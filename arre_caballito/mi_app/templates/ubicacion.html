@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubicación</title>
-    <style>
+    {% load static %}  <style>
         /* General Reset */
         * {
             margin: 0;
@@ -14,30 +14,47 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            background-image: url('fondo.jpg'); /* Usar la imagen local */
+            margin: 0;
+            height: 100vh;
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"); /* Reemplaza con tus imágenes */
             background-size: cover;
             background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            padding: 20px;
+        }
+
+        /* Background images (multiple, simultaneous) */
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
         }
 
         /* Main container styling */
         .container {
-            background-color: rgba(204, 158, 59, 0.9); /* Fondo con opacidad para que se vea la imagen de fondo */
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
             border-radius: 15px;
             padding: 30px;
             width: 100%;
             max-width: 700px;
-            color: white;
+            color: #333; /* Color del texto */
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             text-align: center;
             transform: scale(0.95);
             opacity: 0;
             animation: fadeIn 1s ease-out forwards;
+            z-index: 2; /* Para que esté por encima del fondo */
+            position: relative; /* Para que el botón "Volver" se posicione correctamente */
         }
 
         @keyframes fadeIn {
@@ -65,7 +82,7 @@
             width: 100%;
             height: 350px;
             border-radius: 8px;
-            border: none;
+            border: 2px solid #d9a457; /* Borde con el color principal */
             margin-bottom: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
@@ -77,7 +94,7 @@
 
         /* Back button styling */
         .back-button {
-            background-color: #e2b969;
+            background-color: #333; /* Color de fondo oscuro */
             border: none;
             padding: 12px 25px;
             border-radius: 8px;
@@ -87,22 +104,25 @@
             transition: background-color 0.3s ease;
             margin-bottom: 20px;
             display: inline-block;
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
 
         .back-button:hover {
-            background-color: #d89c5c;
+            background-color: #d9a457; /* Color principal al pasar el ratón */
         }
 
         /* Action button styling */
         .action-button {
-            background-color: #d89c5c;
+            background-color: #d9a457; /* Color principal */
             border: none;
             padding: 12px 25px;
             border-radius: 8px;
             font-size: 16px;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .action-button:hover {

@@ -43,13 +43,12 @@
 
         /* Container with white background */
         .container {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
             border-radius: 12px;
             padding: 40px;
             width: 90%;
             max-width: 700px;
             text-align: center;
-            color: white;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             z-index: 2;
             position: relative;
@@ -57,8 +56,8 @@
 
         .back-link {
             display: inline-block;
-            background-color: #e2b969;
-            color: #333;
+            background-color: #333; /* Color de fondo oscuro */
+            color: white;
             padding: 12px 25px;
             border-radius: 8px;
             text-decoration: none;
@@ -68,7 +67,7 @@
         }
 
         .back-link:hover {
-            background-color: #d89c5c;
+            background-color: #d9a457; /* Color principal al pasar el ratón */
         }
 
         h1 {
@@ -100,11 +99,12 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.3s ease;
-            text-decoration: none; /* Elimina el subrayado del enlace */
-            color: inherit; /* Hereda el color del texto del contenedor */
+            text-decoration: none;
+            color: inherit;
         }
 
         .contact-item:hover {
+            background-color: #d9a457; /* Color principal al pasar el ratón */
             transform: translateY(-5px);
         }
 

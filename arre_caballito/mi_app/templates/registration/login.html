@@ -8,6 +8,7 @@
           rel="stylesheet" 
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
           crossorigin="anonymous">
+    {% load static %}
     <style>
         * {
             margin: 0;
@@ -17,77 +18,105 @@
         }
 
         body {
-            background-color: #d9b36b;
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
+        }
+
         .container {
             text-align: center;
-            color: white;
+            position: relative; /* Para posicionar el botón "Volver" */
         }
 
         .volver-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            padding: 8px 15px;
-            border: 2px solid black;
-            border-radius: 50px;
-            background: #d9b36b;
-            color: black;
+            padding: 10px 20px; /* Aumentar el padding para un mejor aspecto */
+            border: none;
+            border-radius: 8px; /* Redondear un poco más los bordes */
+            background-color: #333;
+            color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px; /* Ajustar el tamaño de la fuente */
+        }
+
+        .volver-btn:hover {
+            background-color: #d9a457;
         }
 
         h1 {
             margin-bottom: 20px;
-            font-size: 24px;
-            color: white;
+            font-size: 28px; /* Aumentar el tamaño de la fuente del título */
+            color: #333;
         }
 
         .login-box {
-            background-color: #dec295;
-            padding: 30px;
-            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px; /* Aumentar el padding del formulario */
+            border-radius: 12px; /* Redondear más los bordes del formulario */
             display: inline-block;
             text-align: left;
-            width: 300px;
+            width: 350px; /* Aumentar el ancho del formulario */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
 
         .login-box label {
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px; /* Aumentar el margen superior de las etiquetas */
             display: block;
-            color: black;
+            color: #333;
+            font-size: 18px; /* Aumentar el tamaño de la fuente de las etiquetas */
         }
 
         .login-box input {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
+            padding: 12px; /* Aumentar el padding de los campos de entrada */
+            margin-top: 8px; /* Aumentar el margen superior de los campos de entrada */
+            margin-bottom: 20px; /* Aumentar el margen inferior de los campos de entrada */
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px; /* Redondear más los bordes de los campos de entrada */
+            font-size: 16px; /* Aumentar el tamaño de la fuente de los campos de entrada */
         }
 
         .login-btn {
             display: block;
-            background-color: #8a6d35;
+            background-color: #d9a457;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 12px; /* Aumentar el padding del botón "Acceder" */
             width: 100%;
-            border-radius: 5px;
+            border-radius: 8px; /* Redondear más los bordes del botón "Acceder" */
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 15px;
+            transition: background-color 0.3s ease;
+            font-size: 18px; /* Aumentar el tamaño de la fuente del botón "Acceder" */
         }
 
-        .login-btn:hover, .volver-btn:hover {
-            background-color: #6b5229;
+        .login-btn:hover {
+            background-color: #b37d4b;
         }
     </style>
 </head>
