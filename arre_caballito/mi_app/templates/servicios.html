@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General reset and body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background images (multiple, simultaneous) */
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
+        }
+
+        /* Servicios section styling */
+        #servicios {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out forwards;
+            z-index: 2;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #servicios h2 {
+            font-size: 2.8em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        #servicios p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        #servicios p:first-of-type {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #2e2e2e;
+        }
+
+        #servicios a.button {
+            display: inline-block;
+            margin-top: 30px;
+            background-color: #333;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #servicios a.button:hover {
+            background-color: #d9a457;
+            transform: translateY(-5px);
+        }
+
+        /* List styles */
+        #servicios ul {
+            list-style-type: none;
+            margin-top: 20px;
+            padding-left: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #servicios ul li {
+            background-color: #f3e1c3;
+            font-size: 1.2em;
+            padding: 20px;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        #servicios ul li:nth-child(odd) {
+            background-color: #e5c46e;
+        }
+
+        #servicios ul li:hover {
+            background-color: #d9a457;
+            transform: translateY(-5px);
+        }
+
+        /* Hover descriptions */
+        .service-item {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .service-item::after {
+            content: attr(data-description);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .service-item:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #servicios {
+                padding: 30px;
+            }
+
+            #servicios h2 {
+                font-size: 2.2em;
+            }
+
+            #servicios ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #servicios ul li {
+                width: 90%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<section id="servicios">
+    <h2>Servicios</h2>
+    <p>Brindamos una enseñanza personalizada que se adapta a las necesidades y metas individuales. Las clases de equitación se dividen en tres categorías:</p>
+    <ul>
+        <li class="service-item" data-description="Clases para los más pequeños, con ponis adaptados a su tamaño y habilidades.">Pony</li>
+        <li class="service-item" data-description="Clases para principiantes que están aprendiendo las bases de la equitación.">Escuelita</li>
+        <li class="service-item" data-description="Clases avanzadas para quienes ya tienen experiencia y desean mejorar sus habilidades.">Escuela</li>
+    </ul>
+    <a href="{% url 'inicio' %}" class="button">Volver a la Página Principal</a>
+</section>
+
+</body>
+</html>

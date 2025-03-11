@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Caballos</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: #333;
+            font-size: 16px;
+        }
+
+        h1 {
+            color: #4e4e4e;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        h1:hover {
+            color: #8a6d35;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        tr:hover {
+            background-color: #dec295;
+            transform: scale(1.02);
+            transition: transform 0.3s;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: #8a6d35;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border: none;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #a67524;
+            transform: translateY(-4px);
+        }
+
+        .btn:active {
+            background-color: #8a6d35;
+            transform: translateY(2px);
+        }
+
+        .volver-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #d9b36b;
+            color: #333;
+            font-weight: 600;
+            border-radius: 50px;
+            border: 2px solid #8a6d35;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .volver-btn:hover {
+            background-color: #c8a158;
+            transform: translateY(-3px);
+        }
+
+        .volver-btn:active {
+            background-color: #d9b36b;
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+
+    <h1>Lista de Caballos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Sexo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for caballo in caballos %}
+            <tr>
+                <td>{{ caballo.id_caballo }}</td>
+                <td>{{ caballo.nombre }}</td>
+                <td>{{ caballo.edad }}</td>
+                <td>{{ caballo.get_sexo_display }}</td>
+                <td>
+                    <button class="btn" onclick="modificarCaballo({{ caballo.id_caballo }})">Modificar</button>
+                    <button class="btn" onclick="confirmarEliminar({{ caballo.id_caballo }})">Eliminar</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="no-data">
+                <td colspan="5">No hay caballos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button class="btn" onclick="agregarCaballo()">Agregar Caballo</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function agregarCaballo() {
+            window.location.href = "{% url 'agregar_caballo' %}";
+        }
+    
+        function modificarCaballo(id) {
+            window.location.href = `/modificar_caballo/${id}/`;
+        }
+    
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_caballo/${id}/`;
+    
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

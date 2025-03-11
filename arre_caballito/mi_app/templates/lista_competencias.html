@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Competencias</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            color: #333; /* Texto oscuro */
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1e0a3;
+            transform: translateY(-5px);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: #8a6d35;
+            background-color: #fff;
+            padding: 15px;
+        }
+
+        .volver-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .volver-btn:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        /* Action Buttons */
+        .add-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background-color: #6d4f24;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-decoration: none;
+            margin: 0 2px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn:hover {
+            background-color: #da190b;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+    <h1>Lista de Competencias</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for competencia in competencias %}
+            <tr>
+                <td>{{ competencia.id_competencia }}</td>
+                <td>{{ competencia.nombre }}</td>
+                <td>{{ competencia.direccion }}</td>
+                <td>{{ competencia.fecha }}</td>
+                <td>{{ competencia.hora }}</td>
+                <td>
+                    <a href="{% url 'modificar_competencia' competencia.id_competencia %}" class="edit-btn">Modificar</a>
+                    <button class="delete-btn" onclick="confirmDelete({{ competencia.id_competencia }})">Eliminar</button>
+                </td>                
+            </tr>
+            {% empty %}
+            <tr class="no-data">
+                <td colspan="6">No hay competencias registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+
+    <a href="{% url 'agregar_competencia' %}" class="add-btn">Agregar Competencia</a>
+
+    <script>
+        function confirmDelete(id_competencia) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir a la URL del servidor para realizar la eliminación
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_competencia/${id_competencia}/`; // Reemplaza con tu URL dinámica
+    
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>    
+</body>
+</html>

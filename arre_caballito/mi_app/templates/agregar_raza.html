@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Razas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #d2b48c;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            box-sizing: border-box;
+            margin: 0 10%;
+        }
+
+        h1 {
+            color: #4a2e17;
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .raza-form p {
+            margin-bottom: 20px;
+        }
+
+        .raza-form label {
+            display: block;
+            color: #4a2e17;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+            text-align: center;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .raza-form input,
+        .raza-form textarea,
+        .raza-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #b1946e;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .raza-form input:focus,
+        .raza-form textarea:focus,
+        .raza-form select:focus {
+            border: 1.5px solid #8b7355;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-button,
+        .cancel-button {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            border: none;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .save-button {
+            background-color: #5c3d1b;
+            color: #fff;
+        }
+
+        .save-button:hover {
+            background-color: #4a2e17;
+        }
+
+        .cancel-button {
+            background-color: #fff;
+            color: #5c3d1b;
+            border: 1.5px solid #5c3d1b;
+        }
+
+        .cancel-button:hover {
+            background-color: #5c3d1b;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Raza</h1>
+        <form method="POST" class="raza-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+                <button type="submit" class="save-button">Guardar</button>
+                <button type="button" class="cancel-button" onclick="window.history.back()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

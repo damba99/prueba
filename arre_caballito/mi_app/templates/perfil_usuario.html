@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Alumno</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #c49a6c;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #8b5c3f;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 2px solid #fff;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        .sidebar button {
+            background-color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .sidebar button:hover {
+            background-color: #d1a25f;
+            transform: scale(1.05);
+        }
+
+        .content {
+            width: 80%;
+            background-color: #f8f0e3;
+            padding: 30px;
+            position: relative;
+            overflow-y: auto;
+            animation: fadeIn 1s ease-out;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #8b5c3f;
+            font-size: 2em;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .btn:hover {
+            background-color: #d1a25f;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button>MI PERFIL</button>
+        <a href="{% url 'lista_cuota' %}" class="btn">CUOTAS</a>
+        <a href="{% url 'lista_alumnoxclase' %}" class="btn">ALUMNOS POR CLASES</a>
+        <a href="{% url 'lista_alumnoxcompetencia' %}" class="btn">ALUMNOS POR COMPETENCIAS</a>
+        <a href="{% url 'inicio' %}" class="btn">CERRAR SESION</a>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>PERFIL DEL ALUMNO</h1>
+        </header>
+
+        {% if mensaje %}
+        <p style="color: green;">{{ mensaje }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Guardar/Actualizar Datos</button>
+        </form>
+
+        {% if alumno %}
+        <h2>Datos cargados:</h2>
+        <p><strong>ID:</strong> {{ alumno.id_alumno }}</p>
+        <p><strong>Nombre:</strong> {{ alumno.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ alumno.apellido }}</p>
+        <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+        <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+        <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+        <p><strong>Email:</strong> {{ alumno.email }}</p>
+
+        <h2>Clases:</h2>
+        {% if clases %}
+            <ul>
+                {% for clase in clases %}
+                    <li>{{ clase.categoria }} - {{ clase.profesor }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No estás inscrito en ninguna clase.</p>
+        {% endif %}
+
+        <h2>Competencias:</h2>
+        {% if competencias %}
+            <ul>
+                {% for competencia in competencias %}
+                    <li>{{ competencia.nombre }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No estás inscrito en ninguna competencia.</p>
+        {% endif %}
+
+        {% else %}
+        <p>No tienes datos registrados todavía. Completa el formulario para agregarlos.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

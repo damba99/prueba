@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilla de Alumnos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f2f2f2;
+            flex-direction: row;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #c49a6c;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%); /* El menú está oculto inicialmente */
+            animation: slideIn 0.5s forwards; /* Animación de deslizamiento */
+        }
+
+        /* Animación para deslizamiento del menú */
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar button, .sidebar a {
+            background-color: #fff;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar button:hover, .sidebar a:hover {
+            background-color: #0056b3;
+            color: white;
+            transform: translateX(10px); /* Desliza ligeramente los botones cuando se pasa el mouse */
+        }
+
+        .content {
+            width: 80%;
+            padding: 30px;
+            background-color: #fff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        th {
+            background-color: #000;
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .footer .btn {
+            background-color: #000;
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .footer .btn:hover {
+            background-color: #444;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .modal h2 {
+            margin: 0;
+            color: #d9534f;
+        }
+
+        .modal p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .modal .confirm-btn {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal .cancel-btn {
+            background-color: #5bc0de;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal .confirm-btn:hover {
+            background-color: #c9302c;
+        }
+
+        .modal .cancel-btn:hover {
+            background-color: #31b0d5;
+        }
+
+        .delete-btn, .modify-btn {
+            padding: 10px 20px; /* Aseguramos que ambos botones tengan el mismo tamaño */
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn {
+            background-color: #ff0202;
+            color: white;
+        }
+
+        .modify-btn {
+            background-color: #f0ad4e;
+            color: white;
+            margin-left: 10px; /* Espacio entre los botones */
+        }
+
+        .delete-btn:hover {
+            background-color: #c40000;
+        }
+
+        .modify-btn:hover {
+            background-color: #ec971f;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <button>PLANILLA DE ALUMNOS</button>
+        <a href="{% url 'lista_competencia' %}" class="btn">COMPETENCIAS</a>
+        <a href="{% url 'lista_profesor' %}" class="btn">PROFESORES</a>
+        <a href="{% url 'lista_categoria' %}" class="btn">CATEGORIAS</a>
+        <a href="{% url 'lista_clase' %}" class="btn">CLASES</a>
+        <a href="{% url 'lista_turno' %}" class="btn">TURNOS</a>
+        <a href="{% url 'lista_cuota' %}" class="btn">CUOTAS</a>
+        <a href="{% url 'lista_caballo' %}" class="btn">CABALLOS</a>
+        <a href="{% url 'lista_raza' %}" class="btn">RAZAS</a>
+        <a href="{% url 'lista_montura' %}" class="btn">MONTURAS</a>
+        <a href="{% url 'lista_disciplina' %}" class="btn">DISCIPLINAS</a>
+        <a href="{% url 'lista_alumnoxcompetencia' %}" class="btn">ALUMNOS POR COMPETENCIAS</a>
+        <a href="{% url 'lista_alumnoxclase' %}" class="btn">ALUMNOS POR CLASES</a>
+        <a href="{% url 'inicio' %}" class="btn">CERRAR SESION</a>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>PLANILLA DE ALUMNOS</h1>
+        </header>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>DNI</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alumno in alumnos %}
+                <tr>
+                    <td>{{ alumno.id_alumno }}</td>
+                    <td>{{ alumno.nombre }}</td>
+                    <td>{{ alumno.apellido }}</td>
+                    <td>{{ alumno.dni }}</td>
+                    <td>{{ alumno.fecha_nacimiento }}</td>
+                    <td>{{ alumno.direccion }}</td>
+                    <td>{{ alumno.telefono }}</td>
+                    <td>{{ alumno.email }}</td>
+                    <td>
+                        <form action="{% url 'eliminar_alumno' alumno.id_alumno %}" method="POST" id="deleteForm">
+                            {% csrf_token %}
+                            <button type="button" class="delete-btn" onclick="openModal()">Eliminar</button>
+                        </form>
+                        <!-- Botón Modificar mejorado con espacio entre ellos -->
+                        <a href="{% url 'modificar_alumno' alumno.id_alumno %}" class="modify-btn">Modificar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9">No hay alumnos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <a href="{% url 'agregar_alumno' %}" class="btn">Agregar Alumno</a>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2>¿Estás seguro de eliminar este alumno?</h2>
+            <p>Esta acción no se puede deshacer.</p>
+            <div class="modal-buttons">
+                <button onclick="confirmDelete()" class="confirm-btn">Sí, Eliminar</button>
+                <button onclick="closeModal()" class="cancel-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('confirmModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+
+        function confirmDelete() {
+            document.getElementById('deleteForm').submit();
+        }
+    </script>
+
+</body>
+</html>

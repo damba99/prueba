@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de alumnos por competencia</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: #000; /* Color negro para todo el texto */
+        }
+
+        /* Heading */
+        h1 {
+            color: black; /* Color negro para el título */
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #f3e1c3;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            color: black; /* Color negro para el texto de la tabla */
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e1c386;
+        }
+
+        tr:hover {
+            background-color: #dec295;
+            cursor: pointer;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: #8a6d35;
+            background-color: #f3e1c3;
+            border: none;
+            padding: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #a67524;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Volver button */
+        .volver-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .volver-btn:hover {
+            background-color: #c8a158;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Button Container */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Modify and Delete buttons */
+        .action-buttons a, .action-buttons button {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #8a6d35;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .action-buttons a:hover, .action-buttons button:hover {
+            background-color: #a67524;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Form styling */
+        .action-buttons form button {
+            padding: 8px 15px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .action-buttons form button:hover {
+            background-color: #c9302c;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+
+    <h1>Lista de alumnos x competencia</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alumno</th>
+                <th>Competencia</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alumno in alumnoxcompetencia %}
+            <tr>
+                <td>{{ alumno.id_alumnos_competencia }}</td>
+                <td>{{ alumno.alumno }}</td>
+                <td>{{ alumno.competencia }}</td>
+                <td class="action-buttons">
+                    <!-- Botón para modificar -->
+                    <a href="{% url 'modificar_alumnoxcompetencia' alumno.id_alumnos_competencia %}">Modificar</a>
+        
+                    <!-- Botón para eliminar -->
+                    <form action="{% url 'eliminar_alumnoxcompetencia' alumno.id_alumnos_competencia %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Action Buttons -->
+    <div class="button-container">
+        <button class="btn" onclick="agregarAlumnoxcompetencia()">Agregar Alumnoxcompetencia</button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function agregarAlumnoxcompetencia() {
+            window.location.href = "{% url 'agregar_alumnoxcompetencia' %}";
+        }
+
+        function modificarAlumnoxcompetencia(id) {
+            window.location.href = `/modificar_alumnoxcompetencia/${id}/`;
+        }
+
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_alumnoxcompetencia/${id}/`;
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }        
+    </script>
+
+</body>
+</html>
