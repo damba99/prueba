@@ -1,0 +1,10 @@
+# Database
+db.sqlite3
+# PyCache
+**/__pycache__/
+**/*.pyc
+# Migrations
+**/migrations/*.py
+**/migrations/__pycache__/
+# Migrations vacías
+**/migrations/000*.py
