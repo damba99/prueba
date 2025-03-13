@@ -4,32 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Alumno</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body {
+        /* General reset and body */
+        * {
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f4f4;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
 
+        /* Background images (multiple, simultaneous) */
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
+        }
+
+        /* Content styling */
         .content {
-            width: 100%;
-            max-width: 500px;
-            background-color: #d2b48c;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
             padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
             text-align: center;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out forwards;
+            z-index: 2;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         h1 {
-            color: #4a2e17;
-            font-size: 26px;
-            font-weight: 700;
+            font-size: 2.8em;
+            color: #333;
             margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
         }
 
         .form-group {
@@ -39,61 +83,62 @@
 
         .form-group label {
             display: block;
-            font-size: 16px;
-            color: #4a2e17;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
+            color: #333;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px;
             font-size: 16px;
-            border: 2px solid #b1946e;
-            border-radius: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             outline: none;
-            transition: border 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
-        .form-group input:focus {
-            border: 2px solid #8b7355;
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3498db;
         }
 
         .form-group input[type="submit"] {
-            background-color: #5c3d1b;
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            padding: 12px 25px;
             border: none;
-            padding: 12px;
-            width: 100%;
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            cursor: pointer;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .form-group input[type="submit"]:hover {
-            background-color: #4a2e17;
+            background-color: #d9a457;
+            transform: translateY(-5px);
         }
 
         .back-btn {
             display: block;
-            margin-top: 10px;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            color: #5c3d1b;
-            background-color: #fff;
-            border: 2px solid #5c3d1b;
+            margin: 20px auto 0 auto;
+            background-color: #333;
+            color: #fff;
+            padding: 12px 25px;
             border-radius: 8px;
             text-decoration: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .back-btn:hover {
-            background-color: #5c3d1b;
-            color: #fff;
+            background-color: #d9a457;
+            transform: translateY(-5px);
         }
     </style>
 </head>
@@ -102,12 +147,24 @@
         <h1>Agregar Alumno</h1>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
             <div class="form-group">
                 <input type="submit" value="Guardar Alumno">
-                <a href="{% url 'lista_alumnos' %}" class="back-btn">Volver a la lista</a>
             </div>
         </form>
+        <a href="{% url 'lista_alumnos' %}" class="back-btn">Volver a la lista</a>
     </div>
 </body>
 </html>

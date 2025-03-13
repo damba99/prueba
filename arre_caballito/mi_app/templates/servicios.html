@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servicios</title>
+    <title>Agregar Alumno</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         /* General reset and body */
         * {
@@ -42,18 +43,18 @@
             }
         }
 
-        /* Servicios section styling */
-        #servicios {
+        /* Content styling */
+        .content {
             background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
             padding: 40px;
             border-radius: 15px;
-            max-width: 900px;
-            width: 100%;
+            max-width: 600px;
+            width: 90%;
             text-align: center;
             box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
             animation: fadeIn 1s ease-out forwards;
             z-index: 2;
-            position: relative; /* Para posicionar el botón "Volver" */
+            position: relative;
         }
 
         @keyframes fadeIn {
@@ -67,7 +68,7 @@
             }
         }
 
-        #servicios h2 {
+        h1 {
             font-size: 2.8em;
             color: #333;
             margin-bottom: 20px;
@@ -75,145 +76,95 @@
             letter-spacing: 2px;
         }
 
-        #servicios p {
-            font-size: 1.2em;
-            line-height: 1.8;
-            margin: 10px 0;
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
             color: #333;
         }
 
-        #servicios p:first-of-type {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: #2e2e2e;
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        #servicios a.button {
-            display: block; /* Para que ocupe todo el ancho disponible */
-            margin: 20px auto 0 auto; /* Margen superior reducido a 20px */
-            background-color: #333; /* Color de fondo oscuro */
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3498db;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #333;
             color: #fff;
-            padding: 12px 25px; /* Padding reducido */
+            padding: 12px 25px;
+            border: none;
             border-radius: 8px;
-            text-decoration: none;
-            font-size: 1em; /* Tamaño de fuente reducido */
+            cursor: pointer;
+            font-size: 1em;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: background-color 0.3s ease, transform 0.3s ease;
-            position: static; /* Posición estática para que fluya con el contenido */
         }
 
-        #servicios a.button:hover {
-            background-color: #d9a457; /* Color principal al pasar el ratón */
-            transform: translateY(-5px);
-        }
-
-        /* List styles */
-        #servicios ul {
-            list-style-type: none;
-            margin-top: 20px;
-            padding-left: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #servicios ul li {
-            background-color: #f3e1c3;
-            font-size: 1.2em;
-            padding: 10px;
-            border-radius: 8px;
-            width: 200px;
-            text-align: center;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        #servicios ul li:nth-child(odd) {
-            background-color: #e5c46e;
-        }
-
-        #servicios ul li:hover {
+        .form-group input[type="submit"]:hover {
             background-color: #d9a457;
             transform: translateY(-5px);
         }
 
-        .service-image {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+        .back-btn {
+            display: block;
+            margin: 20px auto 0 auto;
+            background-color: #333;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .service-item:hover .service-image {
-            transform: scale(1.1);
-        }
-
-        .service-title {
-            font-weight: bold;
-            margin-top: 5px;
-            color: #333;
-        }
-
-        .service-description {
-            margin-top: 10px;
-            padding: 5px;
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            #servicios {
-                padding: 30px;
-            }
-
-            #servicios h2 {
-                font-size: 2.2em;
-            }
-
-            #servicios ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            #servicios ul li {
-                width: 90%;
-                margin-bottom: 10px;
-            }
+        .back-btn:hover {
+            background-color: #d9a457;
+            transform: translateY(-5px);
         }
     </style>
 </head>
 <body>
-
-<section id="servicios">
-    <a href="{% url 'inicio' %}" class="button">Volver a la Página Principal</a> 
-    <div>
-        <h2>Servicios</h2>
-        <p>Brindamos una enseñanza personalizada que se adapta a las necesidades y metas individuales. Las clases de equitación se dividen en tres categorías:</p>
-        <ul>
-            <li class="service-item">
-                <img src="{% static 'imagen/imagen pony.jpg' %}" alt="Pony" class="service-image">
-                <div class="service-title">Pony</div>
-                <div class="service-description">Clases para los más pequeños, con ponis adaptados a su tamaño y habilidades.</div>
-            </li>
-            <li class="service-item">
-                <img src="{% static 'imagen/imagen escuelita.jpg' %}" alt="Escuelita" class="service-image">
-                <div class="service-title">Escuelita</div>
-                <div class="service-description">Clases para principiantes que están aprendiendo las bases de la equitación.</div>
-            </li>
-            <li class="service-item">
-                <img src="{% static 'imagen/images escuela.jpg' %}" alt="Escuela" class="service-image">
-                <div class="service-title">Escuela</div>
-                <div class="service-description">Clases avanzadas para quienes ya tienen experiencia y desean mejorar sus habilidades.</div>
-            </li>
-        </ul>
+    <div class="content">
+        <h1>Agregar Alumno</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <input type="submit" value="Guardar Alumno">
+            </div>
+        </form>
+        <a href="{% url 'lista_alumnos' %}" class="back-btn">Volver a la lista</a>
     </div>
-</section>
-
 </body>
 </html>
