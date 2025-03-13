@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATE_FORMAT = "d-m-Y"
+TIME_FORMAT = "H:i"
 
 # Application definition
 
@@ -37,6 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'alumnos',
+    'caballos',
+    'cajas',
+    'clases',
+    'competencias',
+    'cuotas',
+    'inicio',
+    'pagina_principal',
+    'profesores',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
