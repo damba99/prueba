@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from clases.models import Categoria, Disciplina
 from alumnos.models import Alumno
-from caballos.models import Caballo
+from caballos.models import Caballo, CaballosPorDisciplina
 
 class Competencia(models.Model):
     id_competencias = models.AutoField(primary_key=True)
@@ -32,11 +32,10 @@ class Inscripcion(models.Model):
     def clean(self):
         # Si el caballo no es null, verifica que la disciplina del caballo coincida con la del evento
         if self.id_caballo:
-            # Verifica si el caballo está asociado con la disciplina correspondiente en DisciplinaPorCaballos
-            if self.id_evento.id_disciplina not in self.id_caballo.disciplinas:
-                raise ValidationError("El caballo no está registrado en la disciplina del evento.")
+            # Verifica si el caballo está asociado con la disciplina correspondiente en CaballosPorDisciplina
+            if not CaballosPorDisciplina.objects.filter(caballo=self.id_caballo, disciplina=self.id_evento.id_disciplina).exists():
+                raise ValidationError(f"El caballo {self.id_caballo.nombre} no está registrado en la disciplina del evento.")
         super().clean()
-
     def __str__(self):
         return f"Inscripción {self.id_inscripcion} - Alumno {self.id_alumno.nombre} - Competencia {self.id_competencia.nombre} - Evento {self.id_evento.id_evento}"
 

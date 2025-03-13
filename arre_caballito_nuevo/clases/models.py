@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from profesores.models import Profesor
-from caballos.models import Caballo
+from caballos.models import Caballo, CaballosPorDisciplina, Disciplina
 from alumnos.models import Alumno
 
 
@@ -21,15 +21,7 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-    
-    
-#REVISAR SI DISCIPLINA TIENE VALORES FIJOS O PODEMOS CREARLA
-class Disciplina(models.Model):
-    id_disciplina = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.nombre
 
 class Clase(models.Model):
     id_clase = models.AutoField(primary_key=True)
@@ -60,10 +52,10 @@ class Asistencia(models.Model):
             # Obtener la disciplina de la clase
             disciplina_clase = self.id_clase.id_disciplina
 
-            # Verificar si la disciplina de la clase está en las disciplinas del caballo
-            if disciplina_clase not in self.id_caballo.disciplinas.all():
+            # Verificar si el caballo está relacionado con la disciplina de la clase
+            if not CaballosPorDisciplina.objects.filter(caballo=self.id_caballo, disciplina=disciplina_clase).exists():
                 raise ValidationError(f"El caballo {self.id_caballo.nombre} no está inscrito en la disciplina de esta clase.")
-
+    
     def save(self, *args, **kwargs):
         self.clean()  # Realiza la validación antes de guardar
         super().save(*args, **kwargs)

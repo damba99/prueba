@@ -23,13 +23,8 @@ class Cuota(models.Model):
     mes = models.CharField(max_length=2, choices=MONTH_CHOICES)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateTimeField()
+    pagos = models.ManyToManyField(Pago, related_name='cuotas')
     
     def __str__(self):
         return f"Cuota {self.mes} - {self.alumno}"
 
-class CuotasPorPago(models.Model):
-    id_cuotas = models.ForeignKey(Cuota, related_name='cuotas_por_pago', on_delete=models.CASCADE)
-    id_pago = models.ForeignKey(Pago, related_name='cuotas_por_pago', on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Cuota {self.id_cuotas.id_cuotas} - Pago {self.id_pago.id_pagos}"
