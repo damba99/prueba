@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Competencia, Evento, Inscripcion
 
-# Register your models here.
+admin.site.register(Competencia)
+admin.site.register(Evento)
+admin.site.register(Inscripcion)

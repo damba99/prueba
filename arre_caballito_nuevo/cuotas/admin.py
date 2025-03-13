@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Cuota, CuotasPorPago
 
-# Register your models here.
+admin.site.register(Cuota)
+admin.site.register(CuotasPorPago)

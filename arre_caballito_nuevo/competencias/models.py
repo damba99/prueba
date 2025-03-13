@@ -21,7 +21,7 @@ class Evento(models.Model):
     id_disciplina = models.ForeignKey(Disciplina, related_name='eventos', on_delete=models.CASCADE)
     id_categoria = models.ForeignKey(Categoria, related_name='eventos', on_delete=models.CASCADE)
 
-class Inscripciones(models.Model):
+class Inscripcion(models.Model):
     id_inscripcion = models.AutoField(primary_key=True)
 
     id_competencia = models.ForeignKey(Competencia, related_name='inscripciones', on_delete=models.CASCADE)
