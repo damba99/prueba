@@ -1,6 +1,5 @@
 from django.db import models
 from alumnos.models import Alumno
-from cajas.models import Pago
 
 class Cuota(models.Model):
     MONTH_CHOICES = [
@@ -23,8 +22,8 @@ class Cuota(models.Model):
     mes = models.CharField(max_length=2, choices=MONTH_CHOICES)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateTimeField()
-    pagos = models.ManyToManyField(Pago, related_name='cuotas')
     
     def __str__(self):
         return f"Cuota {self.mes} - {self.alumno}"
+
 

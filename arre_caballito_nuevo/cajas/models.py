@@ -1,6 +1,7 @@
 from django.db import models
 from usuarios.models import Usuario
 from django.core.exceptions import ValidationError
+from cuotas.models import Cuota
 
 class Caja(models.Model):
     ABIERTO = 'Abierta'
@@ -51,6 +52,7 @@ class Pago(models.Model):
     fecha_hora = models.DateTimeField()
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     medio_pago = models.CharField(max_length=50, choices=MEDIO_PAGO_CHOICES)
+    cuotas = models.ManyToManyField(Cuota)
 
     def __str__(self):
         return f"Pago {self.id_pagos} - {self.monto} - {self.medio_pago}"

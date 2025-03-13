@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from profesores.models import Profesor
-from caballos.models import Caballo, CaballosPorDisciplina, Disciplina
+from caballos.models import Caballo, Disciplina
 from alumnos.models import Alumno
 
 
@@ -47,15 +47,12 @@ class Asistencia(models.Model):
     id_caballo = models.ForeignKey(Caballo, related_name='asistencias', on_delete=models.CASCADE)
 
     def clean(self):
-        # Validar que el caballo seleccionado pertenece a la disciplina de la clase
-        if self.id_clase and self.id_caballo:
-            # Obtener la disciplina de la clase
-            disciplina_clase = self.id_clase.id_disciplina
-
-            # Verificar si el caballo está relacionado con la disciplina de la clase
-            if not CaballosPorDisciplina.objects.filter(caballo=self.id_caballo, disciplina=disciplina_clase).exists():
+        super().clean()
+        if self.id_caballo:
+            # Verificar si el caballo pertenece a la disciplina de la clase
+            if self.id_disciplina not in self.id_caballo.disciplinas.all():
                 raise ValidationError(f"El caballo {self.id_caballo.nombre} no está inscrito en la disciplina de esta clase.")
-    
+            
     def save(self, *args, **kwargs):
         self.clean()  # Realiza la validación antes de guardar
         super().save(*args, **kwargs)
