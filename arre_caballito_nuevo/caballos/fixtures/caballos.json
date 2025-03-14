@@ -1,0 +1,32 @@
+[
+    {
+        "model": "caballos.caballo",
+        "pk": 1,
+        "fields": {
+            "nombre": "Caballo 1",
+            "edad": 5,
+            "sexo": "M",
+            "disciplinas": [1]
+        }
+    },
+    {
+        "model": "caballos.caballo",
+        "pk": 2,
+        "fields": {
+            "nombre": "Caballo 2",
+            "edad": 4,
+            "sexo": "H",
+            "disciplinas": [2]
+        }
+    },
+    {
+        "model": "caballos.caballo",
+        "pk": 3,
+        "fields": {
+            "nombre": "Caballo 3",
+            "edad": 6,
+            "sexo": "M",
+            "disciplinas": [1, 2]
+        }
+    }
+]

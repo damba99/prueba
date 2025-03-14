@@ -1,0 +1,16 @@
+[
+    {
+        "model": "caballos.Disciplina",
+        "pk": 1,
+        "fields": {
+            "nombre": "Salto"
+        }
+    },
+    {
+        "model": "caballos.Disciplina",
+        "pk": 2,
+        "fields": {
+            "nombre": "Carrera"
+        }
+    }
+]

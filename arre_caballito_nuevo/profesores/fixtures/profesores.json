@@ -1,0 +1,45 @@
+[
+    {
+      "model": "profesores.profesor",
+      "pk": 1,
+      "fields": {
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "dni": "12345678A",
+        "fecha_nacimiento": "1985-02-20",
+        "direccion": "Calle Ficticia 123",
+        "telefono": "123456789",
+        "email": "juan.perez@example.com",
+        "usuario": 5
+      }
+    },
+    {
+      "model": "profesores.profesor",
+      "pk": 2,
+      "fields": {
+        "nombre": "Ana",
+        "apellido": "Gómez",
+        "dni": "87654321B",
+        "fecha_nacimiento": "1990-06-15",
+        "direccion": "Avenida Real 456",
+        "telefono": "987654321",
+        "email": "ana.gomez@example.com",
+        "usuario": 6
+      }
+    },
+    {
+      "model": "profesores.profesor",
+      "pk": 3,
+      "fields": {
+        "nombre": "Carlos",
+        "apellido": "Rodríguez",
+        "dni": "11223344C",
+        "fecha_nacimiento": "1980-10-10",
+        "direccion": "Calle Ejemplo 789",
+        "telefono": "555123456",
+        "email": "carlos.rodriguez@example.com",
+        "usuario": 7
+      }
+    }
+  ]
+  

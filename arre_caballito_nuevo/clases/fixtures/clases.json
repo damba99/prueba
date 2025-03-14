@@ -1,0 +1,74 @@
+[
+    {
+        "model": "clases.clase",
+        "pk": 1,
+        "fields": {
+            "nombre": "Carrera - Pony - 10:00",
+            "hora_inicio": "10:00:00",
+            "hora_fin": "11:00:00",
+            "id_profesor": 1,
+            "id_disciplina": 1,
+            "id_categoria": 1
+        }
+    },
+    {
+        "model": "clases.clase",
+        "pk": 2,
+        "fields": {
+            "nombre": "Salto - Escuelita - 11:00",
+            "hora_inicio": "11:00:00",
+            "hora_fin": "12:00:00",
+            "id_profesor": 2,
+            "id_disciplina": 2,
+            "id_categoria": 2
+        }
+    },
+    {
+        "model": "clases.clase",
+        "pk": 3,
+        "fields": {
+            "nombre": "Carerra - Escuela - 14:00",
+            "hora_inicio": "14:00:00",
+            "hora_fin": "15:00:00",
+            "id_profesor": 1,
+            "id_disciplina": 1,
+            "id_categoria": 3
+        }
+    },
+    {
+        "model": "clases.clase",
+        "pk": 4,
+        "fields": {
+            "nombre": "Carrera - Pony - 09:00",
+            "hora_inicio": "09:00:00",
+            "hora_fin": "10:00:00",
+            "id_profesor": 2,
+            "id_disciplina": 2,
+            "id_categoria": 1
+        }
+    },
+    {
+        "model": "clases.clase",
+        "pk": 5,
+        "fields": {
+            "nombre": "Carrera - Escuelita - 10:00",
+            "hora_inicio": "10:00:00",
+            "hora_fin": "11:00:00",
+            "id_profesor": 1,
+            "id_disciplina": 1,
+            "id_categoria": 2
+        }
+    },
+    {
+        "model": "clases.clase",
+        "pk": 6,
+        "fields": {
+            "nombre": "Salto - Escuela - 11:00",
+            "hora_inicio": "11:00:00",
+            "hora_fin": "12:00:00",
+            "id_profesor": 2,
+            "id_disciplina": 2,
+            "id_categoria": 3
+        }
+    }
+]

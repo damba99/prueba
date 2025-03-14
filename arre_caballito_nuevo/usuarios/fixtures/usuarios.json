@@ -1,0 +1,135 @@
+[
+    {
+        "model": "usuarios.Usuario",
+        "pk": 1,
+        "fields": {
+            "password": "admin",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Administrador",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 2,
+        "fields": {
+            "password": "alumno1",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "alumno1",
+            "first_name": "",
+            "last_name": "",
+            "email": "alumno1@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Alumno",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 3,
+        "fields": {
+            "password": "alumno2",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "alumno2",
+            "first_name": "",
+            "last_name": "",
+            "email": "alumno2@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Alumno",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 4,
+        "fields": {
+            "password": "alumno3",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "alumno3",
+            "first_name": "",
+            "last_name": "",
+            "email": "alumno3@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Alumno",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 5,
+        "fields": {
+            "password": "profe1",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "profe1",
+            "first_name": "",
+            "last_name": "",
+            "email": "profe1@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Profesor",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 6,
+        "fields": {
+            "password": "profe2",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "profe2",
+            "first_name": "",
+            "last_name": "",
+            "email": "profe2@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Profesor",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.Usuario",
+        "pk": 7,
+        "fields": {
+            "password": "profe3",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "profe3",
+            "first_name": "",
+            "last_name": "",
+            "email": "profe3@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-01-01T00:00:00Z",
+            "rol": "Profesor",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

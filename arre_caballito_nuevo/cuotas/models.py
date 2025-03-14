@@ -16,14 +16,20 @@ class Cuota(models.Model):
         ('11', 'Noviembre'),
         ('12', 'Diciembre'),
     ]
-        
+
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('pagado', 'Pagado'),
+        ('vencida', 'Vencida'),
+    ]
+    
     id_cuota = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name='cuotas')
     mes = models.CharField(max_length=2, choices=MONTH_CHOICES)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
-    fecha_pago = models.DateTimeField()
-    
+    fecha_pago = models.DateField(null=True, blank=True)      
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
+    fecha_vencimiento = models.DateField(null=True, blank=True)  # Cambié a DateField para solo fecha sin hora
+
     def __str__(self):
-        return f"Cuota {self.mes} - {self.alumno}"
-
-
+        return f"Cuota {self.id_cuota} - {self.mes} - {self.estado}"

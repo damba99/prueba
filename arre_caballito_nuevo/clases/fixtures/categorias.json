@@ -1,0 +1,23 @@
+[
+    {
+        "model": "clases.Categoria",
+        "pk": 1,
+        "fields": {
+            "nombre": "Pony"
+        }
+    },
+    {
+        "model": "clases.Categoria",
+        "pk": 2,
+        "fields": {
+            "nombre": "Escuelita"
+        }
+    },
+    {
+        "model": "clases.Categoria",
+        "pk": 3,
+        "fields": {
+            "nombre": "Escuela"
+        }
+    }
+]

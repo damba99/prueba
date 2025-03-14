@@ -1,0 +1,50 @@
+[
+  {
+      "model": "cuotas.cuota",
+      "pk": 1,
+      "fields": {
+          "alumno": 1,
+          "mes": "01",
+          "monto": "1000.00",
+          "fecha_pago": null,
+          "estado": "pendiente",
+          "fecha_vencimiento": "2024-02-28"
+      }
+  },
+  {
+      "model": "cuotas.cuota",
+      "pk": 2,
+      "fields": {
+          "alumno": 1,
+          "mes": "02",
+          "monto": "1000.00",
+          "fecha_pago": null,
+          "estado": "pendiente",
+          "fecha_vencimiento": "2024-03-31"
+      }
+  },
+  {
+      "model": "cuotas.cuota",
+      "pk": 3,
+      "fields": {
+          "alumno": 2,
+          "mes": "03",
+          "monto": "1000.00",
+          "fecha_pago": null,
+          "estado": "vencida",
+          "fecha_vencimiento": "2024-03-31"
+      }
+  },
+  {
+      "model": "cuotas.cuota",
+      "pk": 4,
+      "fields": {
+          "alumno": 3,
+          "mes": "04",
+          "monto": "1000.00",
+          "fecha_pago": "2024-04-01",
+          "estado": "pagado",
+          "fecha_vencimiento": "2024-04-30"
+      }
+  }
+]

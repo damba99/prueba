@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from usuarios.models import Usuario
 
 class Profesor(models.Model):
     id_profesor = models.AutoField(primary_key=True)
@@ -10,7 +10,7 @@ class Profesor(models.Model):
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=15)
     email = models.EmailField()
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
@@ -19,7 +19,7 @@ class Profesor(models.Model):
         # Crear un usuario solo si no existe ya
         if not self.usuario:  # Si el Profesor aún no tiene usuario asignado
             # Crear el usuario con el mismo correo que el profesor y DNI como contraseña
-            user = User.objects.create_user(
+            user = Usuario.objects.create(
                 username=self.email,  # Usar el email del Alumno como nombre de usuario
                 email=self.email,
                 password=self.dni,  # Usar el DNI del Alumno como contraseña

@@ -1,0 +1,44 @@
+[
+    {
+        "model": "alumnos.Alumno",
+        "pk": 1,
+        "fields": {
+            "nombre": "Alumno Uno",
+            "apellido": "Apellido Uno",
+            "dni": "11111111A",
+            "fecha_nacimiento": "2005-01-01",
+            "direccion": "Calle 1, Ciudad 1",
+            "telefono": "111-111-1111",
+            "email": "alumno1@example.com",
+            "usuario": 2
+        }
+    },
+    {
+        "model": "alumnos.Alumno",
+        "pk": 2,
+        "fields": {
+            "nombre": "Alumno Dos",
+            "apellido": "Apellido Dos",
+            "dni": "22222222B",
+            "fecha_nacimiento": "2006-02-02",
+            "direccion": "Calle 2, Ciudad 2",
+            "telefono": "222-222-2222",
+            "email": "alumno2@example.com",
+            "usuario": 3
+        }
+    },
+    {
+        "model": "alumnos.Alumno",
+        "pk": 3,
+        "fields": {
+            "nombre": "Alumno Tres",
+            "apellido": "Apellido Tres",
+            "dni": "33333333C",
+            "fecha_nacimiento": "2007-03-03",
+            "direccion": "Calle 3, Ciudad 3",
+            "telefono": "333-333-3333",
+            "email": "alumno3@example.com",
+            "usuario": 4
+        }
+    }
+]
