@@ -7,7 +7,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        /* General Reset */
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +15,7 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* Body Styling */
+        
         body {
             background-color: #d9b36b;
             display: flex;
@@ -24,12 +24,12 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
-            color: #000; /* Color negro para todo el texto */
+            color: #000; 
         }
 
-        /* Heading */
+        
         h1 {
-            color: black; /* Color negro para el título */
+            color: black;
             margin-bottom: 20px;
             text-align: center;
             font-size: 32px;
@@ -53,7 +53,7 @@
             text-align: center;
             border-bottom: 1px solid #ddd;
             font-size: 16px;
-            color: black; /* Color negro para el texto de la tabla */
+            color: black; 
         }
 
         th {
@@ -96,7 +96,7 @@
 
         .btn:hover {
             background-color: #a67524;
-            transform: translateY(-2px); /* Efecto de elevación */
+            transform: translateY(-2px); 
         }
 
         /* Volver button */
@@ -116,7 +116,7 @@
 
         .volver-btn:hover {
             background-color: #c8a158;
-            transform: translateY(-2px); /* Efecto de elevación */
+            transform: translateY(-2px);
         }
 
         /* Button Container */
@@ -157,7 +157,7 @@
 
         .action-buttons form button:hover {
             background-color: #c9302c;
-            transform: translateY(-2px); /* Efecto de elevación */
+            transform: translateY(-2px); 
         }
 
     </style>
@@ -186,7 +186,7 @@
                     <!-- Botón para modificar -->
                     <a href="{% url 'modificar_alumnoxcompetencia' alumno.id_alumnos_competencia %}">Modificar</a>
         
-                    <!-- Botón para eliminar -->
+                    
                     <form action="{% url 'eliminar_alumnoxcompetencia' alumno.id_alumnos_competencia %}" method="post">
                         {% csrf_token %}
                         <button type="submit">Eliminar</button>

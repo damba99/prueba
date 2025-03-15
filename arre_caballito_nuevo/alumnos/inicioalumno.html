@@ -4,84 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Alumno</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
             display: flex;
-            height: 100vh;
-            background-color: #f0f0f0; /* Light grey background */
-            color: #333; /* Dark grey text */
-            animation: fadeIn 1s ease-out;
+            min-height: 100vh;
+            background-color: #f8f8f8;
+            flex-direction: row;
+            margin: 0;
+            overflow-x: hidden;
+            color: #333;
         }
 
         .sidebar {
-            width: 250px; /* Fixed width for better consistency */
-            background-color: #222; /* Dark background for sidebar */
-            color: #eee; /* Light text for sidebar */
-            padding: 20px 0; /* Vertical padding */
+            width: 250px;
+            background-color: #111;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #333; /* Subtle border */
-            animation: slideInLeft 0.5s ease-out;
+            gap: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
         }
 
-        .sidebar button, .sidebar a.btn {
-            background-color: transparent;
+        .sidebar a, .sidebar button {
+            display: flex;
+            align-items: center;
+            background-color: #222;
             border: none;
-            padding: 12px 20px; /* Consistent padding */
+            padding: 12px;
             font-size: 16px;
-            text-align: left;
-            color: #eee;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            text-decoration: none; /* Remove underline from links */
-            animation: fadeInUp 1s ease-out;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            text-align: left;
         }
 
-        .sidebar button:hover, .sidebar a.btn:hover {
-            background-color: #333; /* Slightly lighter hover effect */
-            color: #fff;
+        .sidebar a i, .sidebar button i {
+            margin-right: 10px;
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        .sidebar a:hover, .sidebar button:hover {
+            background-color: #444;
         }
 
         .content {
-            flex: 1;
-            background-color: #fff; /* White background for content */
+            width: 100%;
             padding: 30px;
-            overflow-y: auto;
-            animation: fadeIn 1s ease-out;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ddd; /* Subtle bottom border */
-            padding-bottom: 20px;
-            animation: fadeInUp 1s ease-out;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #111;
+            padding-bottom: 10px;
         }
 
-        header h1 {
-            margin: 0;
-            color: #222; /* Dark title */
-            font-size: 2.2em;
-            font-weight: 600;
+        h1 {
+            color: #111;
+            font-size: 24px;
         }
 
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #eee; /* Light grey button */
+            background-color: #eee;
             color: #333;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            animation: fadeInUp 1s ease-out;
         }
 
         .btn:hover {
-            background-color: #ddd; /* Slightly darker hover */
+            background-color: #ddd;
             transform: scale(1.05);
         }
 
@@ -100,7 +113,7 @@
         }
 
         form input, form select, form textarea {
-            width: calc(100% - 22px); /* Adjust width for padding and border */
+            width: calc(100% - 22px);
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -123,9 +136,9 @@
 
         h2 {
             margin-top: 30px;
-            color: #222;
-            font-size: 1.8em;
-            font-weight: 600;
+            color: #111;
+            font-size: 20px;
+            font-weight: bold;
             border-bottom: 1px solid #ddd;
             padding-bottom: 10px;
         }
@@ -139,30 +152,24 @@
             margin-bottom: 8px;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
 
-        @keyframes slideInLeft {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            .content {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <button>MI PERFIL</button>
-        <a href="{% url 'lista_cuota' %}" class="btn">CUOTAS</a>
-        <a href="{% url 'lista_alumnoxclase' %}" class="btn">ALUMNOS POR CLASES</a>
-        <a href="{% url 'lista_alumnoxcompetencia' %}" class="btn">ALUMNOS POR COMPETENCIAS</a>
-        <a href="{% url 'inicio' %}" class="btn">CERRAR SESION</a>
+        <button><i class="fas fa-user"></i> MI PERFIL</button>
+        <a href="{% url 'lista_cuota' %}" class="btn"><i class="fas fa-dollar-sign"></i> CUOTAS</a>
+        <a href="{% url 'lista_alumnoxclase' %}" class="btn"><i class="fas fa-user-graduate"></i> ALUMNOS POR CLASES</a>
+        <a href="{% url 'lista_alumnoxcompetencia' %}" class="btn"><i class="fas fa-user-check"></i> ALUMNOS POR COMPETENCIAS</a>
+        <a href="{% url 'inicio' %}" class="btn"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</a>
     </div>
 
     <div class="content">
@@ -182,6 +189,9 @@
 
         {% if alumno %}
         <h2>Datos cargados:</h2>
+        {% if alumno.imagen %}
+        <img src="{{ alumno.imagen.url }}" alt="Imagen de perfil" style="max-width: 200px; max-height: 200px;">
+        {% endif %}
         <p><strong>ID:</strong> {{ alumno.id_alumno }}</p>
         <p><strong>Nombre:</strong> {{ alumno.nombre }}</p>
         <p><strong>Apellido:</strong> {{ alumno.apellido }}</p>
