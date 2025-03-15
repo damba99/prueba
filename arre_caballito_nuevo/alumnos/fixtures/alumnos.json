@@ -1,44 +1,51 @@
 [
     {
-        "model": "alumnos.Alumno",
-        "pk": 1,
-        "fields": {
-            "nombre": "Alumno Uno",
-            "apellido": "Apellido Uno",
-            "dni": "11111111A",
-            "fecha_nacimiento": "2005-01-01",
-            "direccion": "Calle 1, Ciudad 1",
-            "telefono": "111-111-1111",
-            "email": "alumno1@example.com",
-            "usuario": 2
-        }
+      "model": "alumnos.alumno",
+      "pk": 1,
+      "fields": {
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "dni": "12345678A",
+        "fecha_nacimiento": "2000-01-15",
+        "direccion": "Calle Falsa 123",
+        "telefono": "555123456",
+        "email": "juan.perez@example.com",
+        "usuario": 2,
+        "id_categoria": 1,
+        "id_clases": [1, 4]
+      }
     },
     {
-        "model": "alumnos.Alumno",
-        "pk": 2,
-        "fields": {
-            "nombre": "Alumno Dos",
-            "apellido": "Apellido Dos",
-            "dni": "22222222B",
-            "fecha_nacimiento": "2006-02-02",
-            "direccion": "Calle 2, Ciudad 2",
-            "telefono": "222-222-2222",
-            "email": "alumno2@example.com",
-            "usuario": 3
-        }
+      "model": "alumnos.alumno",
+      "pk": 2,
+      "fields": {
+        "nombre": "Ana",
+        "apellido": "González",
+        "dni": "23456789B",
+        "fecha_nacimiento": "1998-05-22",
+        "direccion": "Avenida Siempre Viva 456",
+        "telefono": "555234567",
+        "email": "ana.gonzalez@example.com",
+        "usuario": 3,
+        "id_categoria": 2,
+        "id_clases": [2, 5]
+      }
     },
     {
-        "model": "alumnos.Alumno",
-        "pk": 3,
-        "fields": {
-            "nombre": "Alumno Tres",
-            "apellido": "Apellido Tres",
-            "dni": "33333333C",
-            "fecha_nacimiento": "2007-03-03",
-            "direccion": "Calle 3, Ciudad 3",
-            "telefono": "333-333-3333",
-            "email": "alumno3@example.com",
-            "usuario": 4
-        }
+      "model": "alumnos.alumno",
+      "pk": 3,
+      "fields": {
+        "nombre": "Luis",
+        "apellido": "Rodríguez",
+        "dni": "34567890C",
+        "fecha_nacimiento": "2001-09-10",
+        "direccion": "Calle del Sol 789",
+        "telefono": "555345678",
+        "email": "luis.rodriguez@example.com",
+        "usuario": 4,
+        "id_categoria": 3,
+        "id_clases": [6]
+      }
     }
-]
+  ]
+  

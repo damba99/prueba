@@ -1,9 +1,6 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 from profesores.models import Profesor
-from caballos.models import Caballo, Disciplina
-from alumnos.models import Alumno
-from django.utils import timezone
+from caballos.models import  Disciplina
 
 
 class Categoria(models.Model):
@@ -22,7 +19,6 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-    
 class Clase(models.Model):
     id_clase = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=255, blank=True)
@@ -31,7 +27,6 @@ class Clase(models.Model):
     id_profesor = models.ForeignKey(Profesor, related_name='clases', on_delete=models.CASCADE, blank=True, null=True)
     id_disciplina = models.ForeignKey(Disciplina, related_name='clases', on_delete=models.CASCADE)
     id_categoria = models.ForeignKey(Categoria, related_name='clases', on_delete=models.CASCADE)
-    id_alumnos = models.ManyToManyField(Alumno, related_name='clases')  # Relación ManyToMany con Alumno
 
     def save(self, *args, **kwargs):
         # Crear el nombre de la clase concatenando la disciplina, categoría y el rango horario
@@ -43,27 +38,3 @@ class Clase(models.Model):
         return f"Clase {self.nombre}"
 
 
-class Asistencia(models.Model):
-    id_clase = models.ForeignKey(Clase, related_name='asistencias', on_delete=models.CASCADE)
-    id_alumno = models.ForeignKey(Alumno, related_name='asistencias', on_delete=models.CASCADE)
-    id_caballo = models.ForeignKey(Caballo, related_name='asistencias', on_delete=models.CASCADE, null=True, blank=True)
-    fecha = models.DateField(default=timezone.now)
-
-    def clean(self):
-        super().clean()
-        
-        # Verificar si el alumno está asociado a la clase
-        if self.id_alumno not in self.id_clase.id_alumnos.all():
-            raise ValidationError(f"El alumno {self.id_alumno.nombre} no está inscrito en esta clase.")
-        
-        if self.id_caballo:
-            # Verificar si el caballo pertenece a la disciplina de la clase
-            if self.id_clase.id_disciplina not in self.id_caballo.disciplinas.all():
-                raise ValidationError(f"El caballo {self.id_caballo.nombre} no está inscrito en la disciplina de esta clase.")
-    
-    def save(self, *args, **kwargs):
-        self.clean()  # Realiza la validación antes de guardar
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return f"Asistencia Clase {self.id_clase.id_clase} - Alumno {self.id_alumno.nombre} - Caballo {self.id_caballo.nombre if self.id_caballo else 'Ninguno'}"

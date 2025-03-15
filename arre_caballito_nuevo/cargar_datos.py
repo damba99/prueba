@@ -4,9 +4,29 @@ import glob
 from django.conf import settings
 import django
 import importlib.util
+from django.contrib.auth import get_user_model
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'arre_caballito.settings')
 django.setup()
+
+
+def crear_superusuario():
+    """Crea un superusuario automáticamente si no existe uno."""
+    User = get_user_model()  # Usamos el modelo de usuario configurado en Django (por defecto User)
+
+    if not User.objects.filter(username='admin').exists():
+        # Crear el superusuario
+        try:
+            user = User.objects.create_superuser(
+                username='admin',
+                email='admin@mail.com',
+                password='admin'
+            )
+            print("Superusuario 'admin' creado correctamente.")
+        except Exception as e:
+            print(f"Error al crear el superusuario: {e}")
+    else:
+        print("El superusuario 'admin' ya existe.")
 
 
 def cargar_todos_los_fixtures():
@@ -16,7 +36,8 @@ def cargar_todos_los_fixtures():
     orden_inicio_apps = [
         'usuarios',  # Primero cargamos 'usuarios'
         'caballos',  # Luego 'caballos'
-        'profesores',  # Después 'profesores'
+        'profesores',
+        'clases', # Después 'profesores'
         'alumnos',  # Y finalmente 'alumnos'
     ]
 
@@ -64,4 +85,8 @@ def cargar_todos_los_fixtures():
 
 
 if __name__ == "__main__":
+    # Crear el superusuario
+    crear_superusuario()
+
+    # Cargar los fixtures
     cargar_todos_los_fixtures()
