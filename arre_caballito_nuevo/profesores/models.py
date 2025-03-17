@@ -16,15 +16,14 @@ class Profesor(models.Model):
         return f"{self.nombre} {self.apellido}"
 
     def save(self, *args, **kwargs):
-        # Crear un usuario solo si no existe ya
         if not self.usuario:  # Si el Profesor aún no tiene usuario asignado
             # Crear el usuario con el mismo correo que el profesor y DNI como contraseña
             user = Usuario.objects.create(
-                username=self.email,  # Usar el email del Alumno como nombre de usuario
+                username=self.email,  # Usar el email del Profesor como nombre de usuario
                 email=self.email,
-                password=self.dni,  # Usar el DNI del Alumno como contraseña
-                rol='Profesor'  # Asignar el rol de 'Alumno'
-            )            # Asignar el usuario creado al Profesor
+                password=self.dni,  # Usar el DNI del Profesor como contraseña
+                rol='Profesor'  # Asignar el rol de 'Profesor'
+            )
             self.usuario = user
 
         super().save(*args, **kwargs)

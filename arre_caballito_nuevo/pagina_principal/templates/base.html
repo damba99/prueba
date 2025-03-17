@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Escuela de Equitación</title>
+</head>
+<body>
+
+    <!-- Barra de navegación simple -->
+    <nav>
+        <ul>
+            <li><a href="/caja">Caja</a></li>
+            <li><a href="/alumnos">Alumnos</a></li>
+            <li><a href="/clases">Clases</a></li>
+            <li><a href="/pagos">Pagos</a></li>
+            <li><a href="/cuotas">Cuotas</a></li>
+            <li><a href="/competencias">Competencias</a></li>
+            <li><a href="/profesores">Profesores</a></li>
+            <li><a href="/perfil">Perfil</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container">
+        {% block content %}
+        <!-- Este es el bloque donde se insertará el contenido de las páginas específicas -->
+        {% endblock %}
+    </div>
+
+</body>
+</html>

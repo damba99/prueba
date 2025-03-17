@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Alumno</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f8f8;
+            flex-direction: row;
+            margin: 0;
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #111;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+        }
+
+        .sidebar a, .sidebar button {
+            display: flex;
+            align-items: center;
+            background-color: #222;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .sidebar a i, .sidebar button i {
+            margin-right: 10px;
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        .sidebar a:hover, .sidebar button:hover {
+            background-color: #444;
+        }
+
+        .content {
+            width: 100%;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #111;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            color: #111;
+            font-size: 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #eee;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        form input, form select, form textarea {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        form button[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button[type="submit"]:hover {
+            background-color: #222;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #111;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button><i class="fas fa-user"></i> MI PERFIL</button>
+        <a href="{% url 'lista_cuota' %}" class="btn"><i class="fas fa-dollar-sign"></i> CUOTAS</a>
+        <a href="{% url 'lista_alumnoxclase' %}" class="btn"><i class="fas fa-user-graduate"></i> ALUMNOS POR CLASES</a>
+        <a href="{% url 'lista_alumnoxcompetencia' %}" class="btn"><i class="fas fa-user-check"></i> ALUMNOS POR COMPETENCIAS</a>
+        <a href="{% url 'inicio' %}" class="btn"><i class="fas fa-sign-out-alt"></i> CERRAR SESIÓN</a>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>PERFIL DEL ALUMNO</h1>
+        </header>
+
+        {% if mensaje %}
+        <p style="color: green;">{{ mensaje }}</p>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Guardar/Actualizar Datos</button>
+        </form>
+
+        {% if alumno %}
+        <h2>Datos cargados:</h2>
+        {% if alumno.imagen %}
+        <img src="{{ alumno.imagen.url }}" alt="Imagen de perfil" style="max-width: 200px; max-height: 200px;">
+        {% endif %}
+        <p><strong>ID:</strong> {{ alumno.id_alumno }}</p>
+        <p><strong>Nombre:</strong> {{ alumno.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ alumno.apellido }}</p>
+        <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+        <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+        <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+        <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+        <p><strong>Email:</strong> {{ alumno.email }}</p>
+
+        <h2>Clases:</h2>
+        {% if clases %}
+        <ul>
+            {% for clase in clases %}
+            <li>{{ clase.categoria }} - {{ clase.profesor }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No estás inscrito en ninguna clase.</p>
+        {% endif %}
+
+        <h2>Competencias:</h2>
+        {% if competencias %}
+        <ul>
+            {% for competencia in competencias %}
+            <li>{{ competencia.nombre }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No estás inscrito en ninguna competencia.</p>
+        {% endif %}
+
+        {% else %}
+        <p>No tienes datos registrados todavía. Completa el formulario para agregarlos.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

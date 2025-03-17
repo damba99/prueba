@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Lista de Profesores</h1>
+  <ul>
+    {% for profesor in profesores %}
+      <li>
+        <a href="{% url 'detalle_profesor' pk=profesor.pk %}">{{ profesor.nombre }} {{ profesor.apellido }}</a>
+        <a href="{% url 'modificar_profesor' pk=profesor.pk %}">Editar</a>
+        <a href="{% url 'eliminar_profesor' pk=profesor.pk %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'crear_profesor' %}">Crear Profesor</a>
+{% endblock %}

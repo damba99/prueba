@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Montura</title>
+    {% load static %}
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente más moderna */
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Asegura que el fondo cubra toda la pantalla */
+            width: 100vw; /* Asegura que el fondo cubra todo el ancho de la pantalla */
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #f3e1c3;
+            padding: 30px; /* Aumenta el padding para mejor espaciado */
+            border-radius: 12px; /* Bordes más redondeados */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra más sutil */
+            text-align: center;
+        }
+
+        h2 {
+            color: #8a6d35;
+            margin-bottom: 25px; /* Aumenta el margen inferior */
+            font-size: 24px; /* Tamaño de fuente más grande */
+            font-weight: 600; /* Peso de fuente más fuerte */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Aumenta el espacio entre los elementos del formulario */
+        }
+
+        label {
+            color: #8a6d35;
+            font-weight: 600; /* Peso de fuente más fuerte */
+            display: block; /* Asegura que la etiqueta ocupe todo el ancho */
+            text-align: left; /* Alinea el texto a la izquierda */
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px; /* Aumenta el padding */
+            border: 1.5px solid #ccc; /* Borde más definido */
+            border-radius: 8px; /* Bordes más redondeados */
+            font-size: 16px; /* Tamaño de fuente más grande */
+            outline: none; /* Elimina el borde de enfoque predeterminado */
+        }
+
+        button {
+            padding: 12px 25px; /* Aumenta el padding del botón */
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 8px; /* Bordes más redondeados */
+            cursor: pointer;
+            font-weight: 600; /* Peso de fuente más fuerte */
+            transition: background-color 0.3s;
+            font-size: 16px; /* Tamaño de fuente más grande */
+        }
+
+        button:hover {
+            background-color: #a67524;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px; /* Aumenta el margen superior */
+            color: #8a6d35;
+            text-decoration: none;
+            font-weight: 600; /* Peso de fuente más fuerte */
+            font-size: 16px; /* Tamaño de fuente más grande */
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Agregar Montura</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit">Agregar</button>
+        </form>
+        <a class="back-link" href="{% url 'lista_montura' %}">Volver a la lista de monturas</a>
+    </div>
+</body>
+</html> 

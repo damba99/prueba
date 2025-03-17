@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Alumno</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0e4d7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #4e4e4e;
+            padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            color: #6b4f31;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-container input, .form-container select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .form-container button {
+            background-color: #8a6d35;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+        }
+
+        .form-container button:hover {
+            background-color: #a67524;
+            transform: scale(1.05);
+        }
+
+        .form-container a {
+            margin-top: 12px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .form-container a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Modificar Alumno</h1>
+
+        <div class="form-container">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Guardar Cambios</button>
+            </form>
+
+            <a href="{% url 'lista_alumnos' %}">Volver a la lista de alumnos</a>
+        </div>
+    </div>
+</body>
+</html>

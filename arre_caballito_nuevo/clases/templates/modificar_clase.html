@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Modificar Clase</h1>
+  <form method="POST">
+    {% csrf_token %}
+
+    <label for="id_disciplina">Disciplina:</label>
+    <select name="id_disciplina">
+      {% for disciplina in disciplinas %}
+        <option value="{{ disciplina.id }}" {% if disciplina.id == clase.id_disciplina.id %}selected{% endif %}>
+          {{ disciplina.nombre }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <label for="id_categoria">Categoría:</label>
+    <select name="id_categoria">
+      {% for categoria in categorias %}
+        <option value="{{ categoria.id }}" {% if categoria.id == clase.id_categoria.id %}selected{% endif %}>
+          {{ categoria.nombre }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Modificar Clase</button>
+  </form>
+  <a href="{% url 'listar_clases' %}">Volver al listado de clases</a>
+{% endblock %}

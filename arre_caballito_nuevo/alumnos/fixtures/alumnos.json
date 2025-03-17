@@ -11,8 +11,7 @@
         "telefono": "555123456",
         "email": "juan.perez@example.com",
         "usuario": 2,
-        "id_categoria": 1,
-        "id_clases": [1, 4]
+        "id_categoria": 1
       }
     },
     {
@@ -27,8 +26,7 @@
         "telefono": "555234567",
         "email": "ana.gonzalez@example.com",
         "usuario": 3,
-        "id_categoria": 2,
-        "id_clases": [2, 5]
+        "id_categoria": 2
       }
     },
     {
@@ -43,8 +41,7 @@
         "telefono": "555345678",
         "email": "luis.rodriguez@example.com",
         "usuario": 4,
-        "id_categoria": 3,
-        "id_clases": [6]
+        "id_categoria": 3
       }
     }
   ]

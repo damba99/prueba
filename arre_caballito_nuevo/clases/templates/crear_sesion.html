@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Crear Sesión</h1>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <!-- Selección de la clase -->
+    <label for="id_clase">Clase:</label>
+    <select name="id_clase" id="id_clase" required>
+      {% for clase in clases %}
+        <option value="{{ clase.id_clase }}">{{ clase.nombre }}</option>
+      {% endfor %}
+    </select><br>
+
+    <!-- Selección del profesor -->
+    <label for="id_profesor">Profesor:</label>
+    <select name="id_profesor" id="id_profesor" required>
+      {% for profesor in profesores %}
+        <option value="{{ profesor.id_profesor }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+      {% endfor %}
+    </select><br>
+
+    <!-- Selección del día -->
+<label for="dia">Día:</label>
+<select name="dia" id="dia" required>
+  <option value="Lunes">Lunes</option>
+  <option value="Martes">Martes</option>
+  <option value="Miércoles">Miércoles</option>
+  <option value="Jueves">Jueves</option>
+  <option value="Viernes">Viernes</option>
+  <option value="Sábado">Sábado</option>
+  <option value="Domingo">Domingo</option>
+</select><br>
+
+    <!-- Selección del turno -->
+    <label for="turno">Turno:</label>
+    <select name="turno" id="turno" required>
+      <option value="Mañana">Mañana</option>
+      <option value="Tarde">Tarde</option>
+    </select><br>
+
+    <!-- Hora de inicio -->
+    <label for="hora_inicio">Hora de Inicio:</label>
+    <input type="time" name="hora_inicio" id="hora_inicio" required><br>
+
+    <!-- Hora de fin -->
+    <label for="hora_fin">Hora de Fin:</label>
+    <input type="time" name="hora_fin" id="hora_fin" required><br>
+
+    <button type="submit">Guardar</button>
+  </form>
+{% endblock %}

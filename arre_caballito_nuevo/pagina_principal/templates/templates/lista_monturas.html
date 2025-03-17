@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Monturas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1e0a3;
+            transform: translateY(-5px);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: #8a6d35;
+            background-color: #fff;
+            padding: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #a67524;
+            transform: scale(1.1);
+        }
+
+        .volver-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Button Container */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back Button -->
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+
+    <!-- Title -->
+    <h1>Lista de Monturas</h1>
+
+    <!-- Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alumno</th>
+                <th>Caballo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for montura in monturas %}
+            <tr>
+                <td>{{ montura.id_montura }}</td>
+                <td>{{ montura.alumno }}</td>
+                <td>{{ montura.caballo }}</td>
+                <td>
+                    <button class="btn" onclick="modificarMontura({{ montura.id_montura }})">Modificar</button>
+                    <button class="btn" onclick="confirmarEliminar({{ montura.id_montura }})">Eliminar</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr class="no-data">
+                <td colspan="6">No hay monturas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Action Buttons -->
+    <div class="button-container">
+        <button class="btn" onclick="agregarMontura()">Agregar Montura</button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function agregarMontura() {
+            window.location.href = "{% url 'agregar_montura' %}";
+        }
+
+        function modificarMontura(id) {
+            window.location.href = `/modificar_montura/${id}/`;
+        }
+
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_montura/${id}/`;
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

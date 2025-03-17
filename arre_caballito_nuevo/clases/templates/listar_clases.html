@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Listado de Clases</h1>
+  
+  <ul>
+    {% for clase in clases %}
+      <li>
+        <strong>{{ clase.nombre }}</strong><br>
+        Disciplina: {{ clase.id_disciplina.nombre }}<br>
+        Categoría: {{ clase.id_categoria.nombre }}<br>
+        <a href="{% url 'detalle_clase' pk=clase.pk %}">Ver Detalles</a>
+        <a href="{% url 'modificar_clase' pk=clase.pk %}">Editar</a>
+        <a href="{% url 'eliminar_clase' pk=clase.pk %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+  
+  <br>
+  <a href="{% url 'crear_clase' %}" class="btn btn-primary">Crear Nueva Clase</a>
+  
+  <!-- Botón que te redirige a la lista de sesiones -->
+  <br><br>
+  <a href="{% url 'listar_sesiones' %}" class="btn btn-secondary">Ir al listado de Sesiones</a>
+  
+{% endblock %}

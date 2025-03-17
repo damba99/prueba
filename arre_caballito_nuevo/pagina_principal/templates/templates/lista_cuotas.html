@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cuotas</title>
+    {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Heading */
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            color: #333;
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1e0a3;
+            transform: translateY(-5px);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        /* Estado Pagado / Impago */
+        .estado-pagado {
+            color: #2d8a28;
+            font-weight: bold;
+        }
+
+        .estado-impago {
+            color: #d33333;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #a67524;
+        }
+
+        .volver-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Button Container */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+
+    <h1>Lista de Cuotas</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alumno</th>
+                <th>Mes</th>
+                <th>Monto</th>
+                <th>Fecha de Pago</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cuota in cuotas %}
+            <tr>
+                <td>{{ cuota.id_cuota }}</td>
+                <td>{{ cuota.alumno }}</td>
+                <td>{{ cuota.mes }}</td>
+                <td>${{ cuota.monto|floatformat:2 }}</td>
+                <td>{{ cuota.fecha_pago|default:"-" }}</td>
+                <td class="{% if cuota.pagado %}estado-pagado{% else %}estado-impago{% endif %}">
+                    {% if cuota.pagado %}Pagado{% else %}Impago{% endif %}
+                </td>
+                <td>
+                    <button class="btn" onclick="modificarCuota({{ cuota.id_cuota }})">Modificar</button>
+                    <button class="btn" onclick="confirmarEliminar({{ cuota.id_cuota }})">Eliminar</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align: center; color: #8a6d35; font-size: 18px;">No hay cuotas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button class="btn" onclick="agregarCuota()">Agregar Cuota</button>
+    </div>
+
+    <script>
+        function agregarCuota() {
+            window.location.href = "{% url 'agregar_cuota' %}";
+        }
+
+        function modificarCuota(id) {
+            // Redirige a la URL de edición de cuota en Django
+            window.location.href = `/modificar_cuota/${id}/`;
+        }
+
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_cuota/${id}/`;
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

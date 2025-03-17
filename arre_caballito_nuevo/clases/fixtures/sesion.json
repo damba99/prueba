@@ -1,0 +1,290 @@
+[
+    {
+        "model": "clases.sesion",
+        "pk": 1,
+        "fields": {
+            "id_clase": 1,
+            "id_profesor": 1,
+            "dia": "Lunes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 2,
+        "fields": {
+            "id_clase": 1,
+            "id_profesor": 2,
+            "dia": "Lunes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 3,
+        "fields": {
+            "id_clase": 1,
+            "id_profesor": 1,
+            "dia": "Miércoles",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 4,
+        "fields": {
+            "id_clase": 1,
+            "id_profesor": 2,
+            "dia": "Miércoles",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 5,
+        "fields": {
+            "id_clase": 2,
+            "id_profesor": 3,
+            "dia": "Martes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 6,
+        "fields": {
+            "id_clase": 2,
+            "id_profesor": 3,
+            "dia": "Martes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 7,
+        "fields": {
+            "id_clase": 2,
+            "id_profesor": 3,
+            "dia": "Jueves",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 8,
+        "fields": {
+            "id_clase": 2,
+            "id_profesor": 3,
+            "dia": "Jueves",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 9,
+        "fields": {
+            "id_clase": 3,
+            "id_profesor": 2,
+            "dia": "Lunes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 10,
+        "fields": {
+            "id_clase": 3,
+            "id_profesor": 3,
+            "dia": "Lunes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 11,
+        "fields": {
+            "id_clase": 3,
+            "id_profesor": 3,
+            "dia": "Miércoles",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 12,
+        "fields": {
+            "id_clase": 3,
+            "id_profesor": 2,
+            "dia": "Miércoles",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 13,
+        "fields": {
+            "id_clase": 4,
+            "id_profesor": 1,
+            "dia": "Martes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 14,
+        "fields": {
+            "id_clase": 4,
+            "id_profesor": 1,
+            "dia": "Martes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 15,
+        "fields": {
+            "id_clase": 4,
+            "id_profesor": 2,
+            "dia": "Jueves",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 16,
+        "fields": {
+            "id_clase": 4,
+            "id_profesor": 2,
+            "dia": "Jueves",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 17,
+        "fields": {
+            "id_clase": 5,
+            "id_profesor": 3,
+            "dia": "Lunes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 18,
+        "fields": {
+            "id_clase": 5,
+            "id_profesor": 3,
+            "dia": "Lunes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 19,
+        "fields": {
+            "id_clase": 5,
+            "id_profesor": 1,
+            "dia": "Miércoles",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 20,
+        "fields": {
+            "id_clase": 5,
+            "id_profesor": 1,
+            "dia": "Miércoles",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 21,
+        "fields": {
+            "id_clase": 6,
+            "id_profesor": 2,
+            "dia": "Martes",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 22,
+        "fields": {
+            "id_clase": 6,
+            "id_profesor": 2,
+            "dia": "Martes",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 23,
+        "fields": {
+            "id_clase": 6,
+            "id_profesor": 3,
+            "dia": "Jueves",
+            "Turno": "Mañana",
+            "hora_inicio": "08:00",
+            "hora_fin": "10:00"
+        }
+    },
+    {
+        "model": "clases.sesion",
+        "pk": 24,
+        "fields": {
+            "id_clase": 6,
+            "id_profesor": 3,
+            "dia": "Jueves",
+            "Turno": "Tarde",
+            "hora_inicio": "14:00",
+            "hora_fin": "16:00"
+        }
+    }
+]

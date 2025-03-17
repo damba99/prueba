@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Caballo</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Title */
+        h1 {
+            color: #000; /* Negro para mejor legibilidad */
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Form Styling */
+        form {
+            background-color: #f3e1c3;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            width: 80%;
+            max-width: 600px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        label {
+            font-size: 18px;
+            color: #000; /* Negro para mejor legibilidad */
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #8a6d35;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #8a6d35;
+            outline: none;
+        }
+
+        button {
+            background-color: #8a6d35;
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #6b4f28;
+            transform: scale(1.05);
+        }
+
+        /* Back Button */
+        .volver-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .volver-btn:hover {
+            background-color: #a67524;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="volver-btn" onclick="window.history.back()">Volver</button>
+    <h1>Modificar Caballo</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Modificar</button>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGREGAR CUOTA</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #f3e1c3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h2 {
+            color: #8a6d35;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            color: #8a6d35;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #8a6d35;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #a67524;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #8a6d35;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Styling for the radio buttons */
+        .radio-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .radio-buttons label {
+            display: inline-block;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>AGREGAR CUOTA</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="id_pagado">Estado</label>
+            <div class="radio-buttons">
+                <label>
+                    <input type="radio" name="pagado" value="True" {% if form.pagado.value == 'True' %}checked{% endif %}> Pagado
+                </label>
+                <label>
+                    <input type="radio" name="pagado" value="False" {% if form.pagado.value == 'False' %}checked{% endif %}> Impago
+                </label>
+            </div>
+            {{ form.alumno }}
+            {{ form.mes }}
+            {{ form.monto }}
+            {{ form.fecha_pago }}
+            <button type="submit">AGREGAR</button>
+        </form>
+        <a class="back-link" href="{% url 'lista_cuota' %}">VOLVER A LA LISTA DE CUOTAS</a>
+    </div>
+</body>
+</html>

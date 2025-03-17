@@ -1,0 +1,56 @@
+[
+    {
+        "model": "clases.alumnosesion",
+        "pk": 1,
+        "fields": {
+            "alumno": 1,
+            "sesion": 1,
+            "fecha_inscripcion": "2025-03-13T08:00:00"
+        }
+    },
+    {
+        "model": "clases.alumnosesion",
+        "pk": 2,
+        "fields": {
+            "alumno": 1,
+            "sesion": 3,
+            "fecha_inscripcion": "2025-03-15T08:00:00"
+        }
+    },
+    {
+        "model": "clases.alumnosesion",
+        "pk": 3,
+        "fields": {
+            "alumno": 2,
+            "sesion": 6,
+            "fecha_inscripcion": "2025-03-13T08:00:00"
+        }
+    },
+    {
+        "model": "clases.alumnosesion",
+        "pk": 4,
+        "fields": {
+            "alumno": 2,
+            "sesion": 8,
+            "fecha_inscripcion": "2025-03-15T08:00:00"
+        }
+    },
+    {
+        "model": "clases.alumnosesion",
+        "pk": 5,
+        "fields": {
+            "alumno": 3,
+            "sesion": 9,
+            "fecha_inscripcion": "2025-03-13T14:00:00"
+        }
+    },
+    {
+        "model": "clases.alumnosesion",
+        "pk": 6,
+        "fields": {
+            "alumno": 3,
+            "sesion": 11,
+            "fecha_inscripcion": "2025-03-15T14:00:00"
+        }
+    }
+]

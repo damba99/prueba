@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de alumnos por clase</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Heading */
+        h1 {
+            color: black;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            animation: slideDown 0.7s ease-out;
+        }
+
+        /* Slide Down Animation */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Table Styling */
+        table {
+            width: 90%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #f3e1c3;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            animation: fadeInTable 0.7s ease-out;
+        }
+
+        /* Table Fade In Animation */
+        @keyframes fadeInTable {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            color: black; /* Letras negras */
+        }
+
+        th {
+            background-color: #8a6d35;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e1c386;
+        }
+
+        tr:hover {
+            background-color: #dec295;
+            cursor: pointer;
+            transform: scale(1.02); /* Slight zoom on hover */
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: black; /* Letras negras */
+            background-color: #f3e1c3;
+            border: none;
+            padding: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #a67524;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Volver button */
+        .volver-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 15px;
+            border: 2px solid black;
+            border-radius: 50px;
+            background: #d9b36b;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .volver-btn:hover {
+            background-color: #c8a158;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Button Container */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Modify and Delete buttons */
+        .action-buttons a, .action-buttons button {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #8a6d35;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+
+        .action-buttons a:hover, .action-buttons button:hover {
+            background-color: #a67524;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+        /* Form styling */
+        .action-buttons form button {
+            padding: 8px 15px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .action-buttons form button:hover {
+            background-color: #c9302c;
+            transform: translateY(-2px); /* Efecto de elevación */
+        }
+
+    </style>
+</head>
+<body>
+
+    <button class="volver-btn" onclick="window.location.href='{% url 'lista_alumnos' %}'">Volver</button>
+
+    <h1>Lista de alumnos por clase</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alumno</th>
+                <th>Clase</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alumno in alumnoxclase %}
+            <tr>
+                <td>{{ alumno.id_alumnos_competencia }}</td>
+                <td>{{ alumno.alumno }}</td>
+                <td>{{ alumno.clase }}</td>
+                <td class="action-buttons">
+                    <!-- Botón para modificar -->
+                    <a href="{% url 'modificar_alumnoxclase' alumno.id_alumnos_clase %}">Modificar</a>
+        
+                    <!-- Botón para eliminar -->
+                    <form action="{% url 'eliminar_alumnoxclase' alumno.id_alumnos_clase %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Action Buttons -->
+    <div class="button-container">
+        <button class="btn" onclick="agregarAlumnoxclase()">Agregar Alumnoxclase</button>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        function agregarAlumnoxclase() {
+            window.location.href = "{% url 'agregar_alumnoxclase' %}";
+        }
+
+        function modificarAlumnoxclase(id) {
+            window.location.href = `/modificar_alumnoxclase/${id}/`;
+        }
+
+        function confirmarEliminar(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción no se puede deshacer",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/eliminar_alumnoxclase/${id}/`;
+
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = 'csrfmiddlewaretoken';
+                    csrfToken.value = "{{ csrf_token }}";
+                    form.appendChild(csrfToken);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }        
+    </script>
+
+</body>
+</html>

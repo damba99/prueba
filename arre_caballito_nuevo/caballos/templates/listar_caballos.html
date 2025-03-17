@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Lista de Caballos</h1>
+  <ul>
+    {% for caballo in caballos %}
+      <li>
+        <a href="{% url 'detalle_caballo' pk=caballo.pk %}">{{ caballo.nombre }}</a>
+        <a href="{% url 'modificar_caballo' pk=caballo.pk %}">Editar</a>
+        <a href="{% url 'eliminar_caballo' pk=caballo.pk %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'crear_caballo' %}">Crear Caballo</a>
+{% endblock %}

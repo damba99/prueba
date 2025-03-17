@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Cuotas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background: linear-gradient(135deg, #f4e4c1, #e0d8c0);
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #c28c3a;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar button {
+            background-color: #d4a558;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: black;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .sidebar button:hover {
+            background-color: #a87638;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .content {
+            width: calc(100% - 250px);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-icon {
+            font-size: 28px;
+            color: #c28c3a;
+        }
+
+        .cuotas-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #e0d8c0;
+            padding: 15px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #d4a558;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            background-color: #c28c3a;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #a87638;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        h1 {
+            color: #c28c3a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button onclick="location.href='#'">Inicio</button>
+        <button onclick="location.href='#'">Perfil</button>
+        <button onclick="location.href='#'">Estado de Cuotas</button>
+        <button onclick="location.href='#'">Contacto</button>
+    </div>
+    <div class="content">
+        <header>
+            <div class="user-info">
+                <span class="user-icon">👤</span>
+                <span>Usuario Ejemplo</span>
+            </div>
+        </header>
+        <h1>Mis Cuotas</h1>
+        <div class="cuotas-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mes</th>
+                        <th>Monto</th>
+                        <th>Fecha de Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cuota in cuotas %}
+                    <tr>
+                        <td>{{ cuota.id_cuota }}</td>
+                        <td>{{ cuota.mes }}</td>
+                        <td>{{ cuota.monto }}</td>
+                        <td>{{ cuota.fecha_pago }}</td>
+                        <td><a href="{% url 'simular_pago' cuota.id_cuota %}" class="btn">Pagar</a></td>
+                    </tr>
+                    {% endfor %}
+                    {% if not cuotas %}
+                    <tr><td colspan="5">No tienes cuotas pendientes.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

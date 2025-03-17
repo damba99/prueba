@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Detalles del Profesor</h1>
+  <p><strong>Nombre:</strong> {{ profesor.nombre }} {{ profesor.apellido }}</p>
+  <p><strong>DNI:</strong> {{ profesor.dni }}</p>
+  <p><strong>Fecha de Nacimiento:</strong> {{ profesor.fecha_nacimiento }}</p>
+  <p><strong>Dirección:</strong> {{ profesor.direccion }}</p>
+  <p><strong>Teléfono:</strong> {{ profesor.telefono }}</p>
+  <p><strong>Email:</strong> {{ profesor.email }}</p>
+
+  <a href="{% url 'modificar_profesor' pk=profesor.pk %}">Modificar</a>
+  <a href="{% url 'eliminar_profesor' pk=profesor.pk %}">Eliminar</a>
+  <a href="{% url 'listar_profesores' %}">Volver a la lista</a>
+{% endblock %}

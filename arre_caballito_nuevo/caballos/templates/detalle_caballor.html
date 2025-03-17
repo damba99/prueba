@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Detalles del Caballo</h1>
+  
+  <p><strong>Nombre:</strong> {{ caballo.nombre }}</p>
+  <p><strong>Edad:</strong> {{ caballo.edad }}</p>
+  <p><strong>Sexo:</strong> {{ caballo.get_sexo_display }}</p>
+  <p><strong>Disciplinas:</strong></p>
+  <ul>
+    {% for disciplina in caballo.disciplinas.all %}
+      <li>{{ disciplina.nombre }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'modificar_caballo' pk=caballo.pk %}">Modificar</a>
+  <a href="{% url 'eliminar_c

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia - Centro Ecuestre Arre Caballito</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Body and general layout */
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background images (multiple, simultaneous) */
+        body {
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+        }
+
+        /* Fade and move effect for background images */
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
+        }
+
+        /* Main content container (white box) */
+        #nuestra-historia {
+            background-color: #ffffff;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            animation: fadeIn 1s ease-out;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Text styling */
+        #nuestra-historia p {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #nuestra-historia strong {
+            font-size: 1.75rem;
+            color: #5d4037;
+            display: block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Button styling */
+        a.button {
+            display: inline-block;
+            padding: 14px 30px;
+            background-color: #5d4037;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.3s ease-out;
+        }
+
+        a.button:hover {
+            background-color: #3e2723;
+            transform: translateY(-3px);
+        }
+
+        a.button:active {
+            transform: translateY(1px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #nuestra-historia {
+                padding: 20px;
+            }
+
+            #nuestra-historia p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section id="nuestra-historia">
+        <h2>Nuestra Historia</h2>
+        <p>Fundado el 21 de diciembre de 2021, el Centro Ecuestre Arre Caballito se ha convertido en un destino de excelencia para los amantes de los caballos y la equitación. Situado en un entorno tranquilo y natural, nuestro centro ofrece una experiencia única para niños y adolescentes.</p>
+        <p>La misión en el Centro Ecuestre Arre Caballito es proporcionar un ambiente seguro, educativo y emocionante donde los estudiantes puedan desarrollar una conexión genuina con los caballos mientras mejoran sus habilidades ecuestres. Nos especializamos en dos disciplinas principales: salto de obstáculos y carrera de tambores.</p>
+        <p>En las clases de equitación, los instructores trabajan en estrecha colaboración con cada jinete, brindando una enseñanza personalizada que se adapta a las necesidades y metas individuales. Ya sea que estén interesados en perfeccionar la técnica de salto o dominar la destreza en la carrera de tambores, en el Centro Ecuestre Arre Caballito se encuentra la guía y el apoyo necesarios para alcanzar sus objetivos.</p>
+        <p>Además de las clases regulares, también ofrecemos programas de entrenamiento intensivo y eventos emocionantes para que los estudiantes puedan expandir sus conocimientos y disfrutar al máximo de su pasión por la equitación.</p>
+        <a href="{% url 'inicio' %}" class="button">Volver a la Página Principal</a>
+    </section>    
+
+</body>
+</html>

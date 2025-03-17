@@ -1,11 +1,5 @@
 from django.db import models
-    
-class Disciplina(models.Model):
-    id_disciplina = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nombre
+from clases.models import Disciplina
 
 class Caballo(models.Model):
     id_caballo = models.AutoField(primary_key=True)

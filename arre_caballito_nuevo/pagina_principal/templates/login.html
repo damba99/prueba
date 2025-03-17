@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+</head>
+<body>
+
+    <h2>Iniciar sesión</h2>
+
+    <!-- Formulario que envía los datos a la vista iniciar_sesion -->
+    <form method="POST" action="{% url 'iniciar_sesion' %}">
+        {% csrf_token %}
+        
+        <div>
+            <label for="username">Nombre de usuario</label>
+            <input type="text" id="username" name="username" required placeholder="Ingresa tu nombre de usuario">
+        </div>
+
+        <div>
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required placeholder="Ingresa tu contraseña">
+            <span class="show-password" onclick="togglePassword()">Mostrar contraseña</span>
+        </div>
+
+        <button type="submit">Iniciar sesión</button>
+    </form>
+
+    <script>
+        // Función para mostrar/ocultar la contraseña
+        function togglePassword() {
+            var passwordField = document.getElementById('password');
+            var passwordFieldType = passwordField.type;
+
+            if (passwordFieldType === 'password') {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
+    </script>
+
+</body>
+</html>

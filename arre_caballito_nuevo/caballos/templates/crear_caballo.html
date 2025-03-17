@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Crear Caballo</h1>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required><br>
+    
+    <label for="edad">Edad:</label>
+    <input type="number" id="edad" name="edad" required><br>
+    
+    <label for="sexo">Sexo:</label>
+    <select name="sexo" id="sexo" required>
+      <option value="M">Macho</option>
+      <option value="H">Hembra</option>
+    </select><br>
+    
+    <label for="disciplinas">Disciplinas:</label>
+    <select name="disciplinas" id="disciplinas" multiple>
+      {% for disciplina in disciplinas %}
+        <option value="{{ disciplina.id }}">{{ disciplina.nombre }}</option>
+      {% endfor %}
+    </select><br>
+    
+    <button type="submit">Crear</button>
+  </form>
+  
+  <a href="{% url 'listar_caballos' %}">Volver a la lista</a>
+{% endblock %}

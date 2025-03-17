@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Detalle de la Clase</h1>
+  <p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
+  <p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
+  <p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+
+  <a href="{% url 'modificar_clase' pk=clase.pk %}">Modificar</a>
+  <a href="{% url 'eliminar_clase' pk=clase.pk %}">Eliminar</a>
+  <a href="{% url 'listar_clases' %}">Volver al listado de clases</a>
+{% endblock %}

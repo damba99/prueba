@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Cuota</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-color: #d9b36b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #f3e1c3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: scale(0.9);
+            animation: scaleUp 0.5s forwards;
+        }
+
+        @keyframes scaleUp {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        h2 {
+            color: #8a6d35;
+            margin-bottom: 20px;
+            animation: fadeInText 1s ease-in-out;
+        }
+
+        @keyframes fadeInText {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            color: #8a6d35;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            transform: scale(1.02);
+            border-color: #8a6d35;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #8a6d35;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #a67524;
+            transform: scale(1.05);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #8a6d35;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+            color: #a67524;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Modificar Cuota: {{ cuota }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <label for="pagado">Estado de la cuota:</label>
+            <select name="pagado" id="pagado">
+                <option value="True" {% if cuota.pagado %}selected{% endif %}>Pagado</option>
+                <option value="False" {% if not cuota.pagado %}selected{% endif %}>Impago</option>
+            </select>
+            
+            <button type="submit">Guardar Cambios</button>
+        </form>
+        <a class="back-link" href="{% url 'lista_cuota' %}">Volver a la lista de cuotas</a>
+    </div>
+</body>
+</html>

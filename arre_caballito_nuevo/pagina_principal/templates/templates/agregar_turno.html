@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Turno</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #d2b48c;
+            padding: 40px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+            margin: 20px auto; /* Centrar y agregar margen */
+        }
+
+        h1 {
+            color: #4a2e17;
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 28px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .turno-form p {
+            margin-bottom: 20px;
+        }
+
+        .turno-form label {
+            display: block;
+            color: #4a2e17;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+            text-align: center;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .turno-form input,
+        .turno-form textarea,
+        .turno-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #b1946e;
+            border-radius: 8px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .turno-form input:focus,
+        .turno-form textarea:focus,
+        .turno-form select:focus {
+            border: 1.5px solid #8b7355;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .save-button,
+        .back-link {
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            border: none;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+        }
+
+        .save-button {
+            background-color: #5c3d1b;
+            color: #fff;
+        }
+
+        .save-button:hover {
+            background-color: #4a2e17;
+        }
+
+        .back-link {
+            background-color: #fff;
+            color: #5c3d1b;
+            border: 1.5px solid #5c3d1b;
+        }
+
+        .back-link:hover {
+            background-color: #5c3d1b;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agregar Turno</h1>
+        <form method="POST" class="turno-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+                <button type="submit" class="save-button">Agregar</button>
+                <a href="{% url 'lista_turno' %}" class="back-link">Volver</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

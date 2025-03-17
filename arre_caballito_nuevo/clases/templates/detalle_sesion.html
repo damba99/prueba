@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Detalle de la sesión</h1>
+  <p><strong>Clase:</strong> {{ sesion.id_clase.nombre }}</p>
+  <p><strong>Día:</strong> {{ sesion.dia }}</p>
+  <p><strong>Turno:</strong> {{ sesion.turno }}</p>
+  <p><strong>Hora de inicio:</strong> {{ sesion.hora_inicio }}</p>
+  <p><strong>Hora de fin:</strong> {{ sesion.hora_fin }}</p>
+  <p><strong>Profesor:</strong> {{ sesion.id_profesor.nombre }} {{ sesion.id_profesor.apellido }}</p>
+
+  <a href="{% url 'modificar_sesion' pk=sesion.pk %}">Modificar</a>
+  <a href="{% url 'eliminar_sesion' pk=sesion.pk %}">Eliminar</a>
+  <a href="{% url 'listar_sesiones' %}">Volver al listado de sesiones</a>
+{% endblock %}

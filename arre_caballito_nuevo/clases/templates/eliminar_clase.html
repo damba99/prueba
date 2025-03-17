@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>¿Estás seguro de que quieres eliminar esta clase?</h1>
+  <p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
+  <p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
+  <p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Confirmar eliminación</button>
+  </form>
+  <a href="{% url 'listar_clases' %}">Cancelar</a>
+{% endblock %}

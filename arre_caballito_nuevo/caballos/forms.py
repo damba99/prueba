@@ -1,10 +1,5 @@
 from django import forms
-from .models import Disciplina, Caballo
-
-class DisciplinaForm(forms.ModelForm):
-    class Meta:
-        model = Disciplina
-        fields = ['nombre']
+from .models import Caballo
 
 class CaballoForm(forms.ModelForm):
     class Meta:

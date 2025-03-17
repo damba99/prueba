@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Listado de Sesiones</h1>
+  <ul>
+    {% for sesion in sesiones %}
+      <li>
+        <a href="{% url 'detalle_sesion' pk=sesion.pk %}">{{ sesion.id_clase.nombre }} - {{ sesion.dia }} - {{ sesion.turno }} - {{ sesion.hora_inicio }} - {{ sesion.id_profesor.nombre }}</a>
+        <a href="{% url 'modificar_sesion' pk=sesion.pk %}">Editar</a>
+        <a href="{% url 'eliminar_sesion' pk=sesion.pk %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'crear_sesion' %}">Crear Sesión</a>
+  
+  <!-- Botón que te redirige a la lista de clases -->
+  <br><br>
+  <a href="{% url 'listar_clases' %}" class="btn btn-primary">Ir al listado de Clases</a>
+
+{% endblock %}

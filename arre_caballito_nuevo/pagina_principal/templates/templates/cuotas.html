@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estado de Cuotas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f2f2f2, #e0d8c0);
+        }
+
+        .sidebar {
+            width: 20%;
+            background-color: #a0785a;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            color: #fff;
+        }
+
+        .sidebar button {
+            background-color: #f0e8d9;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            color: #333;
+        }
+
+        .sidebar button:hover {
+            background-color: #e4d4b8;
+        }
+
+        .content {
+            width: 80%;
+            padding: 30px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 18px;
+        }
+
+        .user-icon {
+            font-size: 28px;
+        }
+
+        .cuotas-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .cuotas-section {
+            width: 48%;
+        }
+
+        .cuotas-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #c49a6c;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #d8b584;
+            color: #fff;
+        }
+
+        tbody tr:hover {
+            background-color: #d0b088;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .pay-button {
+            background-color: #4a2e17;
+            color: #fff;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .pay-button:hover {
+            background-color: #332211;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button>MI PERFIL</button>
+        <button>ESTADO DE CUOTAS</button>
+        <button>CERRAR SESIÓN</button>
+    </div>
+
+    <div class="content">
+        <header>
+            <h1>ESTADO DE CUOTAS</h1>
+            <div class="user-info">
+                <span class="user-icon">👤</span>
+                <span>Lourde Cruz</span>
+            </div>
+        </header>
+
+        <div class="cuotas-container">
+            <div class="cuotas-section">
+                <h2>Cuotas Pagadas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Importe</th>
+                            <th>Periodo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="cuotas-section">
+                <h2>Cuotas Impagas</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Importe</th>
+                            <th>Periodo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="https://mpago.la/1MpwAUU" class="pay-button" target="_blank">Pagar cuota</a>
+        </div>
+    </div>
+</body>
+</html>

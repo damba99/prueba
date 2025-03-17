@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Detalles del Alumno</h1>
+  <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+  <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+  <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+  <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+  <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+  <p><strong>Email:</strong> {{ alumno.email }}</p>
+  <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+
+  <a href="{% url 'modificar_alumno' pk=alumno.pk %}">Modificar</a>
+  <a href="{% url 'eliminar_alumno' pk=alumno.pk %}">Eliminar</a>
+  <a href="{% url 'listar_alumnos' %}">Volver a la lista</a>
+{% endblock %}
