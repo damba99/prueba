@@ -10,7 +10,7 @@ class Profesor(models.Model):
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=15)
     email = models.EmailField()
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

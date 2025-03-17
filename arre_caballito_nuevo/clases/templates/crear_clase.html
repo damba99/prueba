@@ -15,7 +15,7 @@
     <select name="id_disciplina" id="id_disciplina" required>
       <option value="" disabled selected>Seleccione una Disciplina</option>
       {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id }}">{{ disciplina.nombre }}</option>
+        <option value="{{ disciplina.id_disciplina }}">{{ disciplina.nombre }}</option>
       {% endfor %}
     </select><br>
 
@@ -24,7 +24,7 @@
     <select name="id_categoria" id="id_categoria" required>
       <option value="" disabled selected>Seleccione una Categoría</option>
       {% for categoria in categorias %}
-        <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+        <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
       {% endfor %}
     </select><br>
 

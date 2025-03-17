@@ -108,7 +108,6 @@ def modificar_clase(request, pk):
     clase = get_object_or_404(Clase, pk=pk)
 
     if request.method == 'POST':
-        clase.nombre = request.POST.get('nombre')
         clase.id_disciplina = get_object_or_404(Disciplina, pk=request.POST.get('id_disciplina'))
         clase.id_categoria = get_object_or_404(Categoria, pk=request.POST.get('id_categoria'))
         clase.save()

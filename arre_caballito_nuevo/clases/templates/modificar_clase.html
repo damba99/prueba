@@ -8,7 +8,7 @@
     <label for="id_disciplina">Disciplina:</label>
     <select name="id_disciplina">
       {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id }}" {% if disciplina.id == clase.id_disciplina.id %}selected{% endif %}>
+        <option value="{{ disciplina.id_disciplina }}" {% if disciplina.id == clase.id_disciplina.id %}selected{% endif %}>
           {{ disciplina.nombre }}
         </option>
       {% endfor %}
@@ -17,7 +17,7 @@
     <label for="id_categoria">Categoría:</label>
     <select name="id_categoria">
       {% for categoria in categorias %}
-        <option value="{{ categoria.id }}" {% if categoria.id == clase.id_categoria.id %}selected{% endif %}>
+        <option value="{{ categoria.id_categoria }}" {% if categoria.id == clase.id_categoria.id %}selected{% endif %}>
           {{ categoria.nombre }}
         </option>
       {% endfor %}

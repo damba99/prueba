@@ -17,16 +17,14 @@
       <option value="H" {% if caballo.sexo == 'H' %}selected{% endif %}>Hembra</option>
     </select><br>
     
-    <label for="disciplinas">Disciplinas:</label>
-    <select name="disciplinas" id="disciplinas" multiple>
-      {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id }}" {% if disciplina in caballo.disciplinas.all %}selected{% endif %}>
-          {{ disciplina.nombre }}
-        </option>
-      {% endfor %}
-    </select><br>
+    <label for="disciplinas">Disciplinas:</label><br>
+    {% for disciplina in disciplinas %}
+      <input type="checkbox" name="disciplinas" value="{{ disciplina.id_disciplina }}"
+      {% if disciplina in caballo.disciplinas.all %}checked{% endif %}>
+      {{ disciplina.nombre }}<br>
+    {% endfor %}
     
-    <button type="submit">Modificar</button>
+    <button type="submit">Modificar Caballo</button>
   </form>
   <a href="{% url 'listar_caballos' %}">Volver a la lista</a>
 {% endblock %}

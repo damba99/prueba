@@ -17,15 +17,12 @@
       <option value="H">Hembra</option>
     </select><br>
     
-    <label for="disciplinas">Disciplinas:</label>
-    <select name="disciplinas" id="disciplinas" multiple>
-      {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id }}">{{ disciplina.nombre }}</option>
-      {% endfor %}
-    </select><br>
+    <label for="disciplinas">Disciplinas:</label><br>
+    {% for disciplina in disciplinas %}
+      <input type="checkbox" name="disciplinas" value="{{ disciplina.id_disciplina }}"> {{ disciplina.nombre }}<br>
+    {% endfor %}
     
-    <button type="submit">Crear</button>
+    <button type="submit">Crear Caballo</button>
   </form>
-  
   <a href="{% url 'listar_caballos' %}">Volver a la lista</a>
 {% endblock %}
