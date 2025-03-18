@@ -1,16 +1,23 @@
 [
     {
-        "model": "caballos.Disciplina",
+        "model": "clases.Disciplina",
         "pk": 1,
         "fields": {
             "nombre": "Salto"
         }
     },
     {
-        "model": "caballos.Disciplina",
+        "model": "clases.Disciplina",
         "pk": 2,
         "fields": {
             "nombre": "Carrera"
+        }
+    },
+    {
+        "model": "clases.Disciplina",
+        "pk": 3,
+        "fields": {
+            "nombre": "Enduro"
         }
     }
 ]

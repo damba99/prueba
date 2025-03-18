@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Lista de Cuotas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Cuota</th>
+        <th>Alumno</th>
+        <th>Periodo</th>
+        <th>Monto</th>
+        <th>Estado</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cuota in cuotas %}
+        <tr>
+          <td>{{ cuota.id_cuota }}</td>
+          <td>{{ cuota.alumno }}</td>
+          <td>{{ cuota.id_periodo }}</td>
+          <td>{{ cuota.monto }}</td>
+          <td>{{ cuota.estado }}</td>
+          <td>{{ cuota.fecha_vencimiento }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

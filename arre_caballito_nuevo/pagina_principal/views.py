@@ -20,6 +20,7 @@ def administracion(request):
     return render(request, 'administracion.html')
 
 
+
 def iniciar_sesion(request):
     if request.method == "POST":
         # Obtener el nombre de usuario y la contraseña desde el formulario

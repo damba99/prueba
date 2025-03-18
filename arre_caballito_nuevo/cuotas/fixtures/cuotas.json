@@ -1,50 +1,122 @@
 [
-  {
-      "model": "cuotas.cuota",
-      "pk": 1,
-      "fields": {
-          "alumno": 1,
-          "mes": "01",
-          "monto": "1000.00",
-          "fecha_pago": null,
-          "estado": "pendiente",
-          "fecha_vencimiento": "2024-02-28"
-      }
-  },
-  {
-      "model": "cuotas.cuota",
-      "pk": 2,
-      "fields": {
-          "alumno": 1,
-          "mes": "02",
-          "monto": "1000.00",
-          "fecha_pago": null,
-          "estado": "pendiente",
-          "fecha_vencimiento": "2024-03-31"
-      }
-  },
-  {
-      "model": "cuotas.cuota",
-      "pk": 3,
-      "fields": {
-          "alumno": 2,
-          "mes": "03",
-          "monto": "1000.00",
-          "fecha_pago": null,
-          "estado": "vencida",
-          "fecha_vencimiento": "2024-03-31"
-      }
-  },
-  {
-      "model": "cuotas.cuota",
-      "pk": 4,
-      "fields": {
-          "alumno": 3,
-          "mes": "04",
-          "monto": "1000.00",
-          "fecha_pago": "2024-04-01",
-          "estado": "pagado",
-          "fecha_vencimiento": "2024-04-30"
-      }
-  }
+    {
+        "model": "cuotas.periodo",
+        "pk": 1,
+        "fields": {
+            "anio": 2025,
+            "mes": "01"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 2,
+        "fields": {
+            "anio": 2025,
+            "mes": "02"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 3,
+        "fields": {
+            "anio": 2025,
+            "mes": "03"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 4,
+        "fields": {
+            "anio": 2025,
+            "mes": "04"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 5,
+        "fields": {
+            "anio": 2025,
+            "mes": "05"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 6,
+        "fields": {
+            "anio": 2025,
+            "mes": "06"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 7,
+        "fields": {
+            "anio": 2025,
+            "mes": "07"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 8,
+        "fields": {
+            "anio": 2025,
+            "mes": "08"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 9,
+        "fields": {
+            "anio": 2025,
+            "mes": "09"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 10,
+        "fields": {
+            "anio": 2025,
+            "mes": "10"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 11,
+        "fields": {
+            "anio": 2025,
+            "mes": "11"
+        }
+    },
+    {
+        "model": "cuotas.periodo",
+        "pk": 12,
+        "fields": {
+            "anio": 2025,
+            "mes": "12"
+        }
+    },
+    {
+        "model": "montos.monto",
+        "pk": 1,
+        "fields": {
+            "disciplina": 1,
+            "monto": 100.00
+        }
+    },
+    {
+        "model": "montos.monto",
+        "pk": 2,
+        "fields": {
+            "disciplina": 2,
+            "monto": 200.00
+        }
+    },
+    {
+        "model": "montos.monto",
+        "pk": 3,
+        "fields": {
+            "disciplina": 3,
+            "monto": 300.00
+        }
+    }
 ]
