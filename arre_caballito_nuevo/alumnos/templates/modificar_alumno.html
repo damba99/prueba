@@ -28,7 +28,7 @@
     <label for="id_categoria">Categoría:</label>
     <select id="id_categoria" name="id_categoria" required>
       {% for categoria in categorias %}
-        <option value="{{ categoria.id }}" {% if categoria.id == alumno.id_categoria.id %} selected {% endif %}>{{ categoria.nombre }}</option>
+        <option value="{{ categoria.id_categoria }}" {% if categoria.id == alumno.id_categoria.id %} selected {% endif %}>{{ categoria.nombre }}</option>
       {% endfor %}
     </select>
 

@@ -10,7 +10,22 @@
   <p><strong>Email:</strong> {{ alumno.email }}</p>
   <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
 
+  <h2>Clases en las que está inscrito:</h2>
+  <ul>
+    {% for clase in clases %}
+      <li>{{ clase.nombre }} ({{ clase.id_categoria.nombre }})
+        <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-danger btn-sm">Eliminar Inscripción</a>
+      </li>
+    {% empty %}
+      <li>El alumno no está inscrito en ninguna clase.</li>
+    {% endfor %}
+  </ul>
+
   <a href="{% url 'modificar_alumno' pk=alumno.pk %}">Modificar</a>
   <a href="{% url 'eliminar_alumno' pk=alumno.pk %}">Eliminar</a>
   <a href="{% url 'listar_alumnos' %}">Volver a la lista</a>
+
+  <!-- Botón para inscribir al alumno en una clase -->
+  <br><br>
+  <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn btn-primary">Inscribir en una clase</a>
 {% endblock %}

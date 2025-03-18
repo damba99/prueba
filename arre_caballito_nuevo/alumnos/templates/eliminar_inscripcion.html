@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Confirmación de Eliminación de Inscripción</h1>
+  
+  <p>¿Está seguro de que desea eliminar la inscripción del alumno <strong>{{ alumno.nombre }} {{ alumno.apellido }}</strong> en la clase <strong>{{ clase.nombre }}</strong>?</p>
+  
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+  </form>
+  
+  <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn btn-secondary">Cancelar</a>
+{% endblock %}

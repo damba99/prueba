@@ -1,7 +1,8 @@
 from django import forms
-from .models import Alumno, AlumnoSesion, Asistencia
+from .models import Alumno, AlumnoClase, Asistencia
 from caballos.models import Caballo
-from clases.models import Sesion
+from clases.models import Sesion, Clase
+from django.core.exceptions import ValidationError
 
 class AlumnoForm(forms.ModelForm):
     class Meta:
@@ -9,29 +10,26 @@ class AlumnoForm(forms.ModelForm):
         fields = ['nombre', 'apellido', 'dni', 'fecha_nacimiento', 'direccion', 'telefono', 'email', 'id_categoria']
 
     def clean_dni(self):
-        dni = self.cleaned_data.get('dni')
-        if len(dni) <= 7:
-            raise forms.ValidationError("El DNI debe tener más de 7 caracteres.")
+        # Verifica que el DNI sea único
+        dni = self.cleaned_data['dni']
+        if Alumno.objects.filter(dni=dni).exists():
+            raise ValidationError("Ya existe un alumno con este DNI.")
         return dni
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if Alumno.objects.filter(email=email).exists():
-            raise forms.ValidationError("Ya existe un alumno con este correo electrónico.")
-        return email
-
-class AlumnoSesionForm(forms.ModelForm):
+class AlumnoClaseForm(forms.ModelForm):
     class Meta:
-        model = AlumnoSesion
-        fields = ['alumno', 'sesion']
+        model = AlumnoClase
+        fields = ['alumno', 'clase']
 
     def clean(self):
         cleaned_data = super().clean()
-        alumno = cleaned_data.get("alumno")
-        sesion = cleaned_data.get("sesion")
 
-        if AlumnoSesion.objects.filter(alumno=alumno, sesion=sesion).exists():
-            raise forms.ValidationError("El alumno ya está inscrito en esta sesión.")
+        alumno = cleaned_data.get('alumno')
+        clase = cleaned_data.get('clase')
+
+        # Asegurarse de que el alumno no se inscriba dos veces en la misma clase
+        if AlumnoClase.objects.filter(alumno=alumno, clase=clase).exists():
+            raise ValidationError(f"El alumno {alumno} ya está inscrito en la clase {clase}.")
 
         return cleaned_data
 
@@ -40,30 +38,27 @@ class AsistenciaForm(forms.ModelForm):
         model = Asistencia
         fields = ['id_sesion', 'id_alumno', 'id_caballo', 'fecha']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if 'id_sesion' in self.data:
-            try:
-                sesion_id = self.data.get('id_sesion')
-                sesion = Sesion.objects.get(id=sesion_id)
-                self.fields['id_caballo'].queryset = Caballo.objects.filter(disciplinas=sesion.id_clase.id_disciplina)
-            except (Sesion.DoesNotExist, ValueError):
-                pass
-
     def clean(self):
         cleaned_data = super().clean()
-        id_alumno = cleaned_data.get('id_alumno')
+
         id_sesion = cleaned_data.get('id_sesion')
-        id_caballo = cleaned_data.get('id_caballo')
+        id_alumno = cleaned_data.get('id_alumno')
 
-        # Validación para verificar si el alumno está inscrito en la sesión
-        if not AlumnoSesion.objects.filter(alumno=id_alumno, sesion=id_sesion).exists():
-            raise forms.ValidationError(f"El alumno no está inscrito en la sesión {id_sesion.id_clase.nombre}.")
+        # Validar si el alumno está inscrito en la clase correspondiente a la sesión
+        if id_sesion and id_alumno:
+            clase = id_sesion.id_clase  # Obtener la clase asociada a la sesión
 
-        # Validación para verificar si el caballo está asociado con la disciplina de la clase
-        if id_caballo:
-            clase_sesion = id_sesion.id_clase
-            if id_caballo.disciplinas.filter(id=clase_sesion.id_disciplina.id).exists() is False:
-                raise forms.ValidationError(f"El caballo {id_caballo.nombre} no está asociado a la disciplina {clase_sesion.id_disciplina.nombre}.")
+            # Verificar si el alumno está inscrito en esa clase
+            if not AlumnoClase.objects.filter(alumno=id_alumno, clase=clase).exists():
+                raise ValidationError(f"El alumno {id_alumno} no está inscrito en la clase {clase}.")
 
         return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        super(AsistenciaForm, self).__init__(*args, **kwargs)
+
+        # Personalización de los campos si es necesario
+        self.fields['id_sesion'].queryset = Sesion.objects.all()
+        self.fields['id_alumno'].queryset = Alumno.objects.all()
+        self.fields['id_caballo'].queryset = Caballo.objects.all()
+        self.fields['fecha'].widget.attrs['type'] = 'date'  # Establecer

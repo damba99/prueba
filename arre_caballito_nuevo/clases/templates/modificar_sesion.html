@@ -1,47 +1,41 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <h1>Modificar Sesión</h1>
-  <form method="POST">
+  <h1>Modificar sesión</h1>
+  <form method="post">
     {% csrf_token %}
-    <label for="id_clase">Clase:</label>
-    <select name="id_clase" id="id_clase" required>
-      {% for clase in clases %}
-        <option value="{{ clase.id_clase }}" {% if clase.id_clase == sesion.id_clase.id_clase %}selected{% endif %}>{{ clase.nombre }}</option>
-      {% endfor %}
-    </select><br>
-  
+    
     <label for="id_profesor">Profesor:</label>
-    <select name="id_profesor" id="id_profesor" required>
+    <select name="id_profesor">
       {% for profesor in profesores %}
-        <option value="{{ profesor.id_profesor }}" {% if profesor.id_profesor == sesion.id_profesor.id_profesor %}selected{% endif %}>{{ profesor.nombre }} {{ profesor.apellido }}</option>
+        <option value="{{ profesor.id }}" {% if profesor.id == sesion.id_profesor.id %}selected{% endif %}>{{ profesor.nombre }} {{ profesor.apellido }}</option>
       {% endfor %}
     </select><br>
-  
+    
     <label for="dia">Día:</label>
-    <select name="dia" id="dia" required>
-      <option value="Lunes" {% if sesion.dia == "Lunes" %}selected{% endif %}>Lunes</option>
-      <option value="Martes" {% if sesion.dia == "Martes" %}selected{% endif %}>Martes</option>
-      <option value="Miércoles" {% if sesion.dia == "Miércoles" %}selected{% endif %}>Miércoles</option>
-      <option value="Jueves" {% if sesion.dia == "Jueves" %}selected{% endif %}>Jueves</option>
-      <option value="Viernes" {% if sesion.dia == "Viernes" %}selected{% endif %}>Viernes</option>
-      <option value="Sábado" {% if sesion.dia == "Sábado" %}selected{% endif %}>Sábado</option>
-      <option value="Domingo" {% if sesion.dia == "Domingo" %}selected{% endif %}>Domingo</option>
+    <select name="dia" required>
+      <option value="Lunes" {% if sesion.dia == 'Lunes' %}selected{% endif %}>Lunes</option>
+      <option value="Martes" {% if sesion.dia == 'Martes' %}selected{% endif %}>Martes</option>
+      <option value="Miércoles" {% if sesion.dia == 'Miércoles' %}selected{% endif %}>Miércoles</option>
+      <option value="Jueves" {% if sesion.dia == 'Jueves' %}selected{% endif %}>Jueves</option>
+      <option value="Viernes" {% if sesion.dia == 'Viernes' %}selected{% endif %}>Viernes</option>
+      <option value="Sábado" {% if sesion.dia == 'Sábado' %}selected{% endif %}>Sábado</option>
+      <option value="Domingo" {% if sesion.dia == 'Domingo' %}selected{% endif %}>Domingo</option>
     </select><br>
-  
-    <label for="turno">Turno:</label>
-    <select name="turno" id="turno" required>
-      <option value="Mañana" {% if sesion.turno == "Mañana" %}selected{% endif %}>Mañana</option>
-      <option value="Tarde" {% if sesion.turno == "Tarde" %}selected{% endif %}>Tarde</option>
+
+    <label for="id_grupo">Grupo:</label>
+    <select name="id_grupo">
+      {% for grupo in grupos %}
+        <option value="{{ grupo.id }}" {% if grupo.id == sesion.id_grupo.id %}selected{% endif %}>{{ grupo.nombre }}</option>
+      {% endfor %}
     </select><br>
-  
+
     <label for="hora_inicio">Hora de inicio:</label>
-    <input type="time" name="hora_inicio" id="hora_inicio" value="{{ sesion.hora_inicio|time:"H:i" }}" required><br>
-  
+    <input type="time" name="hora_inicio" value="{{ sesion.hora_inicio|time:"H:i" }}" required><br>
+
     <label for="hora_fin">Hora de fin:</label>
-    <input type="time" name="hora_fin" id="hora_fin" value="{{ sesion.hora_fin|time:"H:i" }}" required><br>
-  
-    <button type="submit">Modificar sesión</button>
-  </form>  
-  <a href="{% url 'listar_sesiones' %}">Volver al listado</a>
+    <input type="time" name="hora_fin" value="{{ sesion.hora_fin|time:"H:i" }}" required><br>
+
+    <button type="submit">Guardar Cambios</button>
+  </form>
 {% endblock %}

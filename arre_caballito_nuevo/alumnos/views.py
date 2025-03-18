@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Alumno
+from .models import Alumno, AlumnoClase
 from .forms import AlumnoForm
 from clases.models import Categoria
 
@@ -55,4 +55,71 @@ def eliminar_alumno(request, pk):
 
 def detalle_alumno(request, pk):
     alumno = get_object_or_404(Alumno, pk=pk)
-    return render(request, 'detalle_alumno.html', {'alumno': alumno})
+    clases = AlumnoClase.objects.filter(alumno=alumno)
+    
+    clases_inscritas = [alumno_clase.clase for alumno_clase in clases]
+
+    return render(request, 'detalle_alumno.html', {
+        'alumno': alumno,
+        'clases': clases_inscritas
+    })
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Alumno, Clase, AlumnoClase
+from django.contrib import messages
+
+def inscribir_alumno(request, pk):
+    # Obtener el alumno por su pk
+    alumno = get_object_or_404(Alumno, pk=pk)
+    
+    # Filtrar las clases disponibles de la misma categoría que el alumno
+    clases_disponibles = Clase.objects.filter(id_categoria=alumno.id_categoria).exclude(
+        id_clase__in=[alumno_clase.clase.id_clase for alumno_clase in alumno.clases.all()]
+    )
+    
+    # Si el formulario se ha enviado (POST)
+    if request.method == 'POST':
+        # Obtener las clases seleccionadas del formulario (serán enviadas como una lista de ids)
+        clases_seleccionadas = request.POST.getlist('clases')
+        
+        # Inscribir al alumno en las clases seleccionadas
+        for clase_id in clases_seleccionadas:
+            clase = get_object_or_404(Clase, pk=clase_id)
+            AlumnoClase.objects.create(alumno=alumno, clase=clase)
+        
+        # Mensaje de éxito
+        messages.success(request, f"{alumno.nombre} {alumno.apellido} ha sido inscrito exitosamente en las clases seleccionadas.")
+        
+        # Redirigir al detalle del alumno
+        return redirect('detalle_alumno', pk=alumno.pk)
+    
+    # Renderizar el template con las clases disponibles
+    return render(request, 'inscribir_alumno.html', {
+        'alumno': alumno,
+        'clases': clases_disponibles
+    })
+    
+def eliminar_inscripcion(request, alumno_pk, clase_pk):
+    # Obtener al alumno y la clase usando sus pk
+    alumno = get_object_or_404(Alumno, pk=alumno_pk)
+    clase = get_object_or_404(Clase, pk=clase_pk)
+    
+    # Verificar si el alumno está inscrito en la clase
+    inscripcion = AlumnoClase.objects.filter(alumno=alumno, clase=clase).first()
+
+    if not inscripcion:
+        messages.error(request, f"El alumno no está inscrito en la clase '{clase.nombre}'.")
+        return redirect('detalle_alumno', pk=alumno.pk)
+    
+    # Si es un POST, eliminar la inscripción
+    if request.method == 'POST':
+        # Eliminar la relación AlumnoClase
+        inscripcion.delete()
+        messages.success(request, f"Inscripción en la clase '{clase.nombre}' eliminada correctamente.")
+        return redirect('detalle_alumno', pk=alumno.pk)
+    
+    # Si no es POST, mostrar la confirmación
+    return render(request, 'eliminar_inscripcion.html', {
+        'alumno': alumno,
+        'clase': clase,
+    })
