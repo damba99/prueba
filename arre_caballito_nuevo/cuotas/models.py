@@ -30,11 +30,33 @@ class Periodo(models.Model):
         unique_together = ('anio', 'mes')
 
 class Monto(models.Model):
+    TIPO_CHOISES = [
+        ('cuota', 'Cuota'),
+        ('inscripcion','Inscripcion')
+    ]
+
     disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE, related_name='montos')
     monto = models.DecimalField(max_digits=10, decimal_places=2)
+    tipo = models.TextField(max_length=50, null=True, blank=True, choices=TIPO_CHOISES)
     
+    def __str__(self):
+        return f"{self.disciplina} - {self.tipo} - {self.monto}"
 
-
+    
+class Inscripcion(models.Model):
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('pagado', 'Pagado'),
+        ('cancelada', 'Cancelada'),
+    ]
+        
+    alumno = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='inscripciones_alumno')
+    monto = models.ForeignKey(Monto, on_delete=models.CASCADE, related_name='inscripciones')
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
+    detalle = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='inscripciones_detalle')
+    fecha_inscripcion = models.DateField(auto_now_add=True)
+    fecha_pago = models.DateField(null=True, blank=True)
+    
 class Cuota(models.Model):
     ESTADO_CHOICES = [
         ('pendiente', 'Pendiente'),
@@ -44,10 +66,11 @@ class Cuota(models.Model):
         ('cancelada', 'Cancelada'),
     ]
     
+    
     id_cuota = models.AutoField(primary_key=True)
     alumno = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='cuotas_alumno')
     id_periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, related_name='cuotas', blank=True, null=True)
-    monto = models.ForeignKey(Monto, on_delete=models.CASCADE, related_name='cuotas')
+    monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateField(null=True, blank=True)
     detalle = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='cuotas_detalle', blank=True, null=True)      
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
@@ -78,8 +101,6 @@ class Cuota(models.Model):
 
     def save(self, *args, **kwargs):
         # Verificar si ya existe una cuota con los mismos datos
-        if not Cuota.objects.filter(alumno=self.alumno, detalle=self.detalle, id_periodo=self.id_periodo).exists():
-            # Si no existe, guardamos la cuota
             self.clean()  # Ejecutamos la validación personalizada antes de guardar
             super(Cuota, self).save(*args, **kwargs)
         # Si ya existe una cuota con los mismos datos, no se guarda nada

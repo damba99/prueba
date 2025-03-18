@@ -1,5 +1,5 @@
 from django import forms
-from .models import Competencia, Evento, Inscripcion
+from .models import Competencia, Evento, Inscripcion_competencia
 
 class CompetenciaForm(forms.ModelForm):
     class Meta:
@@ -14,7 +14,7 @@ class EventoForm(forms.ModelForm):
         model = Evento
         fields = ['id_competencia', 'id_disciplina', 'id_categoria']
 
-class InscripcionForm(forms.ModelForm):
+class Inscripcion_competenciaForm(forms.ModelForm):
     class Meta:
-        model = Inscripcion
+        model = Inscripcion_competencia
         fields = ['id_competencia', 'id_alumno', 'id_caballo', 'id_evento']

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url 'listar_cuotas' %}" class="btn btn-secondary">Ir al listado de montos</a>
+<h1>Lista de Cuotas</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Monto</th>
+        <th>Tipo</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for monto in montos %}
+        <tr>
+
+          <td>{{ monto.disciplina }}</td>
+          <td>{{ monto.tipo }}</td>
+          <td>{{ monto.monto }}</td>
+          <td><a href="{% url 'modificar_monto' pk=monto.pk %}" class="btn btn-secondary">Modificar montos</a></td>
+
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
