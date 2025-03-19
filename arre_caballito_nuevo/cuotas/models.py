@@ -1,6 +1,6 @@
 from django.db import models
 from alumnos.models import Alumno, AlumnoClase
-from clases.models import Disciplina
+from clases.models import Disciplina, Clase
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from datetime import date
@@ -50,12 +50,15 @@ class Inscripcion(models.Model):
         ('cancelada', 'Cancelada'),
     ]
         
-    alumno = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='inscripciones_alumno')
+    alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name='inscripciones_alumno')
     monto = models.ForeignKey(Monto, on_delete=models.CASCADE, related_name='inscripciones')
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
-    detalle = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='inscripciones_detalle')
+    detalle = models.ForeignKey(Clase, on_delete=models.CASCADE, related_name='inscripciones_detalle')
     fecha_inscripcion = models.DateField(auto_now_add=True)
     fecha_pago = models.DateField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.alumno} - {self.detalle} - {self.monto}"
     
 class Cuota(models.Model):
     ESTADO_CHOICES = [
@@ -73,7 +76,7 @@ class Cuota(models.Model):
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateField(null=True, blank=True)
     detalle = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='cuotas_detalle', blank=True, null=True)      
-    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='pendiente')
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='proximo')
     fecha_vencimiento = models.DateField(null=True, blank=True)
 
     def __str__(self):
@@ -96,8 +99,6 @@ class Cuota(models.Model):
                 self.estado = 'vencida'
             elif current_date < self.fecha_vencimiento and current_date.year == self.fecha_vencimiento.year and current_date.month == self.fecha_vencimiento.month:
                 self.estado = 'pendiente'
-            elif current_date.month < self.fecha_vencimiento.month or (current_date.month == self.fecha_vencimiento.month and current_date.day < self.fecha_vencimiento.day):
-                self.estado = 'proximo'
 
     def save(self, *args, **kwargs):
         # Verificar si ya existe una cuota con los mismos datos

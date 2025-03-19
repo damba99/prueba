@@ -6,16 +6,6 @@
   <h1>Modificar Cuota</h1>
   <form method="post">
     {% csrf_token %}
-    
-    <div class="form-group">
-      <label for="monto">Monto</label>
-      <input type="number" step="0.01" name="monto" id="monto" value="{{ cuota.monto }}" class="form-control">
-    </div>
-
-    <div class="form-group">
-      <label for="fecha_pago">Fecha de Pago</label>
-      <input type="date" name="fecha_pago" id="fecha_pago" value="{{ cuota.fecha_pago|date:'Y-m-d' }}" class="form-control">
-    </div>
 
     <div class="form-group">
       <label for="estado">Estado</label>
@@ -25,33 +15,6 @@
         <option value="vencida" {% if cuota.estado == 'vencida' %}selected{% endif %}>Vencida</option>
         <option value="proximo" {% if cuota.estado == 'proximo' %}selected{% endif %}>Próximo</option>
         <option value="cancelada" {% if cuota.estado == 'cancelada' %}selected{% endif %}>Cancelada</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="fecha_vencimiento">Fecha de Vencimiento</label>
-      <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" value="{{ cuota.fecha_vencimiento|date:'Y-m-d' }}" class="form-control">
-    </div>
-
-    <div class="form-group">
-      <label for="id_periodo">Periodo</label>
-      <select name="id_periodo" id="id_periodo" class="form-control">
-        {% for periodo in Periodos %}
-          <option value="{{ periodo.id }}" {% if cuota.id_periodo.id == periodo.id %}selected{% endif %}>
-            {{ periodo }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="detalle">Detalle</label>
-      <select name="detalle" id="detalle" class="form-control">
-        {% for detalle in AlumnoClases %}
-          <option value="{{ detalle.id }}" {% if cuota.detalle.id == detalle.id %}selected{% endif %}>
-            {{ detalle }}
-          </option>
-        {% endfor %}
       </select>
     </div>
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Alumno, AlumnoClase
 from .forms import AlumnoForm
 from clases.models import Categoria
+from cuotas.models import Inscripcion, Monto, Cuota
 
 def crear_alumno(request):
     if request.method == "POST":
@@ -77,49 +78,54 @@ def inscribir_alumno(request, pk):
         id_clase__in=[alumno_clase.clase.id_clase for alumno_clase in alumno.clases.all()]
     )
     
-    # Si el formulario se ha enviado (POST)
     if request.method == 'POST':
-        # Obtener las clases seleccionadas del formulario (serán enviadas como una lista de ids)
         clases_seleccionadas = request.POST.getlist('clases')
         
-        # Inscribir al alumno en las clases seleccionadas
         for clase_id in clases_seleccionadas:
             clase = get_object_or_404(Clase, pk=clase_id)
             AlumnoClase.objects.create(alumno=alumno, clase=clase)
+            print(clase.id_disciplina.id_disciplina)
+            monto = Monto.objects.filter(disciplina=clase.id_disciplina.id_disciplina, tipo='inscripcion').first()
+            Inscripcion.objects.create(alumno=alumno, monto=monto, detalle=clase)
         
-        # Mensaje de éxito
         messages.success(request, f"{alumno.nombre} {alumno.apellido} ha sido inscrito exitosamente en las clases seleccionadas.")
         
-        # Redirigir al detalle del alumno
         return redirect('detalle_alumno', pk=alumno.pk)
     
-    # Renderizar el template con las clases disponibles
     return render(request, 'inscribir_alumno.html', {
         'alumno': alumno,
         'clases': clases_disponibles
     })
     
 def eliminar_inscripcion(request, alumno_pk, clase_pk):
-    # Obtener al alumno y la clase usando sus pk
-    alumno = get_object_or_404(Alumno, pk=alumno_pk)
-    clase = get_object_or_404(Clase, pk=clase_pk)
-    
-    # Verificar si el alumno está inscrito en la clase
-    inscripcion = AlumnoClase.objects.filter(alumno=alumno, clase=clase).first()
-
-    if not inscripcion:
-        messages.error(request, f"El alumno no está inscrito en la clase '{clase.nombre}'.")
-        return redirect('detalle_alumno', pk=alumno.pk)
-    
-    # Si es un POST, eliminar la inscripción
-    if request.method == 'POST':
-        # Eliminar la relación AlumnoClase
-        inscripcion.delete()
-        messages.success(request, f"Inscripción en la clase '{clase.nombre}' eliminada correctamente.")
-        return redirect('detalle_alumno', pk=alumno.pk)
-    
-    # Si no es POST, mostrar la confirmación
-    return render(request, 'eliminar_inscripcion.html', {
-        'alumno': alumno,
-        'clase': clase,
-    })
+        # Obtener al alumno y la clase usando sus pk
+        alumno = get_object_or_404(Alumno, pk=alumno_pk)
+        clase = get_object_or_404(Clase, pk=clase_pk)
+        print("aaaaaaaaaaa")
+        # Verificar si el alumno está inscrito en la clase
+        inscripcion = AlumnoClase.objects.filter(alumno=alumno, clase=clase).first()
+        cuotas = Cuota.objects.filter(alumno=inscripcion)
+        
+        if not inscripcion:
+            messages.error(request, f"El alumno no está inscrito en la clase '{clase.nombre}'.")
+            return redirect('detalle_alumno', pk=alumno.pk)
+        
+        # Si es un POST, eliminar la inscripción
+        if request.method == 'POST':
+            # Eliminar la relación AlumnoClase
+            inscripcion.delete()
+            for cuota in cuotas:
+                if cuota.estado != 'pagado':
+                    print(cuota)
+                    cuota.estado = 'cancelada'
+                    cuota.clean()
+                    cuota.save()
+                    print(cuota)
+            messages.success(request, f"Inscripción en la clase '{clase.nombre}' eliminada correctamente.")
+            return redirect('detalle_alumno', pk=alumno.pk)
+        
+        # Si no es POST, mostrar la confirmación
+        return render(request, 'eliminar_inscripcion.html', {
+            'alumno': alumno,
+            'clase': clase,
+        })
