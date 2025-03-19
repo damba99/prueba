@@ -71,8 +71,8 @@ class Cuota(models.Model):
     
     
     id_cuota = models.AutoField(primary_key=True)
-    alumno = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='cuotas_alumno')
-    id_periodo = models.ForeignKey(Periodo, on_delete=models.CASCADE, related_name='cuotas', blank=True, null=True)
+    alumno = models.ForeignKey(AlumnoClase, on_delete=models.PROTECT, related_name='cuotas_alumno')
+    id_periodo = models.ForeignKey(Periodo, on_delete=models.PROTECT, related_name='cuotas', blank=True, null=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     fecha_pago = models.DateField(null=True, blank=True)
     detalle = models.ForeignKey(AlumnoClase, on_delete=models.CASCADE, related_name='cuotas_detalle', blank=True, null=True)      
