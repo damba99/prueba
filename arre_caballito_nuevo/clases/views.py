@@ -160,9 +160,6 @@ def eliminar_clase(request, pk):
     return render(request, 'eliminar_clase.html', {'clase': clase})
 
 # Detalle de clase
-def detalle_clase(request, pk):
-    clase = get_object_or_404(Clase, pk=pk)
-    return render(request, 'detalle_clase.html', {'clase': clase})
 
 from django.shortcuts import render
 from django.core.serializers import serialize
@@ -245,4 +242,18 @@ def agregar_clase(request):
         'disciplinas': disciplinas,
         'categorias': categorias,
         'profesores': profesores
+    })
+from alumnos.views import Alumno, AlumnoClase
+    
+def detalle_clase(request, pk):
+    clase = get_object_or_404(Clase, pk=pk)
+    alumnoxclase = AlumnoClase.objects.filter(clase=clase)
+    alumnos = Alumno.objects.filter(id_alumno__in=[alumno.alumno.id_alumno for alumno in alumnoxclase])
+
+    sesiones = Sesion.objects.filter(id_clase=clase)
+    
+    return render(request, 'detalle_clase.html', {
+        'clase': clase,
+        'alumnos': alumnos,
+        'sesiones': sesiones,
     })

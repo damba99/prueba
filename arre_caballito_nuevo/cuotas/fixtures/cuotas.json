@@ -96,27 +96,57 @@
         }
     },
     {
-        "model": "montos.monto",
+        "model": "cuotas.monto",
         "pk": 1,
         "fields": {
             "disciplina": 1,
-            "monto": 100.00
+            "monto": 100.00,
+            "tipo": "cuota"
         }
     },
     {
-        "model": "montos.monto",
+        "model": "cuotas.monto",
         "pk": 2,
         "fields": {
-            "disciplina": 2,
-            "monto": 200.00
+            "disciplina": 1,
+            "monto": 150.00,
+            "tipo": "inscripcion"
         }
     },
     {
-        "model": "montos.monto",
+        "model": "cuotas.monto",
         "pk": 3,
         "fields": {
+            "disciplina": 2,
+            "monto": 200.00,
+            "tipo": "cuota"
+        }
+    },
+    {
+        "model": "cuotas.monto",
+        "pk": 4,
+        "fields": {
+            "disciplina": 2,
+            "monto": 250.00,
+            "tipo": "inscripcion"
+        }
+    },
+    {
+        "model": "cuotas.monto",
+        "pk": 5,
+        "fields": {
             "disciplina": 3,
-            "monto": 300.00
+            "monto": 300.00,
+            "tipo": "cuota"
+        }
+    },
+    {
+        "model": "cuotas.monto",
+        "pk": 6,
+        "fields": {
+            "disciplina": 3,
+            "monto": 350.00,
+            "tipo": "inscripcion"
         }
     }
 ]
