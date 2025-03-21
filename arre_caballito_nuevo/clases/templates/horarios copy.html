@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario Semanal</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .hour-column {
+            width: 12.5%;
+        }
+
+        /* Colores para cada clase */
+        .clase-1 {
+            background-color: #FFDDC1; /* Rosa claro */
+        }
+
+        .clase-2 {
+            background-color: #C1E1FF; /* Azul claro */
+        }
+
+        .clase-3 {
+            background-color: #C1FFC1; /* Verde claro */
+        }
+
+        /* Estilo para el área donde se mostrarán las selecciones */
+        .selection-output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        /* Estilo para las referencias */
+        .references {
+            margin-top: 30px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+        }
+
+        .references h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .references ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .references li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Horario Semanal (De 8:00 a 20:00)</h2>
+
+    <div id="tabla-container">
+        <!-- La tabla se cargará aquí dinámicamente -->
+    </div>
+
+
+    <!-- Referencias de las clases -->
+    <div class="references" id="references-container">
+        <!-- Aquí se mostrarán las referencias de las clases -->
+    </div>
+
+    <script>
+        // Datos de las clases y sesiones
+        const clases = []
+        window.onload = cargarTabla;
+
+        // Cargar la tabla con los datos de las clases
+        function cargarTabla() {
+            const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            const horas = [
+                '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
+                '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', 
+                '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
+            ]; // Horas fijas
+
+            let tablaHTML = '<table>';
+            tablaHTML += '<thead><tr><th class="hour-column">Hora</th>';
+            dias.forEach(dia => {
+                tablaHTML += `<th class="hour-column">${dia}</th>`;
+            });
+            tablaHTML += '</tr></thead><tbody>';
+
+            horas.forEach((hora, index) => {
+                tablaHTML += `<tr><td>${hora}</td>`;
+                dias.forEach(dia => {
+                    tablaHTML += `<td data-hora="${hora}" data-dia="${dia}" class="hora-${index} dia-${dia}"></td>`;
+                });
+                tablaHTML += '</tr>';
+            });
+
+            tablaHTML += '</tbody></table>';
+            document.getElementById('tabla-container').innerHTML = tablaHTML;
+
+            // Pintar las celdas según las sesiones
+            clases.forEach(clase => {
+                clase.sesiones.forEach(sesion => {
+                    const dia = sesion.dia;
+                    const horaInicio = sesion.hora_inicio;
+                    const horaFin = sesion.hora_fin;
+
+                    const filaInicio = horas.indexOf(`${horaInicio} - ${parseInt(horaInicio.split(':')[0]) + 1}:00`);
+                    const filaFin = horas.indexOf(`${horaFin} - ${parseInt(horaFin.split(':')[0]) + 1}:00`);
+                    console.log(filaInicio)
+                    console.log(filaFin)
+                    for (let i = filaInicio; i < filaFin; i++) {
+                        const celda = document.querySelector(`.hora-${i}.dia-${dia}`);
+                        if (celda) {
+                            celda.classList.add(`clase-${clase.id_clase}`);
+                            celda.title = `Clase: ${clase.nombre} - Profesor: ${sesion.id_profesor}`;
+                        }
+                    }
+                });
+            });
+
+            // Agregar las referencias de las clases
+            mostrarReferencias();
+        }
+
+        function mostrarReferencias() {
+            let referenciasHTML = '<h3>Referencias de Clases:</h3><ul>';
+        
+            clases.forEach(clase => {
+                referenciasHTML += `<li><strong>${clase.nombre}</strong> <span style="display: inline-block; width: 20px; height: 20px; background-color: ${obtenerColor(clase.id_clase)};"></span><ul>`;
+                clase.sesiones.forEach(sesion => {
+                    referenciasHTML += `<li>Sesión: ${sesion.dia}, ${sesion.hora_inicio} - ${sesion.hora_fin}</li>`;
+                });
+                referenciasHTML += '</ul></li>';
+            });
+        
+            referenciasHTML += '</ul>';
+            document.getElementById('references-container').innerHTML = referenciasHTML;
+        }
+        
+        function obtenerColor(id_clase) {
+            switch (id_clase) {
+                case 1:
+                    return '#FFDDC1';  // Rosa Claro
+                case 2:
+                    return '#C1E1FF';  // Azul Claro
+                case 3:
+                    return '#C1FFC1';  // Verde Claro
+                default:
+                    return '#FFFFFF';  // Blanco si no se encuentra
+            }
+        }
+    </script>
+
+</body>
+</html>

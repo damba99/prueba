@@ -25,8 +25,8 @@
 
     <label for="id_grupo">Grupo:</label>
     <select name="id_grupo">
-      {% for grupo in grupos %}
-        <option value="{{ grupo.id }}" {% if grupo.id == sesion.id_grupo.id %}selected{% endif %}>{{ grupo.nombre }}</option>
+      {% for clase in clases %}
+        <option value="{{ clase.id_clase }}" {% if clase.id_clase == sesion.clase.id_clase %}selected{% endif %}>{{ clase.nombre }}</option>
       {% endfor %}
     </select><br>
 

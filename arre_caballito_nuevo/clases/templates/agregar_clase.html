@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% load static %}  <!-- Cargar las etiquetas estáticas de Django -->
+
+{% block title %}
+    Horario Semanal
+{% endblock %}
+
+{% block content %}
+<style>
+    .hour-column, #tabla-container td {
+        width: 140px; /* Ancho de las celdas para los días de la semana y las horas */
+        border: 1px solid #000000; /* Bordes para las celdas */
+    }
+    #tabla-container table {
+        border-collapse: collapse; /* No hay espacio entre las celdas */    }
+</style>
+    <h2>Agregar clase:</h2>
+    <form action="" method="POST">
+        {% csrf_token %}
+    
+        <!-- Select de Disciplina -->
+        <label for="id_disciplina">Disciplina:</label>
+        <select id="id_disciplina" name="id_disciplina" class="form-control" required>
+            <option value="" disabled selected>Seleccione una Disciplina</option>
+            {% for disciplina in disciplinas %}
+            <option value="{{ disciplina.id_disciplina }}">{{ disciplina.nombre }}</option>
+            {% endfor %}  <!-- Puedes agregar más disciplinas aquí -->
+        </select>
+    
+        <br><br>
+    
+        <!-- Select de Categoría -->
+        <label for="id_categoria">Categoría:</label>
+        <select id="id_categoria" name="id_categoria" class="form-control" required>
+            <option value="" disabled selected>Seleccione una Categoría</option>
+            {% for categoria in categorias %}
+              <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
+            {% endfor %}            <!-- Puedes agregar más categorías aquí -->
+        </select>
+    
+        <br><br>
+    
+        <!-- Botón para agregar sesión -->
+        <button type="button" id="agregar-sesion-btn" class="btn btn-primary">Agregar sesión</button>
+    
+        <br><br>
+    
+        <!-- Contenedor para las sesiones -->
+        <div id="sesiones-container"></div>
+    
+        <br><br>
+    
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+    
+
+    <div id="tabla-container">
+        <!-- La tabla se cargará aquí dinámicamente -->
+    </div>
+
+    <!-- Referencias de las clases -->
+    <div class="references" id="references-container">
+        <!-- Aquí se mostrarán las referencias de las clases -->
+    </div>
+
+    <a href="{% url 'agregar_clase' %}" class="btn btn-secondary">Agregar una clase</a>
+
+    <!-- Incluir el script al final del bloque content -->
+    <script>
+ // Obtener el botón y el contenedor donde se agregarán las sesiones
+        const agregarSesionBtn = document.getElementById('agregar-sesion-btn');
+        const sesionesContainer = document.getElementById('sesiones-container');
+
+        // Al hacer clic en el botón "Agregar sesión", se agrega un formulario de sesión
+        agregarSesionBtn.addEventListener('click', function() {
+            // Crear un nuevo contenedor para la sesión
+            const sessionForm = document.createElement('div');
+            sessionForm.classList.add('session-form');
+            
+            // HTML para el select de Día, hora de inicio y hora de fin
+            sessionForm.innerHTML = `
+                <h4>Sesión</h4>
+
+                <!-- Select de Día -->
+                <label for="dia">Día:</label>
+                <select name="dia" class="form-control" required>
+                    <option value="" disabled selected>Selecciona un Día</option>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miércoles">Miércoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                </select>
+
+                <br><br>
+
+                <label for="id_profesor">Profesor:</label>
+                <select id="id_profesor" name="id_profesor" class="form-control" required>
+                    <option value="" disabled selected>Seleccione una profesor</option>
+                    {% for profesor in profesores %}
+                    <option value="{{ profesor.id_profesor }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+                    {% endfor %}            
+                </select>
+
+                <!-- Input de Hora de Inicio -->
+                <label for="hora_inicio">Hora de Inicio:</label>
+                <input type="time" name="hora_inicio" class="form-control" required>
+
+                <br><br>
+
+                <!-- Input de Hora de Fin -->
+                <label for="hora_fin">Hora de Fin:</label>
+                <input type="time" name="hora_fin" class="form-control" required>
+
+                <br><br>
+            `;
+
+            // Agregar el nuevo formulario de sesión al contenedor
+            sesionesContainer.appendChild(sessionForm);
+        });
+
+
+
+        // JSON PARA LA TABLA
+        const clases = JSON.parse('{{ clases_json|escapejs }}');
+        const sesiones = JSON.parse('{{ sesiones_json|escapejs }}');
+
+        window.onload = cargarTabla;
+
+        function cargarTabla() {
+            const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            const horas = [
+                '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
+                '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', 
+                '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
+            ]; // Horas fijas
+
+            let tablaHTML = '<table>';
+            tablaHTML += '<thead><tr><th class="hour-column">Hora</th>';
+            dias.forEach(dia => {
+                tablaHTML += `<th class="hour-column">${dia}</th>`;
+            });
+            tablaHTML += '</tr></thead><tbody>';
+
+            horas.forEach((hora, index) => {
+                tablaHTML += `<tr><td>${hora}</td>`;
+                dias.forEach(dia => {
+                    tablaHTML += `<td data-hora="${hora}" data-dia="${dia}" class="hora-${index} dia-${dia}"></td>`;
+                });
+                tablaHTML += '</tr>';
+            });
+
+            tablaHTML += '</tbody></table>';
+            document.getElementById('tabla-container').innerHTML = tablaHTML;
+
+            // Pintar las celdas según las sesiones
+            clases.forEach(clase => {
+                const sesionesClase = sesiones.filter(sesion => sesion.fields.id_clase === clase.pk); // Filtrar sesiones por clase
+
+                sesionesClase.forEach(sesion => {
+                    const dia = sesion.fields.dia;
+                    const horaInicio = sesion.fields.hora_inicio;
+                    const horaFin = sesion.fields.hora_fin;
+                    
+                    const [horaInicioHoras, minutoInicio] = horaInicio.split(':');
+                    const [horaFinHoras, minutoFin] = horaFin.split(':');
+                    
+                    const rangoInicio = `${horaInicioHoras}:${minutoInicio}`; // "10:00"
+                    const rangoFin = `${horaFinHoras}:${minutoFin}`;         // "11:00"
+            
+                    const filaInicio = horas.findIndex(h => h.startsWith(`${rangoInicio}`));
+                    const filaFin = horas.findIndex(h => h.startsWith(`${rangoFin}`));
+
+                    const colorClase = obtenerColor(clase.pk);
+
+                    for (let i = filaInicio; i < filaFin; i++) {
+                        const celda = document.querySelector(`.hora-${i}.dia-${dia}`);
+                        if (celda) {
+                            celda.classList.add(`clase-${clase.pk}`);
+                            celda.style.backgroundColor = colorClase;
+                            celda.title = `Clase: ${clase.fields.nombre} - Profesor: ${sesion.fields.profesor}`;
+                        }
+                    }
+                });
+            });
+
+            // Agregar las referencias de las clases
+            mostrarReferencias();
+        }
+
+        function mostrarReferencias() {
+            let referenciasHTML = '<h3>Referencias de Clases:</h3><ul>';
+
+            clases.forEach(clase => {
+                referenciasHTML += `<li><strong>${clase.fields.nombre}</strong> <span style="display: inline-block; width: 20px; height: 20px; background-color: ${obtenerColor(clase.pk)};"></span><ul>`;
+                sesiones.forEach(sesion => {
+                    if (sesion.fields.clase === clase.pk) {
+                        referenciasHTML += `<li>Sesión: ${sesion.fields.dia}, ${sesion.fields.hora_inicio} - ${sesion.fields.hora_fin}</li>`;
+                    }
+                });
+                referenciasHTML += '</ul></li>';
+            });
+
+            referenciasHTML += '</ul>';
+            document.getElementById('references-container').innerHTML = referenciasHTML;
+        }
+
+        function obtenerColor(id_clase) {
+            switch (id_clase) {
+                case 1:
+                    return '#FFDDC1';  // Rosa Claro
+                case 2:
+                    return '#C1E1FF';  // Azul Claro
+                case 3:
+                    return '#C1FFC1';  // Verde Claro
+                case 4:
+                    return '#FFB6C1';  // Rosa Pastel
+                case 5:
+                    return '#98FB98';  // Verde Menta
+                case 6:
+                    return '#FFFACD';  // Amarillo Claro
+                case 7:
+                    return '#ADD8E6';  // Azul Claro Pastel
+                case 8:
+                    return '#F0E68C';  // Amarillo Mostaza
+                case 9:
+                    return '#E6E6FA';  // Lavanda
+                case 10:
+                    return '#FF6347';  // Tomate
+                case 11:
+                    return '#8A2BE2';  // Azul Violeta
+                case 12:
+                    return '#FFD700';  // Amarillo Dorado
+                case 13:
+                    return '#D3D3D3';  // Gris Claro
+                case 14:
+                    return '#FF1493';  // Rosa Profundo
+                case 15:
+                    return '#32CD32';  // Verde Lima
+                case 16:
+                    return '#FFD700';  // Amarillo
+                case 17:
+                    return '#FF4500';  // Naranja Rojo
+                case 18:
+                    return '#2E8B57';  // Verde Mar
+                case 19:
+                    return '#20B2AA';  // Verde Oscuro Aguamarina
+                case 20:
+                    return '#A52A2A';  // Marrón
+                default:
+                    return '#FFFFFF';  // Blanco si no se encuentra
+            }
+        }
+    </script>
+{% endblock %}
