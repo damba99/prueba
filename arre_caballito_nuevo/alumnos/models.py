@@ -50,12 +50,19 @@ class AlumnoClase(models.Model):
     alumno = models.ForeignKey(Alumno, related_name='clases', on_delete=models.CASCADE)
     clase = models.ForeignKey(Clase, related_name='alumnos', on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)  # Fecha en que el alumno se inscribió
+    activo = models.BooleanField(default=True)
+    fecha_baja = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         unique_together = ('alumno', 'clase') 
         
     def __str__(self):
         return f"{self.alumno} inscrito en {self.clase}"
+    
+    def save(self, *args, **kwargs):
+        if not self.activo and self.fecha_baja is None:
+            self.fecha_baja = timezone.now()  
+        super().save(*args, **kwargs) 
     
 class Asistencia(models.Model):
     id_sesion = models.ForeignKey(Sesion, related_name='asistencias', on_delete=models.CASCADE, null=True)

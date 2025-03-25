@@ -21,7 +21,7 @@ class Clase(models.Model):
     nombre = models.CharField(max_length=255, blank=True)
     id_disciplina = models.ForeignKey(Disciplina, related_name='clases', on_delete=models.CASCADE)
     id_categoria = models.ForeignKey(Categoria, related_name='clases', on_delete=models.CASCADE)
-
+    activo = models.BooleanField(default=True) 
     def __str__(self):
         return f"Clase {self.nombre}"
     

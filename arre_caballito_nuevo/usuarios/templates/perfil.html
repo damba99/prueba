@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil de Usuarios</title>
+</head>
+<body>
+    <h1>Lista de Usuarios</h1>
+    <ul>
+        {% for usuario in usuarios %}
+            <li>{{ usuario.rol }}</li>  <!-- Asumiendo que 'nombre' es un campo en el modelo Usuarios -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

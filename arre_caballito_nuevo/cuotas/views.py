@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Cuota
 import datetime
+from django.utils import timezone
 from datetime import date
 from alumnos.models import AlumnoClase, Alumno  
 from cuotas.models import Monto, Periodo, Inscripcion
@@ -26,9 +27,33 @@ def crear_cuotas():
                     cuota = Cuota(alumno=alumno, id_periodo=id_periodo, monto=monto, fecha_vencimiento= fecha_vencimiento, detalle=detalle)
                     cuota.save()
 
+def actualizar_estado_todas_las_cuotas():
+    cuotas_a_actualizar = Cuota.objects.all()
+    current_date = timezone.now().date()
+
+    for cuota in cuotas_a_actualizar:
+
+
+        if cuota.estado != 'pagado' and cuota.estado != 'cancelada':
+            print(cuota.estado)
+            print(current_date, cuota.fecha_vencimiento)
+
+            if current_date > cuota.fecha_vencimiento:
+                print("Hola")
+                cuota.estado = 'vencida'
+            elif current_date < cuota.fecha_vencimiento:
+                if cuota.fecha_vencimiento.year > current_date.year or (cuota.fecha_vencimiento.year == current_date.year and cuota.fecha_vencimiento.month > current_date.month):
+                    cuota.estado = 'proximo'
+                else:
+                    cuota.estado = 'pendiente'
+                print("picha")
+
+        cuota.save()
+
 def listar_cuotas(request):
     cuotas = Cuota.objects.all()  
     crear_cuotas()
+    actualizar_estado_todas_las_cuotas()
     return render(request, 'listar_cuotas.html', {'cuotas': cuotas})
 
 def listar_montos(request):
@@ -76,11 +101,13 @@ def cuotas(request):
 def deudas(request, pk):
     alumno = Alumno.objects.get(id_alumno=pk)
     print(alumno.id_alumno)
-    alumno_clases = AlumnoClase.objects.filter(alumno=alumno)
-    cuotas = Cuota.objects.filter(alumno__in=alumno_clases, estado__in=['vencida', 'pendiente'])
+    alumno_clases = AlumnoClase.objects.filter(alumno=alumno).first()
+    if not alumno_clases:
+        print("El alumno no tiene clases asignadas.")
+    cuotas = Cuota.objects.filter(alumno=alumno_clases)
     inscripciones = Inscripcion.objects.filter(alumno=alumno, estado='pendiente')
     conceptos = []
-    
+    crear_cuotas()
     for cuota in cuotas:
         print("a")
         conceptos.append({
@@ -102,4 +129,6 @@ def deudas(request, pk):
         })
         
     return render(request, 'deudas.html', {'conceptos': conceptos, 'alumno': alumno})
+
+
     

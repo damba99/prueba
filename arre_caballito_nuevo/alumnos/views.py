@@ -56,7 +56,7 @@ def eliminar_alumno(request, pk):
 
 def detalle_alumno(request, pk):
     alumno = get_object_or_404(Alumno, pk=pk)
-    clases = AlumnoClase.objects.filter(alumno=alumno)
+    clases = AlumnoClase.objects.filter(alumno=alumno, activo=True)
     
     clases_inscritas = [alumno_clase.clase for alumno_clase in clases]
 
@@ -70,32 +70,46 @@ from .models import Alumno, Clase, AlumnoClase
 from django.contrib import messages
 
 def inscribir_alumno(request, pk):
-    # Obtener el alumno por su pk
     alumno = get_object_or_404(Alumno, pk=pk)
-    
-    # Filtrar las clases disponibles de la misma categoría que el alumno
     clases_disponibles = Clase.objects.filter(id_categoria=alumno.id_categoria).exclude(
-        id_clase__in=[alumno_clase.clase.id_clase for alumno_clase in alumno.clases.all()]
+        id_clase__in=[
+            alumno_clase.clase.id_clase
+            for alumno_clase in alumno.clases.filter(activo=True)
+        ]
     )
-    
+
     if request.method == 'POST':
         clases_seleccionadas = request.POST.getlist('clases')
-        
+
         for clase_id in clases_seleccionadas:
             clase = get_object_or_404(Clase, pk=clase_id)
-            AlumnoClase.objects.create(alumno=alumno, clase=clase)
-            print(clase.id_disciplina.id_disciplina)
-            monto = Monto.objects.filter(disciplina=clase.id_disciplina.id_disciplina, tipo='inscripcion').first()
-            Inscripcion.objects.create(alumno=alumno, monto=monto, detalle=clase)
-        
+            print("Clasesita")
+            alumno_clase = AlumnoClase.objects.filter(alumno=alumno, clase=clase).first()
+            print(alumno_clase)
+            if alumno_clase:
+                cuotas_canceladas = Cuota.objects.filter(alumno=alumno_clase, estado='cancelada')
+                for cuota in cuotas_canceladas:
+                    cuota.estado = 'pendiente'
+                    cuota.save()
+                alumno_clase.activo=True
+                alumno_clase.save()
+                for a in cuotas_canceladas:
+                    print(a.estado)
+            else:
+                alumno_clase = AlumnoClase.objects.create(alumno=alumno, clase=clase)
+                monto = Monto.objects.filter(disciplina=clase.id_disciplina.id_disciplina, tipo='inscripcion').first()
+                if monto:
+                    Inscripcion.objects.create(alumno=alumno, monto=monto, detalle=clase)
+
         messages.success(request, f"{alumno.nombre} {alumno.apellido} ha sido inscrito exitosamente en las clases seleccionadas.")
         
         return redirect('detalle_alumno', pk=alumno.pk)
-    
+
     return render(request, 'inscribir_alumno.html', {
         'alumno': alumno,
         'clases': clases_disponibles
     })
+
     
 def eliminar_inscripcion(request, alumno_pk, clase_pk):
         # Obtener al alumno y la clase usando sus pk
@@ -113,7 +127,8 @@ def eliminar_inscripcion(request, alumno_pk, clase_pk):
         # Si es un POST, eliminar la inscripción
         if request.method == 'POST':
             # Eliminar la relación AlumnoClase
-            inscripcion.delete()
+            inscripcion.activo=False
+            inscripcion.save()
             for cuota in cuotas:
                 if cuota.estado != 'pagado':
                     print(cuota)
