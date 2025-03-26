@@ -5,8 +5,8 @@ from caballos.models import Caballo
 from clases.models import Clase, Categoria, Sesion
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User, Group
 
-from django.core.exceptions import ValidationError
 
 class Alumno(models.Model):
     id_alumno = models.AutoField(primary_key=True)
@@ -17,7 +17,7 @@ class Alumno(models.Model):
     direccion = models.CharField(max_length=255)    
     telefono = models.CharField(max_length=15, null=True, blank=True)
     email = models.EmailField(unique=True)
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True, blank=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  # Usamos usuario como nombre
     id_categoria = models.ForeignKey(Categoria, related_name='alumnos', on_delete=models.CASCADE, null=True, default=None)
 
     def __str__(self):
@@ -27,14 +27,20 @@ class Alumno(models.Model):
         # Crear un usuario solo si no existe ya
         if not self.usuario:  # Si el Alumno aún no tiene usuario asignado
             try:
-                # Crear el usuario con el mismo correo que el alumno y DNI como contraseña
-                user = Usuario.objects.create( 
-                    username=self.email,
+                # Crear el usuario de Django con el mismo correo que el alumno y DNI como contraseña
+                user = User.objects.create_user(
+                    username=self.email,  # Usar el email como nombre de usuario
                     email=self.email,
-                    password=self.dni,
-                    rol='Alumno'
+                    password=self.dni,  # Usar el DNI como contraseña
                 )
-                self.usuario = user  # Asignar el usuario creado al Alumno
+                user.is_staff = True  # Hacer que el usuario sea un 'staff'
+                user.save()  # Guardar el usuario
+                grupo_alumno, created = Group.objects.get_or_create(name="Alumno")
+                
+                # Agregar el usuario al grupo 'Alumno'
+                user.groups.add(grupo_alumno)
+                
+                self.usuario = user
             except Exception as e:
                 print(f"Error al crear usuario para {self.nombre} {self.apellido}: {e}")
         
@@ -57,7 +63,7 @@ class AlumnoClase(models.Model):
         unique_together = ('alumno', 'clase') 
         
     def __str__(self):
-        return f"{self.alumno} inscrito en {self.clase}"
+        return f"{self.alumno} inscrito en {self.clase} - {self.activo}"
     
     def save(self, *args, **kwargs):
         if not self.activo and self.fecha_baja is None:

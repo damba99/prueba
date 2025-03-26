@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User, Group 
 from django.db import models
-from usuarios.models import Usuario
+
 
 class Profesor(models.Model):
     id_profesor = models.AutoField(primary_key=True)
@@ -9,21 +10,32 @@ class Profesor(models.Model):
     fecha_nacimiento = models.DateField()
     direccion = models.CharField(max_length=255)
     telefono = models.CharField(max_length=15)
-    email = models.EmailField()
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, null=True)
+    email = models.EmailField(unique=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  # Usamos usuario como nombre
+    # Aquí puedes agregar cualquier otro campo que necesites
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
 
     def save(self, *args, **kwargs):
-        if not self.usuario:  # Si el Profesor aún no tiene usuario asignado
-            # Crear el usuario con el mismo correo que el profesor y DNI como contraseña
-            user = Usuario.objects.create(
-                username=self.email,  # Usar el email del Profesor como nombre de usuario
-                email=self.email,
-                password=self.dni,  # Usar el DNI del Profesor como contraseña
-                rol='Profesor'  # Asignar el rol de 'Profesor'
-            )
-            self.usuario = user
+        if not self.usuario:
+            try:
+                user = User.objects.create_user(
+                    username=self.email,  
+                    email=self.email,
+                    password=self.dni,  
+                )
+                user.is_staff = True 
+                user.save() 
 
+                grupo_profesor, created = Group.objects.get_or_create(name="Profesor")
+                
+                
+                user.groups.add(grupo_profesor)
+                
+                self.usuario = user  
+            except Exception as e:
+                print(f"Error al crear usuario para {self.nombre} {self.apellido}: {e}")
+        
+        # Primero guardamos el Profesor para asignarle un ID
         super().save(*args, **kwargs)
