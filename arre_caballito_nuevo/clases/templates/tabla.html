@@ -1,150 +1,202 @@
-<style>
-    .hour-column, #tabla-container td {
-        width: 100px; /* Ancho de las celdas para los días de la semana y las horas */
-        border: 1px solid #000000; /* Bordes para las celdas */
-        position: relative; /* Necesario para posicionar el div de color encima de la celda */
-    }
-    #tabla-container table {
-        border-collapse: collapse; /* No hay espacio entre las celdas */
-    }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Clases</title>
+    <style>
+        .hour-column, #tabla-container td {
+            width: 100px; /* Ancho de las celdas para los días de la semana y las horas */
+            border: 1px solid #000000; /* Bordes para las celdas */
+            position: relative; /* Necesario para posicionar el div de color encima de la celda */
+            height: 30px; /* Altura estándar de las celdas */
+        }
+        #tabla-container table {
+            border-collapse: collapse; /* No hay espacio entre las celdas */
+        }
 
-    /* Estilo para el div de color encima de las celdas */
-    .color-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 1; /* Totalmente opaco */
-    }
+        /* Estilo para el div de color encima de las celdas */
+        .color-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            border: 2px solid #000;
+            opacity: 1; /* Totalmente opaco */
+            width: 100%; /* Para que el div ocupe todo el ancho de la celda */
+            z-index: 1; /* Asegura que el div esté debajo del enlace */
+        }
 
-    /* Enlace que aparece encima de la celda */
-    .colored-cell a {
-        display: block;
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        line-height: 100%;
-        color: #fff;
-        text-decoration: none;
-    }
-</style>
+        /* Estilo para el enlace dentro del div */
+        .colored-cell a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 100%;
+            color: #fff;
+            text-decoration: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2; /* Asegura que el enlace esté encima del div de color */
+        }
 
-<div id="tabla-container">
-    <!-- La tabla se cargará aquí dinámicamente -->
-</div>
+        /* Aseguramos que el title del enlace aparezca al hacer hover */
+        .colored-cell a:hover {
+            cursor: pointer; /* Cambiar el cursor al pasar sobre el enlace */
+        }
+    </style>
+</head>
+<body>
+    <div id="tabla-container">
+        <!-- La tabla se cargará aquí dinámicamente -->
+    </div>
 
-<!-- Referencias de las clases -->
-<div class="references" id="references-container">
-    <!-- Aquí se mostrarán las referencias de las clases -->
-</div>
+    <div class="references" id="references-container">
+        <!-- Aquí se mostrarán las referencias de las clases -->
+    </div>
 
-<script>
-    const clases = JSON.parse('{{ clases_json|escapejs }}');
-    const sesiones = JSON.parse('{{ sesiones_json|escapejs }}');
-
-    // Lista de colores predefinidos
-    const listaColores = [
-        '#FFDDC1', '#C1E1FF', '#C1FFC1', '#FFB6C1', '#98FB98',
-        '#FFFACD', '#ADD8E6', '#F0E68C', '#E6E6FA', '#FF6347',
-        '#8A2BE2', '#FFD700', '#D3D3D3', '#FF1493', '#32CD32',
-        '#FFD700', '#FF4500', '#2E8B57', '#20B2AA', '#A52A2A'
-    ];
-
-    let colorPorClase = {}; // Objeto para almacenar el color asignado a cada clase
-
-    window.onload = cargarTabla;
-
-    function cargarTabla() {
-        const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-        const horas = [
-            '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
-            '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', 
-            '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
-        ]; // Horas fijas
-
-        let tablaHTML = '<table>';
-        tablaHTML += '<thead><tr><th class="hour-column">Hora</th>';
-        dias.forEach(dia => {
-            tablaHTML += `<th class="hour-column">${dia}</th>`;
-        });
-        tablaHTML += '</tr></thead><tbody>';
-
-        horas.forEach((hora, index) => {
-            tablaHTML += `<tr><td>${hora}</td>`;
-            dias.forEach(dia => {
-                tablaHTML += `<td data-hora="${hora}" data-dia="${dia}" class="hora-${index} dia-${dia}"></td>`;
-            });
-            tablaHTML += '</tr>';
-        });
-
-        tablaHTML += '</tbody></table>';
-        document.getElementById('tabla-container').innerHTML = tablaHTML;
-
-        // Asignar color a cada clase si no tiene asignado uno ya
-        clases.forEach(clase => {
-            if (!colorPorClase[clase.pk]) {
-                // Asignar el siguiente color disponible de la lista
-                colorPorClase[clase.pk] = listaColores.shift(); // Obtener y eliminar el primer color de la lista
-            }
-
-            const sesionesClase = sesiones.filter(sesion => sesion.fields.id_clase === clase.pk); // Filtrar sesiones por clase
-
-            sesionesClase.forEach(sesion => {
-                const dia = sesion.fields.dia;
-                const horaInicio = sesion.fields.hora_inicio;
-                const horaFin = sesion.fields.hora_fin;
-                
-                const [horaInicioHoras, minutoInicio] = horaInicio.split(':');
-                const [horaFinHoras, minutoFin] = horaFin.split(':');
-                
-                const rangoInicio = `${horaInicioHoras}:${minutoInicio}`; // "10:00"
-                const rangoFin = `${horaFinHoras}:${minutoFin}`;         // "11:00"
+    <script>
+        const clases = JSON.parse('{{ clases_json|escapejs }}');
+        const sesiones = JSON.parse('{{ sesiones_json|escapejs }}');
+        const profesores = JSON.parse('{{ profesores_json|escapejs }}');  // Asumiendo que tienes el array de profesores
         
-                const filaInicio = horas.findIndex(h => h.startsWith(`${rangoInicio}`));
-                const filaFin = horas.findIndex(h => h.startsWith(`${rangoFin}`));
-
-                for (let i = filaInicio; i < filaFin; i++) {
-                    const celda = document.querySelector(`.hora-${i}.dia-${dia}`);
-                    if (celda) {
-                        // Crear un div con el color
-                        const divColor = document.createElement('div');
-                        divColor.classList.add('color-overlay');
-                        divColor.style.backgroundColor = colorPorClase[clase.pk];
-
-                        // Crear un enlace dentro de la celda
-                        const enlace = document.createElement('a');
-                        aa = sesion.fields.id_clase
-                        console.log(aa)
-                        enlace.href = `/clasesdetalle_clase/${sesion.fields.id_clase}`;  // Enlace con redirección a la página de asistencia
-                        enlace.classList.add('colored-cell');
-                        enlace.title = `Clase: ${clase.fields.nombre} - Profesor: ${sesion.fields.profesor}`;
-                        enlace.appendChild(divColor);
-
-                        celda.appendChild(enlace); // Añadir el enlace con el color encima de la celda
+        // Lista de colores predefinidos
+        const listaColores = [
+            '#FFDDC1', '#C1E1FF', '#C1FFC1', '#FFB6C1', '#98FB98',
+            '#FFFACD', '#ADD8E6', '#F0E68C', '#E6E6FA', '#FF6347',
+            '#8A2BE2', '#FFD700', '#D3D3D3', '#FF1493', '#32CD32',
+            '#FFD700', '#FF4500', '#2E8B57', '#20B2AA', '#A52A2A'
+        ];
+        
+        let colorPorClase = {}; // Objeto para almacenar el color asignado a cada clase
+        
+        window.onload = cargarTabla;
+        
+        function cargarTabla() {
+            const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+            const horas = [
+                '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
+                '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', 
+                '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
+            ]; // Horas fijas
+        
+            let tablaHTML = '<table>';
+            tablaHTML += '<thead><tr><th class="hour-column">Hora</th>';
+            dias.forEach(dia => {
+                tablaHTML += `<th class="hour-column">${dia}</th>`;
+            });
+            tablaHTML += '</tr></thead><tbody>';
+        
+            horas.forEach((hora, index) => {
+                tablaHTML += `<tr><td>${hora}</td>`;
+                dias.forEach(dia => {
+                    tablaHTML += `<td data-hora="${hora}" data-dia="${dia}" class="hora-${index} dia-${dia}"></td>`;
+                });
+                tablaHTML += '</tr>';
+            });
+        
+            tablaHTML += '</tbody></table>';
+            document.getElementById('tabla-container').innerHTML = tablaHTML;
+        
+            // Asignar color a cada clase si no tiene asignado uno ya
+            clases.forEach(clase => {
+                if (!colorPorClase[clase.pk]) {
+                    // Asignar el siguiente color disponible de la lista
+                    colorPorClase[clase.pk] = listaColores.shift(); // Obtener y eliminar el primer color de la lista
+                }
+        
+                const sesionesClase = sesiones.filter(sesion => sesion.fields.id_clase === clase.pk); // Filtrar sesiones por clase
+        
+                sesionesClase.forEach(sesion => {
+                    const dia = sesion.fields.dia;
+                    const horaInicio = sesion.fields.hora_inicio;
+                    const horaFin = sesion.fields.hora_fin;
+                    
+                    const [horaInicioHoras, minutoInicio] = horaInicio.split(':');
+                    const [horaFinHoras, minutoFin] = horaFin.split(':');
+                    
+                    const rangoInicio = `${horaInicioHoras}:${minutoInicio}`; // "10:00"
+                    const rangoFin = `${horaFinHoras}:${minutoFin}`;         // "11:00"
+        
+                    const filaInicio = horas.findIndex(h => h.startsWith(rangoInicio));
+                    const filaFin = horas.findIndex(h => h.startsWith(rangoFin));
+        
+                    // Crear el div para cubrir el rango de celdas
+                    const divColor = document.createElement('div');
+                    divColor.classList.add('color-overlay');
+                    divColor.style.backgroundColor = colorPorClase[clase.pk];
+        
+                    // Crear un enlace dentro del div
+                    const enlace = document.createElement('a');
+                    enlace.href = `/clasesdetalle_clase/${sesion.fields.id_clase}`;  // Enlace con redirección a la página de asistencia
+                    enlace.classList.add('colored-cell');
+        
+                    // Buscar el profesor por id_profesor (desde el array de profesores)
+                    const profesorId = sesion.fields.id_profesor;
+                    const profesor = profesores.find(prof => prof.pk === profesorId); // Encontrar el profesor correspondiente
+        
+                    // Si encontramos el profesor, mostramos su nombre, sino, mostramos algo genérico
+                    const profesorNombre = profesor ? profesor.fields.nombre : "Profesor no disponible";
+        
+                    enlace.title = `Clase: ${clase.fields.nombre} - Profesor: ${profesorNombre} ${profesor.fields.apellido}`;
+        
+                    // Añadir el div de color al enlace
+                    enlace.appendChild(divColor);
+        
+                    // Asegurarnos de que el div abarque las celdas correspondientes
+                    const celdasEnSesion = [];
+                    for (let i = filaInicio; i < filaFin; i++) {
+                        const celda = document.querySelector(`.hora-${i}.dia-${dia}`);
+                        if (celda) {
+                            celdasEnSesion.push(celda);
+                        }
                     }
-                }
+        
+                    // Ajustar el tamaño del div para que abarque todas las celdas de la sesión
+                    if (celdasEnSesion.length > 0) {
+                        const primerCelda = celdasEnSesion[0];
+                        const ultimaCelda = celdasEnSesion[celdasEnSesion.length - 1];
+        
+                        const primerCeldaRect = primerCelda.getBoundingClientRect();
+                        const ultimaCeldaRect = ultimaCelda.getBoundingClientRect();
+        
+                        const divWidth = (ultimaCeldaRect.right - primerCeldaRect.left)-4;
+                        const divHeigth = (ultimaCeldaRect.bottom - primerCeldaRect.top)-4;
+                        divColor.style.width = `${divWidth}px`;
+                        divColor.style.height = `${divHeigth}px`;
+                        divColor.style.top = `${primerCeldaRect.top - primerCelda.getBoundingClientRect().top}px`;
+        
+                        // Posicionar el div sobre la primera celda
+                        divColor.style.left = `${primerCeldaRect.left - primerCelda.getBoundingClientRect().left}px`;
+        
+                        // Añadir el enlace con el div a la primera celda de la sesión
+                        primerCelda.appendChild(enlace);
+                    }
+                });
             });
-        });
-
-        // Agregar las referencias de las clases
-        mostrarReferencias();
-    }
-
-    function mostrarReferencias() {
-        let referenciasHTML = '<h3>Referencias de Clases:</h3><ul>';
-
-        clases.forEach(clase => {
-            referenciasHTML += `<li><strong>${clase.fields.nombre}</strong> <span style="display: inline-block; width: 20px; height: 20px; background-color: ${colorPorClase[clase.pk]};"></span><ul>`;
-            sesiones.forEach(sesion => {
-                if (sesion.fields.clase === clase.pk) {
-                    referenciasHTML += `<li>Sesión: ${sesion.fields.dia}, ${sesion.fields.hora_inicio} - ${sesion.fields.hora_fin}</li>`;
-                }
+        
+            // Agregar las referencias de las clases
+            mostrarReferencias();
+        }
+        
+        function mostrarReferencias() {
+            let referenciasHTML = '<h3>Referencias de Clases:</h3><ul>';
+        
+            clases.forEach(clase => {
+                referenciasHTML += `<li><strong>${clase.fields.nombre}</strong> <span style="display: inline-block; width: 20px; height: 20px; background-color: ${colorPorClase[clase.pk]};"></span><ul>`;
+                sesiones.forEach(sesion => {
+                    if (sesion.fields.clase === clase.pk) {
+                        referenciasHTML += `<li>Sesión: ${sesion.fields.dia}, ${sesion.fields.hora_inicio} - ${sesion.fields.hora_fin}</li>`;
+                    }
+                });
+                referenciasHTML += '</ul></li>';
             });
-            referenciasHTML += '</ul></li>';
-        });
-
-        referenciasHTML += '</ul>';
-        document.getElementById('references-container').innerHTML = referenciasHTML;
-    }
-</script>
+        
+            referenciasHTML += '</ul>';
+            document.getElementById('references-container').innerHTML = referenciasHTML;
+        }
+    </script>
+</body>
+</html>

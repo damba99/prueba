@@ -166,17 +166,19 @@ from django.core.serializers import serialize
 from .models import Clase, Sesion
 
 def datos_horario():
-    clases = Clase.objects.all()
+    clases = Clase.objects.filter(activo=True)
     sesiones = Sesion.objects.all()
+    profesores = Profesor.objects.all()
     
     # Serializamos los QuerySets a formato JSON
     clases_json = serialize('json', clases)
     sesiones_json = serialize('json', sesiones)
-    
+    profesores_json = serialize('json', profesores)    
     # Pasamos los datos serializados al contexto
     context = {
         'clases_json': clases_json,
-        'sesiones_json': sesiones_json
+        'sesiones_json': sesiones_json,
+        'profesores_json': profesores_json
     }
     return context
 

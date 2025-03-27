@@ -13,7 +13,15 @@
         border: 1px solid #000000; /* Bordes para las celdas */
     }
     #tabla-container table {
-        border-collapse: collapse; /* No hay espacio entre las celdas */    }
+        border-collapse: collapse; /* No hay espacio entre las celdas */    
+    }
+    #tabla-container a {
+        pointer-events: none; /* Deshabilita la interacción con los enlaces */
+        color: #888; /* Cambia el color del enlace a gris para que parezca deshabilitado */
+        text-decoration: none; /* Elimina el subrayado */
+        cursor: pointer;
+    }
+
 </style>
     <h2>Agregar clase:</h2>
     <form action="" method="POST">
@@ -35,7 +43,7 @@
         <select id="id_categoria" name="id_categoria" class="form-control" required>
             <option value="" disabled selected>Seleccione una Categoría</option>
             {% for categoria in categorias %}
-              <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
+                <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
             {% endfor %}            <!-- Puedes agregar más categorías aquí -->
         </select>
     
@@ -53,7 +61,6 @@
     
         <button type="submit" class="btn btn-success">Guardar</button>
     </form>
-    
 
     {% include 'tabla.html' %}
     <script>

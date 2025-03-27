@@ -1,5 +1,5 @@
 from django.db import models
-from usuarios.models import Usuario
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from cuotas.models import Cuota
 
@@ -12,8 +12,8 @@ class Caja(models.Model):
     ]
     
     id_caja = models.AutoField(primary_key=True)
-    usuario_apertura = models.ForeignKey(Usuario, related_name='usuario_apertura', on_delete=models.CASCADE)
-    usuario_cierre = models.ForeignKey(Usuario, related_name='usuario_cierre', on_delete=models.CASCADE)
+    usuario_apertura = models.ForeignKey(User, related_name='usuario_apertura', on_delete=models.CASCADE)
+    usuario_cierre = models.ForeignKey(User, related_name='usuario_cierre', on_delete=models.CASCADE)
     fecha_apertura = models.DateTimeField()
     fecha_cierre = models.DateTimeField()
     monto_inicial = models.DecimalField(max_digits=10, decimal_places=2)
@@ -24,10 +24,10 @@ class Caja(models.Model):
     estado = models.CharField(max_length=50, choices=ESTADO_CHOICES, default=CERRADO)
     
     def clean(self):
-        # Validar que ambos usuarios (apertura y cierre) sean Administradores
-        if self.usuario_apertura.rol != 'Administrador':
+        # Validar que ambos usuarios (apertura y cierre) sean Administradores (pertenecen al grupo 'Administrador')
+        if not self.usuario_apertura.groups.filter(name="Administrador").exists():
             raise ValidationError('El usuario de apertura debe ser un Administrador.')
-        if self.usuario_cierre.rol != 'Administrador':
+        if not self.usuario_cierre.groups.filter(name="Administrador").exists():
             raise ValidationError('El usuario de cierre debe ser un Administrador.')
     
     def __str__(self):

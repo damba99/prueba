@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth import login as auth_login  # Si usas el nuevo login del sistema de sesiones
 
@@ -36,7 +36,7 @@ def iniciar_sesion(request):
             # Imprimir los detalles del usuario en la consola
             print(f"Acceso correcto. Datos del usuario: {user}")
 
-            return HttpResponse("Acceso correcto. Revisa la consola para más detalles.")
+            return redirect('horarios')
         else:
             # Si la autenticación falla, identificar el error
             print("Acceso incorrecto. Usuario o contraseña incorrectos.")
@@ -44,3 +44,7 @@ def iniciar_sesion(request):
     
     # Si no es un POST, renderiza el formulario de inicio de sesión
     return render(request, 'inicio.html')
+
+def logout_view(request):
+    logout(request)  # Cierra la sesión del usuario
+    return redirect('login')
