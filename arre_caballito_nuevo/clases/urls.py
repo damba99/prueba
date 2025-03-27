@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     # Sesiones
-    path('', views.listar_sesiones, name='listar_sesiones'),
+    path('sesiones', views.listar_sesiones, name='listar_sesiones'),
     path('sesion/crear/', views.crear_sesion, name='crear_sesion'),
     path('sesion/<int:pk>/', views.detalle_sesion, name='detalle_sesion'),
     path('sesion/<int:pk>/modificar/', views.modificar_sesion, name='modificar_sesion'),
@@ -15,7 +15,7 @@ urlpatterns = [
     path('clase/<int:pk>/modificar/', views.modificar_clase, name='modificar_clase'),
     path('clase/<int:pk>/eliminar/', views.eliminar_clase, name='eliminar_clase'),
     path('clase/<int:pk>/', views.detalle_clase, name='detalle_clase'),
-    path('horarios/', views.horarios, name='horarios'),
+    path('', views.horarios, name='horarios'),
     path('agregar_clase/', views.agregar_clase, name='agregar_clase'),
     path('detalle_clase/<int:pk>/', views.detalle_clase, name='detalle_clase'),
 

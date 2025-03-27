@@ -4,28 +4,35 @@
   <h1>Deudas de {{ alumno.nombre }} {{ alumno.apellido }}</h1>
 
   {% if conceptos %}
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Descripción</th>
-          <th>Monto</th>
-          <th>Estado</th>
-          <th>Fecha de Vencimiento</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for concepto in conceptos %}
-          <tr>
-            <td>{{ concepto.tipo }}</td>
-            <td>{{ concepto.descripcion }}</td>
-            <td>{{ concepto.monto }}</td>
-            <td>{{ concepto.estado }}</td>  <!-- Aquí mostramos el estado de la cuota o inscripción -->
-            <td>{{ concepto.fecha_vencimiento }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <form method="post" action="{% url 'registrar_pago' alumno.id_alumno %}">
+      {% csrf_token %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Seleccionar</th>
+                  <th>Tipo</th>
+                  <th>Descripción</th>
+                  <th>Monto</th>
+                  <th>Estado</th>
+                  <th>Fecha de Vencimiento</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for concepto in conceptos %}
+                  <tr>
+                      <td><input type="checkbox" name="conceptos_seleccionados" value="{{ concepto.id }};{{ concepto.tipo }};{{ concepto.descripcion }};{{ concepto.monto }};{{ concepto.estado }}"></td>
+                      <td>{{ concepto.tipo }}</td>
+                      <td>{{ concepto.descripcion }}</td>
+                      <td>{{ concepto.monto }}</td>
+                      <td>{{ concepto.estado }}</td>
+                      <td>{{ concepto.fecha_vencimiento }}</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+
+      <button type="submit" class="btn btn-primary">Registrar Pago</button>
+    </form>
   {% else %}
     <p>No hay deudas pendientes.</p>
   {% endif %}

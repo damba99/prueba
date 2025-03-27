@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Registrar Pago - Deudas de {{ alumno.nombre }} {{ alumno.apellido }}</h1>
+  
+  <h3>Conceptos Seleccionados</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Monto</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for concepto in conceptos_detalles %}
+        <tr>
+          <td>{{ concepto.tipo }}</td>
+          <td>{{ concepto.descripcion }}</td>
+          <td>${{ concepto.monto|floatformat:2 }}</td>
+          <td>{{ concepto.estado }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h4>Total a Pagar: ${{ total_monto|floatformat:2 }}</h4>
+
+  <form method="POST" action="{% url 'pagar' pk=alumno.id_alumno %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="metodo_pago">Método de Pago</label>
+      <select name="metodo_pago" id="metodo_pago" class="form-control">
+        <option value="Efectivo">Efectivo</option>
+        <option value="Crédito">Crédito</option>
+        <option value="Débito">Débito</option>
+        <option value="Transferencia">Transferencia</option>
+        <option value="Billetera Virtual">Billetera Virtual</option>
+      </select>
+    </div>
+
+      <!-- Incluimos los conceptos seleccionados como campo oculto -->
+    {% for concepto in conceptos_detalles %}
+      <input type="hidden" name="conceptos_seleccionados" value="{{ concepto.id }};{{ concepto.tipo }};{{ concepto.descripcion }};{{ concepto.monto }};{{ concepto.estado }}">
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Confirmar Pago</button>
+  </form>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} Apertura de Caja {% endblock %}
+
+{% block content %}
+    <h2>Apertura de Caja</h2>
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="monto_inicial">Monto Inicial:</label>
+            <input type="number" name="monto_inicial" required step="0.01" min="0">
+        </div>
+        <button type="submit">Abrir Caja</button>
+    </form>
+    <a href="{% url 'listar_cajas' %}">Ir a Listado de Cajas</a>
+
+{% endblock %}

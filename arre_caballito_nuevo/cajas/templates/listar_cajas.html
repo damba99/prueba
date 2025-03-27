@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %} Listado de Cajas {% endblock %}
+
+{% block content %}
+    <h2>Listado de Cajas</h2>
+
+    <!-- Tabla para mostrar las cajas -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID Caja</th>
+                <th>Estado</th>
+                <th>Usuario de Apertura</th>
+                <th>Fecha de Apertura</th>
+                <th>Monto Inicial</th>
+                <th>Ingresos</th>
+                <th>Egresos</th>
+                <th>Saldo</th>
+                <th>Monto Final</th>
+                <th>Usuario de Cierre</th>
+                <th>Fecha de Cierre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for caja in cajas %}
+            <tr>
+                <td>{{ caja.id_caja }}</td>
+                <td>{{ caja.get_estado_display }}</td>
+                <td>{{ caja.usuario_apertura.username }}</td>
+                <td>{{ caja.fecha_apertura|date:"d/m/Y H:i" }}</td>
+                <td>${{ caja.monto_inicial }}</td>
+                <td>${{ caja.ingresos }}</td>
+                <td>${{ caja.egresos }}</td>
+                <td>${{ caja.saldo }}</td>
+                <td>
+                    {% if caja.monto_final %}
+                        ${{ caja.monto_final }}
+                    {% else %}
+                        ----- <!-- Si no se ha cerrado, el monto final no está disponible -->
+                    {% endif %}
+                </td>
+                <td>
+                    {% if caja.usuario_cierre %}
+                        {{ caja.usuario_cierre.username }}
+                    {% else %}
+                        No ha sido cerrado aún
+                    {% endif %}
+                </td>
+                <td>
+                    {% if caja.fecha_cierre %}
+                        {{ caja.fecha_cierre|date:"d/m/Y H:i" }}
+                    {% else %}
+                        No ha sido cerrado aún
+                    {% endif %}
+                </td>
+                <td>
+                    <!-- Ver detalles de la caja -->
+                    <a href="{% url 'detalle_caja' pk=caja.pk %}">Ver Detalles</a>
+                    <!-- Si la caja está abierta, se puede cerrar -->
+                    {% if caja.estado == 'Abierta' %}
+                        <a href="{% url 'cerrar_caja' pk=caja.pk %}">Cerrar Caja</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Enlace para abrir una nueva caja solo si no hay ninguna caja abierta -->
+    {% if not caja_abierta %}
+        <a href="{% url 'apertura_caja' %}">Abrir una nueva Caja</a>
+    {% else %}
+        <p>Ya hay una caja abierta, no puedes abrir una nueva hasta que se cierre la actual.</p>
+    {% endif %}
+{% endblock %}

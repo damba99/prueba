@@ -98,19 +98,27 @@ def cuotas(request):
     alumnos = Alumno.objects.filter(id_alumno__in=AlumnoClase.objects.values('alumno'))
     return render(request, 'cuotas.html', {'alumnos': alumnos})
 
+from django.shortcuts import render, redirect
+from .models import Cuota, Inscripcion, Alumno, AlumnoClase
+from django.contrib import messages
+
 def deudas(request, pk):
     alumno = Alumno.objects.get(id_alumno=pk)
-    print(alumno.id_alumno)
+
+    # Filtrar las cuotas no pagadas y no canceladas
     alumno_clases = AlumnoClase.objects.filter(alumno=alumno).first()
     if not alumno_clases:
-        print("El alumno no tiene clases asignadas.")
-    cuotas = Cuota.objects.filter(alumno=alumno_clases)
+        return render(request, 'deudas.html', {'conceptos': [], 'alumno': alumno})
+
+    cuotas = Cuota.objects.filter(alumno=alumno_clases).exclude(estado='pagado').exclude(estado='cancelada')
     inscripciones = Inscripcion.objects.filter(alumno=alumno, estado='pendiente')
+
     conceptos = []
-    crear_cuotas()
+    
+    # Añadir las cuotas a los conceptos
     for cuota in cuotas:
-        print("a")
         conceptos.append({
+            'id': cuota.id_cuota,
             'tipo': 'cuota',
             'descripcion': f'Cuota {cuota.id_cuota} - {cuota.id_periodo}',
             'monto': cuota.monto,
@@ -118,17 +126,153 @@ def deudas(request, pk):
             'fecha_vencimiento': cuota.fecha_vencimiento
         })
 
+    # Añadir las inscripciones a los conceptos
     for inscripcion in inscripciones:
         conceptos.append({
+            'id': inscripcion.pk,
             'tipo': 'inscripcion',
             'descripcion': f'Inscripción en {inscripcion.detalle.nombre}',
-            'monto': inscripcion.monto, 
-            'estado': inscripcion.estado, 
-            'fecha_vencimiento': ""
-  
+            'monto': inscripcion.monto.monto,
+            'estado': inscripcion.estado,
+            'fecha_vencimiento': ''
         })
-        
+    
     return render(request, 'deudas.html', {'conceptos': conceptos, 'alumno': alumno})
 
+from django.contrib import messages
+from cajas.models import Pago, Movimiento, Caja
 
-    
+def registrar_pago(request, pk):
+    alumno = Alumno.objects.get(id_alumno=pk)
+
+    if request.method == "POST":
+        conceptos_seleccionados = request.POST.getlist('conceptos_seleccionados')
+        conceptos_detalles = []
+        total_monto = 0.0
+
+        # Recorremos los conceptos seleccionados para procesarlos
+        for concepto in conceptos_seleccionados:
+            print(concepto)  # Esto mostrará el valor exacto de cada checkbox enviado
+            try:
+                # Dividimos la cadena recibida para obtener los detalles
+                concepto_id, concepto_tipo, concepto_descripcion, concepto_monto, concepto_estado = concepto.split(';')
+                concepto_monto = float(concepto_monto)  # Asegúrate de convertir el monto a float
+                conceptos_detalles.append({
+                    'id': concepto_id,
+                    'tipo': concepto_tipo,
+                    'descripcion': concepto_descripcion,
+                    'monto': concepto_monto,
+                    'estado': concepto_estado
+                })
+                total_monto += concepto_monto
+            except ValueError:
+                print(f"Error al dividir el concepto: {concepto}")
+
+        # Pasar los detalles de los conceptos y el total a la plantilla
+        return render(request, 'registrar_pago.html', {
+            'alumno': alumno,
+            'conceptos_detalles': conceptos_detalles,
+            'total_monto': total_monto
+        })
+
+    # Si no es un POST, redirigir a la vista de deudas
+    return redirect('deudas', pk=alumno.id_alumno)
+
+
+def pago_a_movimiento(usuario, id_pago, monto):
+    # Obtener la caja abierta (si existe)
+    caja = Caja.objects.filter(estado='Abierta').first()  
+    if not caja:
+        
+        print("No hay caja abierta")
+        return None
+
+   
+    pago = Pago.objects.get(id_pagos=id_pago)
+
+    print(caja)
+    print(pago)
+    movimiento = Movimiento.objects.create(
+        id_caja=caja,
+        tipo=Movimiento.INGRESO,
+        fecha_y_hora = timezone.now(),
+        monto=monto,
+        id_pago=pago,  
+        usuario=usuario  
+    )
+    caja.save()
+    return movimiento
+
+def pagar(request, pk):
+    alumno = Alumno.objects.get(id_alumno=pk)
+
+    if request.method == "POST":
+        # Obtenemos la lista de los conceptos seleccionados
+        conceptos_seleccionados = request.POST.getlist('conceptos_seleccionados')
+        metodo_pago = request.POST.get('metodo_pago')  # Obtener el método de pago seleccionado
+        conceptos_detalles = []
+        total_monto = 0.0
+        cuotas_a_pagar = []  # Lista para almacenar las cuotas asociadas al pago
+        inscripcion_a_pagar = None  # Para almacenar la inscripción si corresponde
+
+        # Recorremos los conceptos seleccionados para procesarlos
+        for concepto in conceptos_seleccionados:
+            print(concepto)
+            try:
+                # Dividimos la cadena recibida para obtener los detalles
+                concepto_id, concepto_tipo, concepto_descripcion, concepto_monto, concepto_estado = concepto.split(';')
+                concepto_monto = float(concepto_monto)  # Asegúrate de convertir el monto a float
+                conceptos_detalles.append({
+                    'id': concepto_id,
+                    'tipo': concepto_tipo,
+                    'descripcion': concepto_descripcion,
+                    'monto': concepto_monto,
+                    'estado': concepto_estado
+                })
+                total_monto += concepto_monto
+
+                # Si es inscripción, la marcamos como pagada
+                if concepto_tipo == 'inscripcion':
+                    inscripcion_a_pagar = Inscripcion.objects.get(pk=concepto_id)
+                    inscripcion_a_pagar.estado = 'pagado'  # Cambiar estado a 'pagado'
+                    inscripcion_a_pagar.save()
+
+                # Si es cuota, la marcamos como pagada
+                if concepto_tipo == 'cuota':
+                    cuota = Cuota.objects.get(pk=concepto_id)
+                    cuotas_a_pagar.append(cuota)  # Añadir cuota a la lista de cuotas a pagar
+                    cuota.estado = 'pagado'  # Cambiar estado a 'pagado'
+                    cuota.save()
+
+            except ValueError:
+                print(f"Error al dividir el concepto: {concepto}")
+
+        # Guardar el registro del pago con el método de pago y las cuotas/inscripción asociadas
+        pago = Pago(
+            monto=total_monto,
+            medio_pago=metodo_pago  # Guardamos el método de pago seleccionado
+        )
+        pago.save()
+
+        # Asociar las cuotas al pago
+        if cuotas_a_pagar:
+            pago.cuotas.set(cuotas_a_pagar)  # Asignar cuotas relacionadas al pago
+            pago.save()
+            
+        # Si hay una inscripción, asociarla al pago
+        if inscripcion_a_pagar:
+            pago.inscripcion = inscripcion_a_pagar
+            pago.save()  # Guardar el pago nuevamente para incluir la inscripción
+        
+        usuario = request.user 
+        id_pago = pago.id_pagos
+        pago_a_movimiento(usuario=usuario, id_pago=id_pago, monto=pago.monto)
+        
+        # Mostrar mensaje de éxito después de procesar el pago
+        messages.success(request, "Pago registrado correctamente.")
+
+        # Redirigir al usuario a la vista de deudas para este alumno
+        return redirect('deudas', pk=alumno.id_alumno)
+
+    # Si no es un POST, redirigir a la vista de deudas
+    return redirect('deudas', pk=alumno.id_alumno)
