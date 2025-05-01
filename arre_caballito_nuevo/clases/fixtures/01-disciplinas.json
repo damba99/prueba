@@ -19,5 +19,11 @@
         "fields": {
             "nombre": "Enduro"
         }
+    },
+    {
+        "model": "clases.Disciplina",
+        "fields": {
+            "nombre": "Baile"
+        }
     }
 ]

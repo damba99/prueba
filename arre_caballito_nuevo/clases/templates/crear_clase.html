@@ -1,35 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Crear Clase</h1>
+    <h1>Crear Clase</h1>
 
-  {% if error_message %}
-    <div class="alert alert-danger">{{ error_message }}</div>
-  {% endif %}
+    {% if error_message %}
+      <div class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
 
-  <form method="POST">
-    {% csrf_token %}
+    <form method="POST">
+      {% csrf_token %}
 
-    <!-- Selección de la disciplina -->
-    <label for="id_disciplina">Disciplina:</label>
-    <select name="id_disciplina" id="id_disciplina" required>
-      <option value="" disabled selected>Seleccione una Disciplina</option>
-      {% for disciplina in disciplinas %}
-        <option value="{{ disciplina.id_disciplina }}">{{ disciplina.nombre }}</option>
-      {% endfor %}
-    </select><br>
+      <!-- Selección de la disciplina -->
+      <div class="form-group">
+        <label for="id_disciplina">Disciplina:</label>
+        <select name="id_disciplina" id="id_disciplina" class="form-control" required>
+          <option value="" disabled selected>Seleccione una Disciplina</option>
+          {% for disciplina in disciplinas %}
+            <option value="{{ disciplina.id_disciplina }}">{{ disciplina.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-    <!-- Selección de la categoría -->
-    <label for="id_categoria">Categoría:</label>
-    <select name="id_categoria" id="id_categoria" required>
-      <option value="" disabled selected>Seleccione una Categoría</option>
-      {% for categoria in categorias %}
-        <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
-      {% endfor %}
-    </select><br>
+      <!-- Selección de la categoría -->
+      <div class="form-group">
+        <label for="id_categoria">Categoría:</label>
+        <select name="id_categoria" id="id_categoria" class="form-control" required>
+          <option value="" disabled selected>Seleccione una Categoría</option>
+          {% for categoria in categorias %}
+            <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
-    <button type="submit">Crear Clase</button>
-  </form>
+      <!-- Botón de creación -->
+      <button type="submit" class="btn">Crear Clase</button>
+    </form>
 
-  <a href="{% url 'listar_clases' %}">Volver al listado de clases</a>
+    <br>
+    <a href="{% url 'listar_clases' %}" class="btn btn-secundario">Volver al listado de clases</a>
 {% endblock %}

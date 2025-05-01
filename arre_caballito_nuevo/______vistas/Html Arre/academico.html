@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Académico</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      background-color: #ffffff;
+      color: #fff;
+      height: 100vh;
+    }
+
+    .menu-toggle {
+      position: absolute;
+      top: 5px;
+      left: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 10;
+      color: #ff0044;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .menu {
+      width: 190px;
+      background-color: #000000;
+      padding: 20px;
+      transition: transform 0.4s ease;
+      transform: translateX(0);
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu.activo {
+      transform: translateX(-190px);
+    }
+
+    .menu h2 {
+      text-align: left;
+      margin-bottom: 20px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.5em;
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu li {
+      margin-bottom: 15px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.3s ease;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+
+    .menu a:hover {
+      color: #000000;
+      background-color: #408a9b;
+    }
+
+    .menu i {
+      margin-right: 15px;
+      color: #ff0051;
+    }
+
+    .contenido {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      margin-left: 200px;
+      transition: margin-left 0.4s ease;
+    }
+
+    .menu.activo + .contenido {
+      margin-left: 20px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      color: #000;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #ff0044;
+    }
+
+    .card p {
+      margin: 10px 0;
+      font-size: 1em;
+    }
+
+    .btn-detalle {
+      margin-top: 10px;
+      background-color: #ff0044;
+      color: #fff;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-detalle:hover {
+      background-color: #c60034;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <div class="menu">
+    <h2>Arre Caballito</h2>
+    <ul>
+      <li><a href="#"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+      <li><a href="#"><i class="fas fa-money-bill-wave"></i> Cuotas</a></li>
+      <li><a href="#"><i class="fas fa-graduation-cap"></i> Académico</a></li>
+      <li><a href="#"><i class="fas fa-cash-register"></i> Cajas y movimientos</a></li>
+      <li><a href="#"><i class="fas fa-user-circle"></i> Perfil</a></li>
+      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+    </ul>
+  </div>
+
+  <div class="contenido">
+    <h2 style="color: #000; margin-bottom: 20px;">Vista Académica</h2>
+
+    <div class="card-container">
+      <div class="card">
+        <h3>Juan Perez</h3>
+        <p><strong>DNI:</strong> 424545648</p>
+        <p><strong>Categoría:</strong> Escuelita</p>
+        <button class="btn-detalle">Ver detalle</button>
+      </div>
+
+      <div class="card">
+        <h3>Ramon Ramirez</h3>
+        <p><strong>DNI:</strong> 564435345</p>
+        <p><strong>Categoría:</strong> Pony</p>
+        <button class="btn-detalle">Ver detalle</button>
+      </div>
+
+      <div class="card">
+        <h3>Agustin Falso</h3>
+        <p><strong>DNI:</strong> 345345345</p>
+        <p><strong>Categoría:</strong> Escuela</p>
+        <button class="btn-detalle">Ver detalle</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
+    const contenido = document.querySelector('.contenido');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('activo');
+      contenido.classList.toggle('expandido');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profe</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                display: flex;
+                background-color: #ffffff;
+                color: #fff;
+                height: 100vh;
+            }
+
+            .menu-toggle {
+                position: absolute;
+                top: 5px;
+                left: 20px;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 10;
+                color: #ff0044;
+                transition: transform 0.3s ease;
+            }
+
+            .menu-toggle:hover {
+                transform: scale(1.1);
+            }
+
+            .menu {
+                width: 190px; /* Increased menu width */
+                background-color: #000000;
+                padding: 20px; /* Increased padding */
+                transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+                transform: translateX(0);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+
+            .menu.active {
+                transform: translateX(-330px); 
+            }
+
+            .menu h2 {
+                text-align: left;
+                margin-bottom: 20px; 
+                color: #fff;
+                font-weight: 700;
+                font-size: 1.5em; 
+            }
+
+            .menu ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .menu li {
+                margin-bottom: 15px; 
+            }
+
+            .menu a {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: #ffffff;
+                transition: color 0.3s ease;
+                padding: 10px 15px; 
+                border-radius: 5px;
+            }
+
+            .menu a:hover {
+                color: #000000;
+                background-color: #408a9b;
+            }
+
+            .menu i {
+                margin-right: 15px; 
+                color: #ff0051;
+            }
+
+            .tabla-horarios {
+                flex: 1;
+                padding: 20px;
+                overflow-y: auto;
+                transition: margin-left 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+                margin-left: 10px;
+            }
+
+            .tabla-horarios.menu-closed {
+                margin-left: 0;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: #ffffff;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            th, td {
+                border-bottom: 3px solid #000000;
+                border-right: 3px solid #000000;
+                padding: 10px 15px;
+                text-align: left;
+                color: #000000;
+            }
+
+            th {
+                background-color: #535353;
+                font-weight: 600;
+                color: #fff;
+            }
+
+            td:first-child {
+                background-color: #535353;
+                font-weight: 600;
+                color: #fff;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="menu">
+            <h2>Arre Caballito</h2>
+            <ul>
+                <li><a href="#"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+                <li><a href="#"><i class="fas fa-money-bill-wave"></i> Cuotas</a></li>
+                <li><a href="#"><i class="fas fa-graduation-cap"></i> Académico</a></li>
+                <li><a href="#"><i class="fas fa-cash-register"></i> Cajas y movimientos</a></li>
+                <li><a href="#"><i class="fas fa-user-circle"></i> Perfil</a></li>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+            </ul>
+        </div>
+
+        <div class="tabla-horarios">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>LUNES</th>
+                        <th>MARTES</th>
+                        <th>MIÉRCOLES</th>
+                        <th>JUEVES</th>
+                        <th>VIERNES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>09:00 - 10:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>10:00 - 11:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>11:00 - 12:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>16:00 - 17:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>17:00 - 18:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>18:00 - 19:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>20:00 - 21:00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            const menuToggle = document.querySelector('.menu-toggle');
+            const menu = document.querySelector('.menu');
+            const tablaHorarios = document.querySelector('.tabla-horarios');
+
+            menuToggle.addEventListener('click', () => {
+                menu.classList.toggle('active');
+                tablaHorarios.classList.toggle('menu-closed');
+            });
+        </script>
+    </body>
+    </html>

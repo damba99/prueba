@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from cuotas.models import Cuota, Inscripcion
 from django.utils import timezone  # Para obtener la hora actual automáticamente
-
+from decimal import Decimal
 from django.db.models import Sum
 
 class Caja(models.Model):
@@ -13,7 +13,7 @@ class Caja(models.Model):
         (ABIERTO, 'Abierta'),
         (CERRADO, 'Cerrada'),
     ]
-    
+
     id_caja = models.AutoField(primary_key=True)
     usuario_apertura = models.ForeignKey(User, related_name='usuario_apertura', on_delete=models.CASCADE)
     usuario_cierre = models.ForeignKey(User, related_name='usuario_cierre', on_delete=models.CASCADE, null=True, blank=True)
@@ -27,33 +27,42 @@ class Caja(models.Model):
 
     @property
     def saldo(self):
-        """Calcula el saldo como ingresos - egresos."""
-        return (self.ingresos or 0) - (self.egresos or 0)
+        """Saldo = monto inicial + ingresos - egresos."""
+        return (self.monto_inicial or 0) + (self.ingresos or 0) - (self.egresos or 0)
 
     def clean(self):
-        if not self.usuario_apertura.groups.filter(name="Administrador").exists():
+        if self.usuario_apertura and not self.usuario_apertura.groups.filter(name="Administrador").exists():
             raise ValidationError('El usuario de apertura debe ser un Administrador.')
-        if not self.usuario_cierre.groups.filter(name="Administrador").exists():
+        if self.usuario_cierre and not self.usuario_cierre.groups.filter(name="Administrador").exists():
             raise ValidationError('El usuario de cierre debe ser un Administrador.')
 
     def save(self, *args, **kwargs):
-        # Si la caja está abierta, actualizamos los ingresos y egresos antes de guardar
-        if self.estado == self.ABIERTO:
-            # Consultar los movimientos relacionados con esta caja, filtrados por tipo "Ingreso" y "Egreso"
-            movimientos_ingresos = Movimiento.objects.filter(id_caja=self, tipo=Movimiento.INGRESO)
-            movimientos_egresos = Movimiento.objects.filter(id_caja=self, tipo=Movimiento.EGRESO)
-            
-            # Calcular la suma de los montos de ingresos y egresos
-            self.ingresos = movimientos_ingresos.aggregate(total_ingresos=Sum('monto'))['total_ingresos'] or 0
-            self.egresos = movimientos_egresos.aggregate(total_egresos=Sum('monto'))['total_egresos'] or 0
-
-        # Si la fecha de apertura es anterior al día de hoy y la caja está abierta, cerramos la caja automáticamente
+        # Cierre automático si la fecha de apertura es anterior al día actual
         now = timezone.now()
         if self.estado == self.ABIERTO and self.fecha_apertura.date() < now.date():
             self.fecha_cierre = now
             self.estado = self.CERRADO
 
         super(Caja, self).save(*args, **kwargs)
+
+    def actualizar_saldos(self):
+        """Recalcula ingresos y egresos en base a los movimientos."""
+        if not self.pk:
+            return  # La instancia aún no está guardada
+
+        from .models import Movimiento  # importar aquí para evitar problemas circulares
+
+        ingresos = Movimiento.objects.filter(id_caja=self, tipo=Movimiento.INGRESO).aggregate(
+            total=Sum('monto'))['total'] or Decimal('0.00')
+        egresos = Movimiento.objects.filter(id_caja=self, tipo=Movimiento.EGRESO).aggregate(
+            total=Sum('monto'))['total'] or Decimal('0.00')
+
+        self.ingresos = ingresos
+        self.egresos = egresos
+        self.save()
+
+    def __str__(self):
+        return f"Caja {self.id_caja} - Estado: {self.get_estado_display()}"
 
     def __str__(self):
         return f"Caja {self.id_caja} - Estado: {self.get_estado_display()}"
@@ -99,10 +108,18 @@ class Movimiento(models.Model):
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion = models.TextField(blank=True, null=True)
     id_pago = models.ForeignKey(Pago, related_name='movimientos', on_delete=models.SET_NULL, null=True, blank=True)
-    
-    # Añadir ForeignKey a User
     usuario = models.ForeignKey(User, related_name='movimientos', on_delete=models.CASCADE, default=None)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Actualizar ingresos/egresos de la caja automáticamente
+        if self.id_caja:
+            self.id_caja.actualizar_saldos()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        if self.id_caja:
+            self.id_caja.actualizar_saldos()
 
     def __str__(self):
         return f"Movimiento {self.id_movimientos} - Tipo: {self.tipo} - Monto: {self.monto}"
-

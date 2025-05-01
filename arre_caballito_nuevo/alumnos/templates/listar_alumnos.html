@@ -1,15 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Lista de Alumnos</h1>
-  <ul>
-    {% for alumno in alumnos %}
-      <li>
-        <a href="{% url 'detalle_alumno' pk=alumno.pk %}">{{ alumno.nombre }} {{ alumno.apellido }}</a>
-        <a href="{% url 'modificar_alumno' pk=alumno.pk %}">Editar</a>
-        <a href="{% url 'eliminar_alumno' pk=alumno.pk %}">Eliminar</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'crear_alumno' %}">Crear Alumno</a>
+  <div class="contenido">
+    <div class="contenedor-general">
+      <h1>Lista de Alumnos</h1>
+
+      {% if alumnos %}
+        <table class="tabla-estandar">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for alumno in alumnos %}
+              <tr>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.apellido }}</td>
+                <td>
+                  <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn-tabla">Ver</a>
+                  <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn-tabla">Editar</a>
+                  <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No hay alumnos registrados.</p>
+      {% endif %}
+
+      <br>
+      <a href="{% url 'crear_alumno' %}" class="btn">Crear Alumno</a>
+    </div>
+  </div>
 {% endblock %}

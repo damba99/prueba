@@ -96,6 +96,8 @@ def modificar_cuota(request, pk):
 
 def cuotas(request):
     alumnos = Alumno.objects.filter(id_alumno__in=AlumnoClase.objects.values('alumno'))
+    crear_cuotas()
+    actualizar_estado_todas_las_cuotas()
     return render(request, 'cuotas.html', {'alumnos': alumnos})
 
 from django.shortcuts import render, redirect

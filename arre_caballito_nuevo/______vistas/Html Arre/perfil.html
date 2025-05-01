@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      display: flex;
+      background-color: #ffffff;
+      color: #fff;
+      height: 100vh;
+    }
+
+    .menu-toggle {
+      position: absolute;
+      top: 5px;
+      left: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 10;
+      color: #ff0044;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .menu {
+      width: 190px;
+      background-color: #000000;
+      padding: 20px;
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      transform: translateX(0);
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .menu.activo {
+      transform: translateX(-190px);
+    }
+
+    .menu h2 {
+      text-align: left;
+      margin-bottom: 20px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.5em;
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu li {
+      margin-bottom: 15px;
+    }
+
+    .menu a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.3s ease;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+
+    .menu a:hover {
+      color: #000000;
+      background-color: #408a9b;
+    }
+
+    .menu i {
+      margin-right: 15px;
+      color: #ff0051;
+    }
+
+    .contenido {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      margin-left: 200px;
+      transition: margin-left 0.4s ease;
+      color: #000;
+    }
+
+    .menu.activo + .contenido {
+      margin-left: 20px;
+    }
+
+    .perfil-info {
+      background-color: #ffffff;
+      color: #000000;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .perfil-info h2 {
+      color: #ff0044;
+      margin-top: 0;
+    }
+
+    .perfil-info p {
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .cambiar-clave {
+      margin-top: 20px;
+    }
+
+    .cambiar-clave a {
+      color: #ff0044;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .cambiar-clave a:hover {
+      text-decoration: underline;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 50;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-contenido {
+      background-color: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      color: #000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      animation: aparecer 0.3s ease;
+    }
+
+    .modal-contenido h3 {
+      margin-top: 0;
+      color: #ff0044;
+    }
+
+    .modal-contenido label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .modal-contenido input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-botones {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn-rojo {
+      background-color: #ff0044;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-rojo:hover {
+      background-color: #c60034;
+    }
+
+    .btn-cancelar {
+      background-color: #ccc;
+      color: #000;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-cancelar:hover {
+      background-color: #999;
+    }
+
+    @keyframes aparecer {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <div class="menu">
+    <h2>Arre Caballito</h2>
+    <ul>
+      <li><a href="#"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+      <li><a href="#"><i class="fas fa-money-bill-wave"></i> Cuotas</a></li>
+      <li><a href="#"><i class="fas fa-graduation-cap"></i> Académico</a></li>
+      <li><a href="#"><i class="fas fa-cash-register"></i> Cajas y movimientos</a></li>
+      <li><a href="#"><i class="fas fa-user-circle"></i> Perfil</a></li>
+      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+    </ul>
+  </div>
+
+  <div class="contenido">
+    <div class="perfil-info">
+      <h2>Mi Perfil</h2>
+      <p><strong>Nombre:</strong> Juan Pérez</p>
+      <p><strong>Email:</strong> juan.perez@arre.com</p>
+      <p><strong>Teléfono:</strong> +54 11 1234 5678</p>
+
+      <div class="cambiar-clave">
+        <a href="#" id="abrirModal">Cambiar contraseña</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalClave" class="modal">
+    <div class="modal-contenido">
+      <h3>Cambiar Contraseña</h3>
+      <label for="actual">Contraseña Actual</label>
+      <input type="password" id="actual" placeholder="********"/>
+
+      <label for="nueva">Nueva Contraseña</label>
+      <input type="password" id="nueva" placeholder="********"/>
+
+      <label for="confirmar">Confirmar Nueva</label>
+      <input type="password" id="confirmar" placeholder="********"/>
+
+      <div class="modal-botones">
+        <button class="btn-rojo" onclick="guardarClave()">Guardar</button>
+        <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
+    const contenido = document.querySelector('.contenido');
+
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('activo');
+      contenido.classList.toggle('expandido');
+    });
+
+    document.getElementById('abrirModal').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('modalClave').style.display = 'flex';
+    });
+
+    function cerrarModal() {
+      document.getElementById('modalClave').style.display = 'none';
+    }
+
+    function guardarClave() {
+      const actual = document.getElementById('actual').value;
+      const nueva = document.getElementById('nueva').value;
+      const confirmar = document.getElementById('confirmar').value;
+
+      if (nueva !== confirmar) {
+        alert('La nueva contraseña no coincide.');
+        return;
+      }
+
+      // Acá podrías hacer una petición al servidor real
+      alert('Contraseña cambiada correctamente.');
+      cerrarModal();
+    }
+  </script>
+</body>
+</html>
