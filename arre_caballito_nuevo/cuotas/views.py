@@ -50,12 +50,44 @@ def actualizar_estado_todas_las_cuotas():
 
         cuota.save()
 
+def buscar_alumno(query):
+    return Alumno.objects.filter(nombre__icontains=query) | Alumno.objects.filter(apellido__icontains=query)
+
 def listar_cuotas(request):
-    cuotas = Cuota.objects.all()  
     crear_cuotas()
     actualizar_estado_todas_las_cuotas()
-    return render(request, 'listar_cuotas.html', {'cuotas': cuotas})
+    
+    estado = request.GET.get('filtro_estado', '')
+    buscar_alumno_query = request.GET.get('buscar_alumno', '')
+    cuotas = Cuota.objects.all()
 
+    if estado and estado != "todas":
+        cuotas = cuotas.filter(estado=estado)
+
+    if buscar_alumno_query:
+        alumnos = Alumno.objects.filter(nombre__icontains=buscar_alumno_query) | Alumno.objects.filter(apellido__icontains=buscar_alumno_query)
+        
+        if alumnos.exists():
+            print("Existe coincidencia")
+            for alumno in alumnos:
+                print(alumno.nombre, alumno.apellido, alumno.dni)
+        else:
+            print("No hay coincidencia")
+    
+    else:
+        alumnos = Alumno.objects.all()
+
+    estado_choices = Cuota.ESTADO_CHOICES + [('todas', 'Todas las cuotas')]
+
+    return render(request, 'listar_cuotas.html', {
+        'cuotas': cuotas,
+        'estado_seleccionado': estado,
+        'estado_choices': estado_choices,
+        'alumnos': alumnos,
+        'buscar_alumno': buscar_alumno_query,
+    })
+
+    
 def listar_montos(request):
     montos = Monto.objects.all()
     return render(request, 'listar_montos.html', {'montos': montos})

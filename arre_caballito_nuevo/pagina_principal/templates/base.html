@@ -248,23 +248,22 @@ table {
         <li><a href="/cajas"><i class="fas fa-cash-register"></i> Caja</a></li>
         <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
         <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/pagos"><i class="fas fa-money-bill-wave"></i> Pagos</a></li>
+        <li><a href="/caballos"><i class="fas fa-horse"></i> Caballos</a></li>
         <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
         <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
         <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% elif is_profesor %}
+        <li><a href="{% url 'perfil' id=request.user.id %}"><i class="fas fa-user-circle"></i> Perfil</a></li>
+        {% elif is_profesor %}
         <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
         <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
         <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% else %}
+        <li><a href="{% url 'perfil' id=request.user.id %}"><i class="fas fa-user-circle"></i> Perfil</a></li>
+        {% else %}
         <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
         <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
         <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% endif %}
+        <li><a href="{% url 'perfil' id=request.user.id %}"><i class="fas fa-user-circle"></i> Perfil</a></li>
+        {% endif %}
 
       {% if user.is_authenticated %}
         <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>

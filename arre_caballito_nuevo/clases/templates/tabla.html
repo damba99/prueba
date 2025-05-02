@@ -53,10 +53,6 @@
         <!-- La tabla se cargará aquí dinámicamente -->
     </div>
 
-    <div class="references" id="references-container">
-        <!-- Aquí se mostrarán las referencias de las clases -->
-    </div>
-
     <script>
         const clases = JSON.parse('{{ clases_json|escapejs }}');
         const sesiones = JSON.parse('{{ sesiones_json|escapejs }}');
@@ -77,9 +73,8 @@
         function cargarTabla() {
             const dias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
             const horas = [
-                '08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
-                '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', 
-                '16:00 - 17:00', '17:00 - 18:00', '18:00 - 19:00', '19:00 - 20:00'
+                '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', 
+                '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00'
             ]; // Horas fijas
         
             let tablaHTML = '<table>';
