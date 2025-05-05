@@ -47,7 +47,7 @@
           <label for="id_categoria">Categoría:</label>
           <select id="id_categoria" name="id_categoria" required>
             {% for categoria in categorias %}
-              <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+              <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
             {% endfor %}
           </select>
         </div>

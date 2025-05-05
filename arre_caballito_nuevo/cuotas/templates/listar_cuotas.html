@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{% url 'listar_montos' %}" class="btn btn-secondary">Ir al listado de montos</a>
-<br>
+{% if is_admin %}
+  <a href="{% url 'listar_montos' %}" class="btn btn-secondary">Ir al listado de montos</a>
+{% endif %}<br>
 
 <h1>Lista de Cuotas</h1>
 
@@ -20,6 +21,7 @@
 
 <!-- Mostrar las cuotas filtradas -->
 <h2>Lista de Cuotas</h2>
+<p>ID Usuario Logueado: {{ user.id }}</p>
 <table>
   <thead>
     <tr>

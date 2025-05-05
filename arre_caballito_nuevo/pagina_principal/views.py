@@ -6,7 +6,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import CodigoRecuperacion
 from django.utils import timezone
+from alumnos.models import Alumno
+from django.contrib.auth.hashers import make_password
+import re
 import random
+from django.contrib.auth import update_session_auth_hash
+
 
 
 def inicio(request):
@@ -40,57 +45,45 @@ def iniciar_sesion(request):
         username = request.POST.get('username')
         password_o_codigo = request.POST.get('password')
 
-        # Intentamos autenticar con nombre de usuario y contraseña
         user = authenticate(request, username=username, password=password_o_codigo)
+        print("hola")
+        alumno = Alumno.objects.filter(usuario=user).first()
+        if alumno:    
+            print(alumno.dni)
+        else:
+            print("Nadita")
 
+        no_dni = False
+        
         if user is not None:
-            # Si la autenticación con la contraseña es exitosa
             auth_login(request, user)
+            if alumno and alumno.dni == password_o_codigo:
+                print("primer inicio de sesión")
+                if no_dni == True:
+                    return redirect('nueva_password')
             print(f"Acceso correcto con contraseña. Datos del usuario: {user}")
             return redirect('horarios')
+        
         try:
             user = User.objects.get(username=username)
             codigo_obj = CodigoRecuperacion.objects.get(usuario=user)
-
-            if codigo_obj.codigo == password_o_codigo and codigo_obj.es_valido():
-                # Si el código de recuperación es válido
+            print(codigo_obj.activo)
+            if codigo_obj.codigo == password_o_codigo and codigo_obj.activo == True:
                 auth_login(request, user)
                 print(f"Acceso correcto con código de recuperación. Datos del usuario: {user}")
-                return redirect('horarios')
+                return redirect('nueva_password')
             else:
                 print("Código de recuperación inválido o expirado.")
-                return HttpResponse("Código de recuperación inválido o expirado.")
+                return render(request, 'login.html', {'error': 'Contraseña o código incorrecto'})
         except (User.DoesNotExist, CodigoRecuperacion.DoesNotExist):
-            # Si no se encuentra el usuario o no tiene código de recuperación
             print("Usuario no encontrado o no tiene un código de recuperación.")
-            return HttpResponse("Usuario no encontrado o no tiene un código de recuperación.")
+            return render(request, 'login.html', {'error': 'Contraseña o código incorrecto'})
 
-    return render(request, 'inicio.html')
+    return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)
     return redirect('login')
-
-def recuperar_apassword(request):
-    error = ""
-    email_valido = True
-    codigo_generado = None
-
-    if request.method == "POST":
-        email = request.POST.get("email")
-
-        try:
-            user = User.objects.get(email=email)
-            codigo_generado = str(random.randint(100000, 999999))
-            print(f"Contraseña recuperada. Código generado: {codigo_generado}")
-        except User.DoesNotExist:
-            error = "Este correo no está registrado"
-            email_valido = False
-
-    return render(request, "recuperar_password.html", {
-        "error": error,
-        "email_valido": email_valido,
-    })
 
 def recuperar_password(request):
     if request.method == "POST":
@@ -106,7 +99,46 @@ def recuperar_password(request):
         except User.DoesNotExist:
             print("Este correo no está registrado")
             return render(request, 'recuperar_password.html', {'error': 'Este correo no está registrado'})
+        
+        return redirect('login')
+
     return render(request, 'recuperar_password.html')
+
+def nueva_password(request):
+    if request.method == 'POST':
+        nueva_pass = request.POST.get('nueva_pass')
+        confirmar_pass = request.POST.get('confirmar_pass')
+
+        if nueva_pass != confirmar_pass:
+            return render(request, 'nueva_password.html', {'error': 'Las contraseñas no coinciden.'})
+
+        if not re.search(r'[A-Z]', nueva_pass) or not re.search(r'\d', nueva_pass):
+            return render(request, 'nueva_password.html', {
+                'error': 'La contraseña debe contener al menos una letra mayúscula y un número.'
+            })
+
+        # Usuario autenticado (ya sea por código o login normal)
+        user = request.user
+
+        # Buscar código activo vinculado al usuario
+        codigo_activo = CodigoRecuperacion.objects.filter(usuario=user, activo=True).first()
+        if codigo_activo:
+            print("Código activo encontrado")
+            codigo_activo.activo = False
+
+            if codigo_activo.usado == False:
+                print("Código ya usado, desactivando")
+                codigo_activo.activo = False
+                codigo_activo.save()
+
+            # Cambiar contraseña
+            user.set_password(nueva_pass)
+            user.save()
+            update_session_auth_hash(request, user)
+
+        return redirect('horarios')
+
+    return render(request, 'nueva_password.html')
 
 @login_required
 def perfil(request):
