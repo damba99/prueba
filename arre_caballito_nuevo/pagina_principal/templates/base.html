@@ -1,293 +1,323 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %}Gestión de Escuela de Equitación{% endblock %}</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}Gestión de Escuela de Equitación{% endblock %}</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #ffffff;
-      color: #000000;
-      min-height: 100vh;
-      position: relative;
-    }
+        body {
+            font-family: 'Roboto', sans-serif; /* Tipografía más moderna */
+            background-color: #f4f4f4; /* Un gris claro de fondo suele ser más elegante */
+            color: #333; /* Gris oscuro para el texto principal */
+            min-height: 100vh;
+            position: relative;
+            -webkit-font-smoothing: antialiased; /* Mejora la visualización de la fuente en navegadores webkit */
+            -moz-osx-font-smoothing: grayscale; /* Mejora la visualización de la fuente en Firefox */
+        }
 
-    .menu-toggle {
-      position: fixed;
-      top: 15px;
-      left: 20px;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 1001;
-      color: #ff0044;
-      transition: transform 0.3s ease;
-    }
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 25px;
+            font-size: 28px; /* Un poco más grande */
+            cursor: pointer;
+            z-index: 1001;
+            color: #ff0044;
+            transition: transform 0.2s ease-in-out; /* Transición más suave */
+        }
 
-    .menu-toggle:hover {
-      transform: scale(1.1);
-    }
+        .menu-toggle:hover {
+            transform: scale(1.15);
+        }
 
-    .menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
-      height: 100%;
-      background-color: #000000;
-      padding: 20px;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-    }
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px; /* Un poco más ancho para mayor sensación de espacio */
+            height: 100%;
+            background-color: #1a1a1a; /* Un negro más suave */
+            padding: 30px; /* Más espacio interior */
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out; /* Transición más suave */
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); /* Sutil sombra para destacar */
+        }
 
-    .menu.activo {
-      transform: translateX(0);
-    }
+        .menu.activo {
+            transform: translateX(0);
+        }
 
-    .menu h2 {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-      color: #ffffff;
-    }
+        .menu h2 {
+            font-size: 1.8em; /* Título más prominente */
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 500; /* Ligeramente más ligero que bold */
+        }
 
-    .menu ul {
-      list-style: none;
-    }
+        .menu ul {
+            list-style: none;
+        }
 
-    .menu li {
-      margin-bottom: 15px;
-    }
+        .menu li {
+            margin-bottom: 20px;
+        }
 
-    .menu a {
-      display: flex;
-      align-items: center;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 10px;
-      transition: background-color 0.3s ease;
-    }
+        .menu a {
+            display: flex;
+            align-items: center;
+            color: #d9d9d9; /* Gris más claro para los enlaces */
+            text-decoration: none;
+            padding: 12px 15px; /* Más espaciado vertical y horizontal */
+            border-radius: 6px; /* Bordes ligeramente redondeados */
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* Transiciones suaves */
+        }
 
-    .menu a:hover {
-      background-color: #408a9b;
-      color: #000000;
-    }
+        .menu a:hover {
+            background-color: #333; /* Un gris más oscuro al pasar el ratón */
+            color: #ffffff;
+        }
 
-    .menu i {
-      margin-right: 10px;
-      color: #ff0051;
-    }
+        .menu i {
+            margin-right: 15px;
+            color: #ff3366; /* Un tono ligeramente más brillante del acento */
+            font-size: 1.2em; /* Iconos un poco más grandes */
+        }
 
-    .contenido {
-      padding: 30px;
-      background-color: #f8f8f8;
-      min-height: 100vh;
-    }
+        .contenido {
+            padding: 40px; /* Más espacio alrededor del contenido */
+            background-color: #ffffff;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease-in-out; /* Para que el contenido se desplace suavemente */
+            margin-left: 0; /* Inicialmente sin margen */
+        }
 
-    .contenedor-general {
-      max-width: 1000px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
+        .menu.activo ~ .contenido {
+            margin-left: 250px; /* Se desplaza al abrir el menú */
+        }
 
-    h1, h2, h3 {
-      color: #ff0044;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
+        .contenedor-general {
+            max-width: 1100px; /* Un poco más ancho */
+            margin: 30px auto; /* Más margen superior e inferior */
+            background-color: #ffffff;
+            padding: 40px;
+            border: 1px solid #e0e0e0; /* Borde más claro */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Sombra más sutil */
+            border-radius: 8px; /* Bordes más redondeados */
+        }
 
-    a {
-      color: #ff0044;
-      text-decoration: none;
-    }
+        h1, h2, h3 {
+            color: #ff3366; /* Tono ligeramente más brillante del acento */
+            margin-bottom: 25px;
+            font-weight: 700; /* Más énfasis */
+            letter-spacing: 0.5px; /* Ligero espaciado entre letras */
+        }
 
-    a:hover {
-      text-decoration: underline;
-    }
+        a {
+            color: #ff3366;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
 
-    input, select, textarea {
-      font-family: inherit;
-      font-size: 1em;
-      padding: 10px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      color: #000;
-      outline: none;
-      border-radius: 4px;
-      width: 100%;
-    }
+        a:hover {
+            color: #cc0033; /* Tono más oscuro al pasar el ratón */
+            text-decoration: underline;
+        }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: #ff0044;
-    }
+        input, select, textarea {
+            font-family: inherit;
+            font-size: 1em;
+            padding: 12px;
+            border: 1px solid #d9d9d9; /* Borde más claro */
+            background-color: #f9f9f9; /* Fondo ligeramente grisáceo */
+            color: #333;
+            outline: none;
+            border-radius: 6px;
+            width: 100%;
+            transition: border-color 0.2s ease-in-out;
+        }
 
-    /* Estilo de los botones */
-    .btn {
-      background-color: #ff0044;  /* Fondo rojo */
-      color: white;               /* Texto blanco */
-      padding: 10px 15px;         /* Espaciado del botón */
-      border: none;               /* Sin borde */
-      border-radius: 6px;         /* Bordes redondeados */
-      cursor: pointer;           /* Cambio de cursor */
-      margin-top: 20px;           /* Espaciado superior */
-      font-weight: bold;          /* Texto en negrita */
-      transition: background-color 0.3s ease; /* Transición de fondo */
-      text-align: center;
-      display: inline-block;
-      text-decoration: none;
-    }
+        input:focus, select:focus, textarea:focus {
+            border-color: #ff3366;
+            box-shadow: 0 0 5px rgba(255, 51, 102, 0.2); /* Sutil sombra al enfocar */
+        }
 
-    .btn:hover {
-      background-color: #c60034;  /* Fondo más oscuro al pasar el ratón */
-    }
+        /* Estilo de los botones */
+        .btn {
+            background-color: #ff3366; /* Tono ligeramente más brillante del acento */
+            color: white;
+            padding: 12px 20px; /* Más espaciado */
+            border: none;
+            border-radius: 8px; /* Bordes más redondeados */
+            cursor: pointer;
+            margin-top: 25px;
+            font-weight: 500; /* Ligeramente más ligero que bold */
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* Transiciones suaves */
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+        }
 
-    .btn-secundario {
-      background-color: #f0ad4e;  /* Fondo naranja para el secundario */
-    }
+        .btn:hover {
+            background-color: #cc0033;
+            transform: translateY(-1px); /* Ligero movimiento al pasar el ratón */
+            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.15);
+        }
 
-    .btn-secundario:hover {
-      background-color: #ec971f;  /* Fondo más oscuro al pasar el ratón */
-    }
+        .btn-secundario {
+            background-color: #f0ad4e; /* Mismo color secundario */
+            color: white;
+        }
 
-    .btn-alerta {
-      background-color: #d9534f;  /* Fondo rojo para alertas */
-    }
+        .btn-secundario:hover {
+            background-color: #ec971f;
+        }
 
-    .btn-alerta:hover {
-      background-color: #c9302c;  /* Fondo más oscuro al pasar el ratón */
-    }
+        .btn-alerta {
+            background-color: #d9534f; /* Mismo color de alerta */
+            color: white;
+        }
 
-    .alert {
-      padding: 15px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-    }
+        .btn-alerta:hover {
+            background-color: #c9302c;
+        }
 
-    .alert-danger {
-      background-color: #f8d7da;
-      color: #721c24;
-    }
+        .alert {
+            padding: 18px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Sutil sombra */
+        }
 
-    .alert-success {
-      background-color: #d4edda;
-      color: #155724;
-    }
+        .alert-danger {
+            background-color: #fdecea;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
 
-    .alert-info {
-      background-color: #d1ecf1;
-      color: #0c5460;
-    }
+        .alert-success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
-    /* Estilo para tablas generales */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 1em;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  }
-  
-  th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #ff0044;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  td a.btn, td .btn {
-    margin-right: 5px;
-    font-size: 0.9em;
-    padding: 6px 10px;
-  }
-  
-  </style>
+        .alert-info {
+            background-color: #d9edf7;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        /* Estilo para tablas generales */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            font-size: 0.95em;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden; /* Para que la sombra y el border-radius se apliquen a todo */
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee; /* Líneas divisorias más claras */
+        }
+
+        th {
+            background-color: #ff3366;
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        td a.btn, td .btn {
+            margin-right: 8px;
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+    </style>
 </head>
 <body>
 
-  <!-- Botón toggle -->
-  <div class="menu-toggle">
-    <i class="fas fa-bars"></i>
-  </div>
-
-  <!-- Menú lateral -->
-  <div class="menu" id="menu">
-    <h2>Arre Caballito</h2>
-    <ul>
-      {% if is_admin %}
-        <li><a href="/cajas"><i class="fas fa-cash-register"></i> Caja</a></li>
-        <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/pagos"><i class="fas fa-money-bill-wave"></i> Pagos</a></li>
-        <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% elif is_profesor %}
-        <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% else %}
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
-        <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
-      {% endif %}
-
-      {% if user.is_authenticated %}
-        <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
-      {% endif %}
-    </ul>
-  </div>
-
-  <!-- Contenido principal -->
-  <div class="contenido">
-    <div class="contenedor-general">
-      {% block content %} 
-      <!-- Aquí va el contenido de las vistas hijas -->
-      {% endblock %}
+    <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
     </div>
-  </div>
 
-  <script>
-    const toggleBtn = document.querySelector('.menu-toggle');
-    const menu = document.getElementById('menu');
+    <div class="menu" id="menu">
+        <h2>Arre Caballito</h2>
+        <ul>
+            {% if is_admin %}
+                <li><a href="/cajas"><i class="fas fa-cash-register"></i> Caja</a></li>
+                <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
+                <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+                <li><a href="/pagos"><i class="fas fa-money-bill-wave"></i> Pagos</a></li>
+                <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
+                <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+                <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
+            {% elif is_profesor %}
+                <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
+                <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+                <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+                <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
+            {% else %}
+                <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+                <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
+                <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+                <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="/usuarios"><i class="fas fa-user-circle"></i> Perfil</a></li>
+            {% endif %}
 
-    toggleBtn.addEventListener('click', () => {
-      menu.classList.toggle('activo');
-    });
-  </script>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="contenido">
+        <div class="contenedor-general">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script>
+        const toggleBtn = document.querySelector('.menu-toggle');
+        const menu = document.getElementById('menu');
+        const contenido = document.querySelector('.contenido');
+
+        toggleBtn.addEventListener('click', () => {
+            menu.classList.toggle('activo');
+            contenido.classList.toggle('activo'); /* Para desplazar el contenido */
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    {% load static %}
+    <style>
+        /* General reset and body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: backgroundChange 30s infinite;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background images (multiple, simultaneous) */
+        @keyframes backgroundChange {
+            0% {
+                background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
+            }
+            50% {
+                background-image: url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'imagen/imagen3.jpg' %}"), url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}");
+            }
+        }
+
+        /* Container with white background */
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+            position: relative;
+        }
+
+        .back-link {
+            display: inline-block;
+            background-color:rgb(255, 16, 112);
+            color: #333;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color:rgb(186, 174, 174);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-item {
+            background-color:rgba(246, 36, 102, 0.47);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            text-decoration: none; /* Elimina el subrayado del enlace */
+            color: inherit; /* Hereda el color del texto del contenedor */
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-item img.icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 4px rgba(50, 10, 250, 0.82));
+        }
+
+        .contact-item p {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'inicio' %}" class="back-link">Volver a la Página Principal</a>
+        <h1>CONTACTO</h1>
+        <p>Para un mejor asesoramiento, comunícate a nuestras redes sociales.</p>
+
+        <div class="contact-info">
+            <a href="https://wa.me/543876059900" target="_blank" class="contact-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon">
+                <p>Teléfono de contacto:<br>0387 6059900</p>
+            </a>
+            <a href="https://www.instagram.com/ARRE_CABALLITO/" target="_blank" class="contact-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram QR" class="icon">
+                <p>@ARRE_CABALLITO</p>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=100075958549760&mibextid=ZbWKwL" target="_blank" class="contact-item">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" class="icon">
+                <p>arre_caballito</p>
+            </a>
+            <a href="https://www.tiktok.com/@arre_caballi.to" target="_blank" class="contact-item">
+                <img src="https://cdn.pixabay.com/photo/2021/01/30/06/43/tiktok-5962993_960_720.png" alt="TikTok" class="icon">
+                <p>arre_caballi.to</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

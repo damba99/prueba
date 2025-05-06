@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        /* General reset and body */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +13,7 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             height: 100vh;
             background: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
@@ -29,7 +27,6 @@
             align-items: center;
         }
 
-        /* Background images (multiple, simultaneous) */
         @keyframes backgroundChange {
             0% {
                 background-image: url("{% static 'imagen/imagen1.jpg' %}"), url("{% static 'imagen/imagen2.jpg' %}"), url("{% static 'imagen/imagen3.jpg' %}");
@@ -42,150 +39,107 @@
             }
         }
 
-        /* Servicios section styling */
         #servicios {
-            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad */
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 15px;
             max-width: 900px;
-            width: 100%;
+            width: 90%;
             text-align: center;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-out forwards;
-            z-index: 2;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.25);
             position: relative;
         }
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        #servicios h2 {
-            font-size: 2.8em;
-            color: #333;
-            margin-bottom: 20px;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        #servicios p {
-            font-size: 1.2em;
-            line-height: 1.8;
-            margin: 10px 0;
-            color: #333;
-        }
-
-        #servicios p:first-of-type {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: #2e2e2e;
-        }
-
-        #servicios a.button {
+        .back-link {
             display: inline-block;
-            margin-top: 30px;
-            background-color: #333; /* Color de fondo oscuro */
+            background-color: rgb(255, 16, 112);
             color: #fff;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 8px;
             text-decoration: none;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            position: absolute; /* Para posicionar en la esquina */
-            bottom: 20px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
             left: 20px;
         }
 
-        #servicios a.button:hover {
-            background-color: #d9a457; /* Color principal al pasar el ratón */
-            transform: translateY(-5px);
+        .back-link:hover {
+            background-color: rgb(186, 174, 174);
         }
 
-        /* List styles */
-        #servicios ul {
+        h2 {
+            font-size: 2.8em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        ul {
             list-style-type: none;
-            margin-top: 20px;
-            padding-left: 0;
+            padding: 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
         }
 
-        #servicios ul li {
-            background-color: #f3e1c3;
-            font-size: 1.2em;
-            padding: 10px;
-            border-radius: 8px;
-            width: 200px;
-            text-align: center;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
+        .service-item {
+            background-color: rgba(246, 36, 102, 0.47);
+            padding: 20px;
+            border-radius: 12px;
+            width: 260px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
         }
 
-        #servicios ul li:nth-child(odd) {
-            background-color: #e5c46e;
-        }
-
-        #servicios ul li:hover {
-            background-color: #d9a457;
+        .service-item:hover {
             transform: translateY(-5px);
         }
 
         .service-image {
             width: 100%;
-            height: 120px;
+            height: 150px;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .service-item:hover .service-image {
-            transform: scale(1.1);
+            border-radius: 10px;
         }
 
         .service-title {
             font-weight: bold;
-            margin-top: 5px;
+            font-size: 1.3em;
+            margin-top: 10px;
             color: #333;
         }
 
         .service-description {
+            font-size: 0.95em;
             margin-top: 10px;
-            padding: 5px;
-            font-size: 0.9em;
-            color: #555;
-            text-align: left;
+            color: #444;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             #servicios {
-                padding: 30px;
+                padding: 20px;
             }
 
-            #servicios h2 {
-                font-size: 2.2em;
-            }
-
-            #servicios ul {
+            ul {
                 flex-direction: column;
                 align-items: center;
             }
 
-            #servicios ul li {
+            .service-item {
                 width: 90%;
-                margin-bottom: 10px;
+            }
+
+            .back-link {
+                position: static;
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -193,7 +147,7 @@
 <body>
 
 <section id="servicios">
-    <a href="{% url 'inicio' %}" class="button">Volver a la Página Principal</a> <div>
+    <a href="{% url 'inicio' %}" class="back-link">Volver a la Página Principal</a>
     <h2>Servicios</h2>
     <p>Brindamos una enseñanza personalizada que se adapta a las necesidades y metas individuales. Las clases de equitación se dividen en tres categorías:</p>
     <ul>
@@ -213,7 +167,6 @@
             <div class="service-description">Clases avanzadas para quienes ya tienen experiencia y desean mejorar sus habilidades.</div>
         </li>
     </ul>
-    </div>
 </section>
 
 </body>
