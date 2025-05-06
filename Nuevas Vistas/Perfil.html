@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil del Alumno | Arre Caballito</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Merriweather', serif;
+            background-color: rgb(244, 244, 244);
+            color: #333;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(255, 0, 93, 0.2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: rgb(255, 0, 93);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .profile-picture {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-picture img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgb(255, 0, 93);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-picture form {
+            margin-top: 15px;
+        }
+
+        .profile-picture input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        .profile-picture button {
+            background-color: rgb(255, 0, 93);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Merriweather', serif;
+            cursor: pointer;
+        }
+
+        .profile-section {
+            margin-bottom: 40px;
+        }
+
+        .profile-section h2 {
+            font-size: 1.8em;
+            color: rgb(211, 5, 50);
+            border-bottom: 2px solid rgb(211, 5, 50);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-box {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-box label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .info-box p {
+            margin: 0 0 15px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Perfil del Alumno</h1>
+
+    <div class="profile-picture">
+        <img src="{{ alumno.foto_perfil.url|default:'{% static 'img/default-profile.jpg' %}' }}" alt="Foto de perfil">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="foto_perfil" accept="image/*">
+            <br>
+            <button type="submit">Cambiar imagen</button>
+        </form>
+    </div>
+
+    <section class="profile-section">
+        <h2>Información Personal</h2>
+        <div class="profile-info">
+            <div class="info-box">
+                <label>Nombre:</label>
+                <p>{{ alumno.nombre }}</p>
+
+                <label>Edad:</label>
+                <p>{{ alumno.edad }} años</p>
+
+                <label>Fecha de Nacimiento:</label>
+                <p>{{ alumno.fecha_nacimiento }}</p>
+            </div>
+
+            <div class="info-box">
+                <label>Responsable:</label>
+                <p>{{ alumno.responsable }}</p>
+
+                <label>Teléfono de contacto:</label>
+                <p>{{ alumno.telefono }}</p>
+
+                <label>Email:</label>
+                <p>{{ alumno.email }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-section">
+        <h2>Información Médica</h2>
+        <div class="profile-info">
+            <div class="info-box">
+                <label>Obra Social:</label>
+                <p>{{ alumno.obra_social }}</p>
+
+                <label>Número de afiliado:</label>
+                <p>{{ alumno.numero_afiliado }}</p>
+
+                <label>Alergias:</label>
+                <p>{{ alumno.alergias }}</p>
+            </div>
+
+            <div class="info-box">
+                <label>Condiciones médicas:</label>
+                <p>{{ alumno.condiciones_medicas }}</p>
+
+                <label>Medicación actual:</label>
+                <p>{{ alumno.medicacion }}</p>
+
+                <label>Observaciones adicionales:</label>
+                <p>{{ alumno.observaciones }}</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
