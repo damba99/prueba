@@ -5,6 +5,7 @@ from django.utils import timezone
 from datetime import date
 from alumnos.models import AlumnoClase, Alumno  
 from cuotas.models import Monto, Periodo, Inscripcion
+from django.contrib.auth.decorators import login_required
 
 def crear_cuotas():
     alumnos = AlumnoClase.objects.all()
@@ -50,12 +51,37 @@ def actualizar_estado_todas_las_cuotas():
 
         cuota.save()
 
-def listar_cuotas(request):
-    cuotas = Cuota.objects.all()  
-    crear_cuotas()
-    actualizar_estado_todas_las_cuotas()
-    return render(request, 'listar_cuotas.html', {'cuotas': cuotas})
+def buscar_alumno(query):
+    return Alumno.objects.filter(nombre__icontains=query) | Alumno.objects.filter(apellido__icontains=query)
 
+@login_required
+def listar_cuotas(request):
+    estado = request.GET.get('filtro_estado', '')
+    buscar_alumno_query = request.GET.get('buscar_alumno', '')
+    
+    cuotas = Cuota.objects.all()
+
+    if estado and estado != "todas":
+        cuotas = cuotas.filter(estado=estado)
+
+    if buscar_alumno_query:
+        cuotas = cuotas.filter(alumno__alumno__nombre__icontains=buscar_alumno_query) | cuotas.filter(alumno__alumno__apellido__icontains=buscar_alumno_query)
+
+    if request.user.is_superuser:
+        cuotas = cuotas.order_by('-fecha_vencimiento')
+    else:
+        alumno_clases = AlumnoClase.objects.filter(alumno__usuario=request.user)
+        cuotas = cuotas.filter(alumno__in=alumno_clases)
+
+    estado_choices = Cuota.ESTADO_CHOICES + [('todas', 'Todas las cuotas')]
+
+    return render(request, 'listar_cuotas.html', {
+        'cuotas': cuotas,
+        'estado_seleccionado': estado,
+        'estado_choices': estado_choices,
+        'buscar_alumno': buscar_alumno_query,
+    })
+  
 def listar_montos(request):
     montos = Monto.objects.all()
     return render(request, 'listar_montos.html', {'montos': montos})

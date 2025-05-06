@@ -8,6 +8,7 @@
 
 {% block content %}
     {% include 'tabla.html' %}
-    <a href="{% url 'agregar_clase' %}" class="btn btn-secondary">Agregar una clase</a>
-
+    {% if is_admin %}
+        <a href="{% url 'agregar_clase' %}" class="btn btn-secondary">Agregar una clase</a>
+    {% endif %}
 {% endblock %}
