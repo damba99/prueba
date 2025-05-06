@@ -16,24 +16,24 @@
         }
 
         body {
-            font-family: 'Roboto', sans-serif; /* Tipografía más moderna */
-            background-color: #f4f4f4; /* Un gris claro de fondo suele ser más elegante */
-            color: #333; /* Gris oscuro para el texto principal */
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
             min-height: 100vh;
             position: relative;
-            -webkit-font-smoothing: antialiased; /* Mejora la visualización de la fuente en navegadores webkit */
-            -moz-osx-font-smoothing: grayscale; /* Mejora la visualización de la fuente en Firefox */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .menu-toggle {
             position: fixed;
             top: 20px;
             left: 25px;
-            font-size: 28px; /* Un poco más grande */
+            font-size: 28px;
             cursor: pointer;
             z-index: 1001;
             color: #ff0044;
-            transition: transform 0.2s ease-in-out; /* Transición más suave */
+            transition: transform 0.2s ease-in-out;
         }
 
         .menu-toggle:hover {
@@ -44,14 +44,14 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 250px; /* Un poco más ancho para mayor sensación de espacio */
+            width: 250px;
             height: 100%;
-            background-color: #1a1a1a; /* Un negro más suave */
-            padding: 30px; /* Más espacio interior */
+            background-color: #1a1a1a;
+            padding: 30px;
             transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out; /* Transición más suave */
+            transition: transform 0.3s ease-in-out;
             z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); /* Sutil sombra para destacar */
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         }
 
         .menu.activo {
@@ -59,10 +59,10 @@
         }
 
         .menu h2 {
-            font-size: 1.8em; /* Título más prominente */
+            font-size: 1.8em;
             margin-bottom: 30px;
             color: #ffffff;
-            font-weight: 500; /* Ligeramente más ligero que bold */
+            font-weight: 500;
         }
 
         .menu ul {
@@ -76,61 +76,61 @@
         .menu a {
             display: flex;
             align-items: center;
-            color: #d9d9d9; /* Gris más claro para los enlaces */
+            color: #d9d9d9;
             text-decoration: none;
-            padding: 12px 15px; /* Más espaciado vertical y horizontal */
-            border-radius: 6px; /* Bordes ligeramente redondeados */
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* Transiciones suaves */
+            padding: 12px 15px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
 
         .menu a:hover {
-            background-color: #333; /* Un gris más oscuro al pasar el ratón */
+            background-color: #333;
             color: #ffffff;
         }
 
         .menu i {
             margin-right: 15px;
-            color: #ff3366; /* Un tono ligeramente más brillante del acento */
-            font-size: 1.2em; /* Iconos un poco más grandes */
+            color: #ff3366;
+            font-size: 1.2em;
         }
 
         .contenido {
-            padding: 40px; /* Más espacio alrededor del contenido */
+            padding: 40px;
             background-color: #ffffff;
             min-height: 100vh;
-            transition: margin-left 0.3s ease-in-out; /* Para que el contenido se desplace suavemente */
-            margin-left: 0; /* Inicialmente sin margen */
+            transition: margin-left 0.3s ease-in-out;
+            margin-left: 0;
         }
 
         .menu.activo ~ .contenido {
-            margin-left: 250px; /* Se desplaza al abrir el menú */
+            margin-left: 250px;
         }
 
         .contenedor-general {
-            max-width: 1100px; /* Un poco más ancho */
-            margin: 30px auto; /* Más margen superior e inferior */
+            max-width: 1100px;
+            margin: 30px auto;
             background-color: #ffffff;
             padding: 40px;
-            border: 1px solid #e0e0e0; /* Borde más claro */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Sombra más sutil */
-            border-radius: 8px; /* Bordes más redondeados */
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-radius: 8px;
         }
 
         h1, h2, h3 {
-            color: #ff3366; /* Tono ligeramente más brillante del acento */
+            color:rgb(57, 54, 54);
             margin-bottom: 25px;
-            font-weight: 700; /* Más énfasis */
-            letter-spacing: 0.5px; /* Ligero espaciado entre letras */
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         a {
-            color: #ff3366;
+            color:rgb(255, 2, 78);
             text-decoration: none;
             transition: color 0.2s ease-in-out;
         }
 
         a:hover {
-            color: #cc0033; /* Tono más oscuro al pasar el ratón */
+            color: #cc0033;
             text-decoration: underline;
         }
 
@@ -138,8 +138,8 @@
             font-family: inherit;
             font-size: 1em;
             padding: 12px;
-            border: 1px solid #d9d9d9; /* Borde más claro */
-            background-color: #f9f9f9; /* Fondo ligeramente grisáceo */
+            border: 1px solid #d9d9d9;
+            background-color: #f9f9f9;
             color: #333;
             outline: none;
             border-radius: 6px;
@@ -148,35 +148,34 @@
         }
 
         input:focus, select:focus, textarea:focus {
-            border-color: #ff3366;
-            box-shadow: 0 0 5px rgba(255, 51, 102, 0.2); /* Sutil sombra al enfocar */
+            border-color:rgba(255, 51, 102, 0.67);
+            box-shadow: 0 0 5px rgba(255, 51, 102, 0.2);
         }
 
-        /* Estilo de los botones */
         .btn {
-            background-color: #ff3366; /* Tono ligeramente más brillante del acento */
+            background-color:rgb(255, 0, 64);
             color: white;
-            padding: 12px 20px; /* Más espaciado */
+            padding: 12px 20px;
             border: none;
-            border-radius: 8px; /* Bordes más redondeados */
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 25px;
-            font-weight: 500; /* Ligeramente más ligero que bold */
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* Transiciones suaves */
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
             text-align: center;
             display: inline-block;
             text-decoration: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sutil sombra */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .btn:hover {
-            background-color: #cc0033;
-            transform: translateY(-1px); /* Ligero movimiento al pasar el ratón */
+            background-color:rgb(255, 255, 255);
+            transform: translateY(-1px);
             box-shadow: 0 4px 7px rgba(0, 0, 0, 0.15);
         }
 
         .btn-secundario {
-            background-color: #f0ad4e; /* Mismo color secundario */
+            background-color: #f0ad4e;
             color: white;
         }
 
@@ -185,7 +184,7 @@
         }
 
         .btn-alerta {
-            background-color: #d9534f; /* Mismo color de alerta */
+            background-color: #d9534f;
             color: white;
         }
 
@@ -193,11 +192,12 @@
             background-color: #c9302c;
         }
 
+        /* Estilo de las alertas */
         .alert {
             padding: 18px;
             margin-bottom: 25px;
             border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Sutil sombra */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .alert-danger {
@@ -222,47 +222,56 @@
             margin-bottom: 25px;
         }
 
-        /* Estilo para tablas generales */
+        /* Estilo de tablas más elegantes */
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 30px;
-            font-size: 0.95em;
+            font-size: 1em;
             background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            overflow: hidden; /* Para que la sombra y el border-radius se apliquen a todo */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(66, 5, 28, 0.58);
         }
 
         th, td {
-            padding: 15px 20px;
+            padding: 16px 20px;
             text-align: left;
-            border-bottom: 1px solid #eee; /* Líneas divisorias más claras */
+            vertical-align: middle;
         }
 
         th {
-            background-color: #ff3366;
-            color: white;
-            font-weight: 500;
+            background: linear-gradient(135deg, #ff3366, #cc0033);
+            color: #fff;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.7px;
+            letter-spacing: 0.6px;
+            border-bottom: 2px solid #e6e6e6;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        td {
+            border-bottom: 1px solid #f0f0f0;
+            background-color: #ffffff;
         }
 
-        tr:hover {
+        tr:nth-child(even) td {
+            background-color: #fafafa;
+        }
+
+        tr:hover td {
             background-color: #f5f5f5;
+            transition: background-color 0.2s ease-in-out;
         }
 
+        /* Botones dentro de celdas */
         td a.btn, td .btn {
-            margin-right: 8px;
             font-size: 0.9em;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
+            margin-right: 6px;
+            white-space: nowrap;
         }
-
     </style>
 </head>
 <body>
@@ -316,7 +325,7 @@
 
         toggleBtn.addEventListener('click', () => {
             menu.classList.toggle('activo');
-            contenido.classList.toggle('activo'); /* Para desplazar el contenido */
+            contenido.classList.toggle('activo');
         });
     </script>
 </body>

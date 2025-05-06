@@ -22,7 +22,7 @@
             background-position: center;
             background-attachment: fixed;
             animation: backgroundChange 30s infinite;
-            color: #333;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,33 +43,36 @@
 
         /* Container with white background */
         .container {
-            background-color: #ffffff;
+            background-color:rgba(255, 255, 255, 0.65);
             border-radius: 12px;
             padding: 40px;
             width: 90%;
             max-width: 700px;
             text-align: center;
             color: white;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 20px rgb(255, 0, 111);
             z-index: 2;
             position: relative;
-        }
-
-        .back-link {
-            display: inline-block;
-            background-color:rgb(255, 16, 112);
-            color: #333;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 30px;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-link:hover {
-            background-color:rgb(186, 174, 174);
-        }
+            .back-link {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                background-color: #000;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 600;
+                box-shadow: 0 4px 12px rgb(255, 0, 106);
+                transition: background-color 0.3s ease, transform 0.2s ease;
+                z-index: 999;
+            }
+            
+            .back-link:hover {
+                background-color: #333;
+                transform: scale(1.05);
+            }
+            
 
         h1 {
             font-size: 32px;
@@ -92,7 +95,7 @@
         }
 
         .contact-item {
-            background-color:rgba(246, 36, 102, 0.47);
+            background-color:rgba(44, 44, 44, 0.33);
             padding: 25px;
             border-radius: 10px;
             display: flex;
@@ -112,7 +115,7 @@
             width: 60px;
             height: 60px;
             margin-bottom: 15px;
-            filter: drop-shadow(2px 2px 4px rgba(50, 10, 250, 0.82));
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0));
         }
 
         .contact-item p {
@@ -139,7 +142,7 @@
 </head>
 <body>
     <div class="container">
-        <a href="{% url 'inicio' %}" class="back-link">Volver a la Página Principal</a>
+        <a href="{% url 'inicio' %}" class="back-link">← Volver a la Página Principal</a>
         <h1>CONTACTO</h1>
         <p>Para un mejor asesoramiento, comunícate a nuestras redes sociales.</p>
 

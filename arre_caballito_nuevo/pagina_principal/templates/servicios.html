@@ -40,45 +40,47 @@
         }
 
         #servicios {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.51);
             padding: 40px;
             border-radius: 15px;
             max-width: 900px;
             width: 90%;
             text-align: center;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.25);
+            box-shadow: 0px 10px 25px rgb(0, 0, 0);
             position: relative;
         }
 
         .back-link {
-            display: inline-block;
-            background-color: rgb(255, 16, 112);
-            color: #fff;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 30px;
-            transition: background-color 0.3s ease;
-            position: absolute;
+            position: fixed;
             top: 20px;
             left: 20px;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 999;
         }
-
+        
         .back-link:hover {
-            background-color: rgb(186, 174, 174);
+            background-color: #333;
+            transform: scale(1.05);
         }
+        
 
         h2 {
             font-size: 2.8em;
-            color: #333;
+            color: #000;
             margin-bottom: 20px;
         }
 
         p {
             font-size: 1.2em;
             margin-bottom: 30px;
-            color: #333;
+            color: #000;
         }
 
         ul {
@@ -91,11 +93,11 @@
         }
 
         .service-item {
-            background-color: rgba(246, 36, 102, 0.47);
+            background-color: rgba(6, 6, 6, 0.59);
             padding: 20px;
             border-radius: 12px;
             width: 260px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 5px 15px rgb(245, 0, 90);
             transition: transform 0.3s ease;
         }
 
@@ -114,13 +116,13 @@
             font-weight: bold;
             font-size: 1.3em;
             margin-top: 10px;
-            color: #333;
+            color: #fff;
         }
 
         .service-description {
             font-size: 0.95em;
             margin-top: 10px;
-            color: #444;
+            color: #fff;
         }
 
         @media (max-width: 768px) {
@@ -147,7 +149,7 @@
 <body>
 
 <section id="servicios">
-    <a href="{% url 'inicio' %}" class="back-link">Volver a la Página Principal</a>
+    <a href="{% url 'inicio' %}" class="back-link">← Volver a la Página Principal</a>
     <h2>Servicios</h2>
     <p>Brindamos una enseñanza personalizada que se adapta a las necesidades y metas individuales. Las clases de equitación se dividen en tres categorías:</p>
     <ul>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -145,9 +146,9 @@
 
   <!-- Fondo con imágenes -->
   <div class="slideshow-container">
-    <div class="slideshow-image active" style="background-image: url('imagen1.jpg');"></div>
-    <div class="slideshow-image" style="background-image: url('imagen2.jpg');"></div>
-    <div class="slideshow-image" style="background-image: url('imagen3.jpg');"></div>
+    <div class="slideshow-image active" style="background-image: url('{% static "imagen/imagen1.jpg" %}');"></div>
+    <div class="slideshow-image" style="background-image: url('{% static "imagen/imagen2.jpg" %}');"></div>
+    <div class="slideshow-image" style="background-image: url('{% static "imagen/imagen3(2).jpg" %}');"></div>
   </div>
 
   <!-- Botón para volver al inicio -->
@@ -189,7 +190,7 @@
       slides[index].classList.remove('active');
       index = (index + 1) % slides.length;
       slides[index].classList.add('active');
-    }, 6000); // cambia cada 6 segundos
+    }, 6000);
   </script>
 
 </body>
