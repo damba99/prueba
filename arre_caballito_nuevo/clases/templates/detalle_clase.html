@@ -1,56 +1,160 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Detalle de la Clase</h1>
+<div class="container">
+    <h1>Detalle de la Clase</h1>
 
-  <!-- Información de la clase -->
-  <p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
-  <p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
-  <p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+    <!-- Información de la clase -->
+    <div class="class-info">
+        <p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
+        <p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
+        <p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+    </div>
 
-  <!-- Enlaces para modificar o eliminar la clase -->
-  <a href="{% url 'modificar_clase' pk=clase.pk %}">Modificar</a>
-  <a href="{% url 'eliminar_clase' pk=clase.pk %}">Eliminar</a>
-  <a href="{% url 'horarios' %}">Volver al listado de clases</a>
+    <!-- Enlaces para modificar o eliminar la clase -->
+    <div class="action-buttons">
+        <a href="{% url 'modificar_clase' pk=clase.pk %}" class="btn btn-editar">Modificar</a>
+        <a href="{% url 'eliminar_clase' pk=clase.pk %}" class="btn btn-eliminar">Eliminar</a>
+        <a href="{% url 'horarios' %}" class="btn btn-secundario">Volver al listado de clases</a>
+    </div>
 
-  <hr>
+    <hr>
 
-  <!-- Listado de alumnos -->
-  <h2>Alumnos de la Clase</h2>
-  <ul>
-    {% for alumno in alumnos %}
-      <li>{{ alumno.nombre }}</li>
-    {% empty %}
-      <li>No hay alumnos asignados a esta clase.</li>
-    {% endfor %}
-  </ul>
+    <!-- Listado de alumnos -->
+    <h2>Alumnos de la Clase</h2>
+    <ul>
+        {% for alumno in alumnos %}
+            <li>{{ alumno.nombre }}</li>
+        {% empty %}
+            <li>No hay alumnos asignados a esta clase.</li>
+        {% endfor %}
+    </ul>
 
-  <hr>
+    <hr>
 
-  <!-- Listado de sesiones -->
-  <h2>Sesiones de la Clase</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Día</th>
-        <th>Hora de Inicio</th>
-        <th>Hora de Fin</th>
-        <th>Profesor</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for sesion in sesiones %}
-        <tr>
-          <td>{{ sesion.dia }}</td>
-          <td>{{ sesion.hora_inicio }}</td>
-          <td>{{ sesion.hora_fin }}</td>
-          <td>{{ sesion.profesor }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">No hay sesiones para esta clase.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <!-- Listado de sesiones -->
+    <h2>Sesiones de la Clase</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Día</th>
+                <th>Hora de Inicio</th>
+                <th>Hora de Fin</th>
+                <th>Profesor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sesion in sesiones %}
+                <tr>
+                    <td>{{ sesion.dia }}</td>
+                    <td>{{ sesion.hora_inicio }}</td>
+                    <td>{{ sesion.hora_fin }}</td>
+                    <td>{{ sesion.profesor }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay sesiones para esta clase.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        font-family: 'Merriweather', serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: rgb(255, 0, 93);
+        margin-bottom: 30px;
+    }
+
+    .class-info p {
+        font-size: 1.1em;
+        margin: 10px 0;
+    }
+
+    .class-info strong {
+        color: rgb(211, 5, 50);
+    }
+
+    .action-buttons {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+        color: white;
+        margin: 0 10px;
+    }
+
+    .btn-editar {
+        background-color: #f39c12;
+    }
+
+    .btn-editar:hover {
+        background-color: #d68910;
+    }
+
+    .btn-eliminar {
+        background-color: #e74c3c;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #c0392b;
+    }
+
+    .btn-secundario {
+        background-color: rgb(150, 150, 255);
+    }
+
+    .btn-secundario:hover {
+        background-color: rgb(100, 100, 255);
+    }
+
+    table {
+        width: 100%;
+        margin-top: 30px;
+        border-collapse: collapse;
+    }
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: rgb(211, 5, 50);
+        color: white;
+    }
+
+    table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    @media screen and (max-width: 768px) {
+        .class-info p {
+            font-size: 1em;
+        }
+
+        .action-buttons {
+            text-align: center;
+        }
+    }
+</style>
 {% endblock %}

@@ -1,22 +1,72 @@
 {% extends 'base.html' %}
 
-{% block title %} Apertura de Caja {% endblock %}
+{% block title %}Apertura de Caja | Arre Caballito{% endblock %}
 
 {% block content %}
-    <h2>Apertura de Caja</h2>
-    
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    
-    <form method="POST">
-        {% csrf_token %}
-        <div>
-            <label for="monto_inicial">Monto Inicial:</label>
-            <input type="number" name="monto_inicial" required step="0.01" min="0">
-        </div>
-        <button type="submit">Abrir Caja</button>
-    </form>
-    <a href="{% url 'listar_cajas' %}">Ir a Listado de Cajas</a>
+<style>
+    h2 {
+        font-family: 'Playfair Display', serif;
+        color: rgb(255, 0, 93);
+        font-size: 2.2em;
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+        display: grid;
+        gap: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1em;
+    }
+
+    button {
+        background-color: rgb(255, 0, 93);
+        color: white;
+        font-weight: bold;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: rgb(211, 5, 50);
+    }
+
+    .volver-link {
+        text-align: center;
+        margin-top: 25px;
+    }
+</style>
+
+<h2>Apertura de Caja</h2>
+
+{% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="monto_inicial">Monto Inicial:</label>
+    <input type="number" name="monto_inicial" required step="0.01" min="0">
+    <button type="submit">Abrir Caja</button>
+</form>
+
+<div class="volver-link">
+    <a href="{% url 'listar_cajas' %}">← Ir al Listado de Cajas</a>
+</div>
 {% endblock %}

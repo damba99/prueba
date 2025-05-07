@@ -1,35 +1,117 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Detalles del Profesor</h1>
+<div class="container">
+    <h1>Detalles del Profesor</h1>
 
-  <div class="form-group">
-    <p><strong>Nombre:</strong> {{ profesor.nombre }} {{ profesor.apellido }}</p>
-  </div>
+    <div class="profile-info">
+        <div class="info-box">
+            <p><strong>Nombre:</strong> {{ profesor.nombre }} {{ profesor.apellido }}</p>
+            <p><strong>DNI:</strong> {{ profesor.dni }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ profesor.fecha_nacimiento }}</p>
+        </div>
 
-  <div class="form-group">
-    <p><strong>DNI:</strong> {{ profesor.dni }}</p>
-  </div>
+        <div class="info-box">
+            <p><strong>Dirección:</strong> {{ profesor.direccion }}</p>
+            <p><strong>Teléfono:</strong> {{ profesor.telefono }}</p>
+            <p><strong>Email:</strong> {{ profesor.email }}</p>
+        </div>
+    </div>
 
-  <div class="form-group">
-    <p><strong>Fecha de Nacimiento:</strong> {{ profesor.fecha_nacimiento }}</p>
-  </div>
+    <div class="action-buttons" style="margin-top: 30px;">
+        <a href="{% url 'modificar_profesor' pk=profesor.pk %}" class="btn btn-editar">Modificar</a>
+        <a href="{% url 'eliminar_profesor' pk=profesor.pk %}" class="btn btn-eliminar">Eliminar</a>
+        <a href="{% url 'listar_profesores' %}" class="btn btn-secundario">Volver a la lista</a>
+    </div>
+</div>
 
-  <div class="form-group">
-    <p><strong>Dirección:</strong> {{ profesor.direccion }}</p>
-  </div>
+<style>
+    .container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        font-family: 'Merriweather', serif;
+    }
 
-  <div class="form-group">
-    <p><strong>Teléfono:</strong> {{ profesor.telefono }}</p>
-  </div>
+    h1 {
+        text-align: center;
+        color: rgb(255, 0, 93);
+        margin-bottom: 30px;
+    }
 
-  <div class="form-group">
-    <p><strong>Email:</strong> {{ profesor.email }}</p>
-  </div>
+    .profile-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
 
-  <div style="margin-top: 30px;">
-    <a href="{% url 'modificar_profesor' pk=profesor.pk %}" class="btn btn-secundario">Modificar</a>
-    <a href="{% url 'eliminar_profesor' pk=profesor.pk %}" class="btn btn-alerta">Eliminar</a>
-    <a href="{% url 'listar_profesores' %}" class="btn">Volver a la lista</a>
-  </div>
+    .info-box {
+        width: 48%;
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-box p {
+        margin: 10px 0;
+    }
+
+    .info-box strong {
+        color: rgb(211, 5, 50);
+    }
+
+    .action-buttons {
+        text-align: center;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+        color: white;
+        margin: 0 10px;
+    }
+
+    .btn-editar {
+        background-color: #f39c12;
+    }
+
+    .btn-editar:hover {
+        background-color: #d68910;
+    }
+
+    .btn-eliminar {
+        background-color: #e74c3c;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #c0392b;
+    }
+
+    .btn-secundario {
+        background-color: rgb(150, 150, 255);
+    }
+
+    .btn-secundario:hover {
+        background-color: rgb(100, 100, 255);
+    }
+
+    @media screen and (max-width: 768px) {
+        .profile-info {
+            flex-direction: column;
+        }
+
+        .info-box {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+</style>
 {% endblock %}

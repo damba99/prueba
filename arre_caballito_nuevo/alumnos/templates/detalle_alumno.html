@@ -1,40 +1,156 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block title %}Detalles del Alumno | Arre Caballito{% endblock %}
+
 {% block content %}
-      <h1>Detalles del Alumno</h1>
+<div class="container">
+    <h1>Detalles del Alumno</h1>
 
-      <div class="form-group">
-        <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
-        <p><strong>DNI:</strong> {{ alumno.dni }}</p>
-        <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
-        <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
-        <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
-        <p><strong>Email:</strong> {{ alumno.email }}</p>
-        <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
-      </div>
+    <div class="alumno-detalle">
+        <div class="detalle-columna">
+            <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+            <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+            <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+        </div>
+        <div class="detalle-columna">
+            <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+            <p><strong>Email:</strong> {{ alumno.email }}</p>
+            <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+        </div>
+    </div>
 
-      <h2>Clases en las que está inscrito:</h2>
+    <h2>Clases en las que está inscrito:</h2>
 
-      {% if clases %}
-        <ul>
-          {% for clase in clases %}
-            <li style="margin-bottom: 10px;">
-              {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
-              <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm" style="margin-left: 10px;">Eliminar Inscripción</a>
-            </li>
-          {% endfor %}
+    {% if clases %}
+        <ul class="lista-clases">
+            {% for clase in clases %}
+                <li>
+                    {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
+                    <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm">Eliminar Inscripción</a>
+                </li>
+            {% endfor %}
         </ul>
-      {% else %}
+    {% else %}
         <p>El alumno no está inscrito en ninguna clase.</p>
-      {% endif %}
+    {% endif %}
 
-      <div style="margin-top: 30px;">
+    <div class="botones-acciones">
         <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn">Modificar</a>
         <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn btn-secundario">Eliminar</a>
         <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Volver a la lista</a>
-      </div>
-
-      <div style="margin-top: 40px;">
         <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn">Inscribir en una clase</a>
-      </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        font-family: 'Merriweather', serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: rgb(255, 0, 93);
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        color: #c60044;
+        margin-top: 40px;
+        border-bottom: 2px solid #c60044;
+        padding-bottom: 6px;
+    }
+
+    .alumno-detalle {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .detalle-columna p {
+        margin: 8px 0;
+    }
+
+    .lista-clases {
+        list-style: none;
+        padding-left: 0;
+        margin-top: 20px;
+    }
+
+    .lista-clases li {
+        margin-bottom: 12px;
+        background: #f9f9f9;
+        padding: 10px 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .botones-acciones {
+        margin-top: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .btn {
+        background-color: rgb(255, 0, 93);
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+        background-color: rgb(200, 0, 70);
+    }
+
+    .btn-secundario {
+        background-color: #555;
+    }
+
+    .btn-secundario:hover {
+        background-color: #333;
+    }
+
+    .btn-alerta {
+        background-color: #d60000;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.9em;
+        text-decoration: none;
+    }
+
+    .btn-alerta:hover {
+        background-color: #a80000;
+    }
+
+    @media screen and (max-width: 768px) {
+        .alumno-detalle {
+            grid-template-columns: 1fr;
+        }
+
+        .botones-acciones {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+</style>
 {% endblock %}

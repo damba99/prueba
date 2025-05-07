@@ -1,26 +1,181 @@
 {% extends 'base.html' %}
 
-{% block title %}Perfil de Usuario{% endblock %}
+{% load static %}
+
+{% block title %}Perfil del Alumno | Arre Caballito{% endblock %}
 
 {% block content %}
-    <h1>Perfil de Usuario</h1>
+<div class="container">
+    <h1>Perfil del Alumno</h1>
 
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Fecha de Registro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+    <div class="profile-picture">
+        <img src="{{ alumno.foto_perfil.url|default:'{% static "img/default-profile.jpg" %}' }}" alt="Foto de perfil">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="foto_perfil" accept="image/*">
+            <br>
+            <button type="submit">Cambiar imagen</button>
+        </form>
+    </div>
 
-    <h3>Detalles del Alumno</h3>
-    <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
-    <p><strong>DNI:</strong> {{ alumno.dni }}</p>
-    <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento|date:"b d, Y" }}</p>
-    <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
-    <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
-    <p><strong>Email:</strong> {{ alumno.email }}</p>
-    <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+    <section class="profile-section">
+        <h2>Información Personal</h2>
+        <div class="profile-info">
+            <div class="info-box">
+                <label>Nombre:</label>
+                <p>{{ alumno.nombre }}</p>
 
-    <h3>Opciones</h3>
-    <ul>
-        <li><a href="{% url 'nueva_password' %}">Cambiar contraseña</a></li>
-        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-    </ul>
+                <label>Edad:</label>
+                <p>{{ alumno.edad }} años</p>
+
+                <label>Fecha de Nacimiento:</label>
+                <p>{{ alumno.fecha_nacimiento }}</p>
+            </div>
+
+            <div class="info-box">
+                <label>Responsable:</label>
+                <p>{{ alumno.responsable }}</p>
+
+                <label>Teléfono de contacto:</label>
+                <p>{{ alumno.telefono }}</p>
+
+                <label>Email:</label>
+                <p>{{ alumno.email }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="profile-section">
+        <h2>Información Médica</h2>
+        <div class="profile-info">
+            <div class="info-box">
+                <label>Obra Social:</label>
+                <p>{{ alumno.obra_social }}</p>
+
+                <label>Número de afiliado:</label>
+                <p>{{ alumno.numero_afiliado }}</p>
+
+                <label>Alergias:</label>
+                <p>{{ alumno.alergias }}</p>
+            </div>
+
+            <div class="info-box">
+                <label>Condiciones médicas:</label>
+                <p>{{ alumno.condiciones_medicas }}</p>
+
+                <label>Medicación actual:</label>
+                <p>{{ alumno.medicacion }}</p>
+
+                <label>Observaciones adicionales:</label>
+                <p>{{ alumno.observaciones }}</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Merriweather', serif;
+        background-color: rgb(244, 244, 244);
+        color: #333;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(255, 0, 93, 0.2);
+    }
+
+    h1 {
+        font-family: 'Playfair Display', serif;
+        color: rgb(255, 0, 93);
+        font-size: 2.5em;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .profile-picture {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .profile-picture img {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 6px solid #fff;
+        box-shadow: 0 8px 20px rgba(255, 0, 93, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-picture img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(255, 0, 93, 0.4), 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-picture form {
+        margin-top: 15px;
+    }
+
+    .profile-picture input[type="file"] {
+        margin-bottom: 10px;
+    }
+
+    .profile-picture button {
+        background-color: rgb(255, 0, 93);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-family: 'Merriweather', serif;
+        cursor: pointer;
+    }
+
+    .profile-section {
+        margin-bottom: 40px;
+    }
+
+    .profile-section h2 {
+        font-size: 1.8em;
+        color: rgb(211, 5, 50);
+        border-bottom: 2px solid rgb(211, 5, 50);
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .info-box {
+        background-color: #f7f7f7;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-box label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .info-box p {
+        margin: 0 0 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .profile-info {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 {% endblock %}

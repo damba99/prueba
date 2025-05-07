@@ -1,15 +1,174 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block title %}Lista de Caballos | Arre Caballito{% endblock %}
+
 {% block content %}
-  <h1>Lista de Caballos</h1>
-  <ul>
-    {% for caballo in caballos %}
-      <li>
-        <a href="{% url 'detalle_caballo' pk=caballo.pk %}">{{ caballo.nombre }}</a>
-        <a href="{% url 'modificar_caballo' pk=caballo.pk %}">Editar</a>
-        <a href="{% url 'eliminar_caballo' pk=caballo.pk %}">Eliminar</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'crear_caballo' %}">Crear Caballo</a>
+<div class="container">
+    <h1>Lista de Caballos</h1>
+
+    {% if caballos %}
+        <table class="tabla-caballos">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Disciplinas</th>
+                    <th>Edad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for caballo in caballos %}
+                    <tr>
+                        <td>{{ caballo.nombre }}</td>
+                        <td>
+                            {% for disciplina in caballo.disciplinas.all %}
+                                <span class="disciplina-badge">{{ disciplina.nombre }}</span>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{{ caballo.edad }} años</td>
+                        <td>
+                            <a href="{% url 'detalle_caballo' pk=caballo.pk %}" class="btn btn-ver">Ver</a>
+                            <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn btn-editar">Editar</a>
+                            <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn btn-eliminar">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay caballos registrados.</p>
+    {% endif %}
+
+    <div class="boton-crear">
+        <a href="{% url 'crear_caballo' %}" class="btn">Crear Caballo</a>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        font-family: 'Merriweather', serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: rgb(255, 0, 93);
+        margin-bottom: 30px;
+    }
+
+    .tabla-caballos {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .tabla-caballos th,
+    .tabla-caballos td {
+        border: 1px solid #ddd;
+        padding: 12px 15px;
+        text-align: left;
+    }
+
+    .tabla-caballos th {
+        background-color: rgb(255, 0, 93);
+        color: white;
+    }
+
+    .tabla-caballos tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .tabla-caballos tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .disciplina-badge {
+        background-color: rgb(150, 150, 255);
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-right: 5px;
+        color: white;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+        color: white;
+    }
+
+    .btn-ver {
+        background-color: #3498db;
+    }
+
+    .btn-ver:hover {
+        background-color: #2980b9;
+    }
+
+    .btn-editar {
+        background-color: #f39c12;
+    }
+
+    .btn-editar:hover {
+        background-color: #d68910;
+    }
+
+    .btn-eliminar {
+        background-color: #e74c3c;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #c0392b;
+    }
+
+    .boton-crear {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .boton-crear .btn {
+        background-color: rgb(255, 0, 93);
+    }
+
+    .boton-crear .btn:hover {
+        background-color: rgb(200, 0, 70);
+    }
+
+    @media screen and (max-width: 768px) {
+        .tabla-caballos thead {
+            display: none;
+        }
+
+        .tabla-caballos tr {
+            display: block;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .tabla-caballos td {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 5px;
+            border: none;
+        }
+
+        .tabla-caballos td::before {
+            content: attr(data-label);
+            font-weight: bold;
+            color: #555;
+        }
+    }
+</style>
 {% endblock %}
