@@ -21,8 +21,6 @@
             color: #333;
             min-height: 100vh;
             position: relative;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
         .menu-toggle {
@@ -170,6 +168,7 @@
 
         .btn:hover {
             background-color:rgb(255, 255, 255);
+            color: #ff0044;
             transform: translateY(-1px);
             box-shadow: 0 4px 7px rgba(0, 0, 0, 0.15);
         }
@@ -192,7 +191,6 @@
             background-color: #c9302c;
         }
 
-        /* Estilo de las alertas */
         .alert {
             padding: 18px;
             margin-bottom: 25px;
@@ -222,7 +220,6 @@
             margin-bottom: 25px;
         }
 
-        /* Estilo de tablas más elegantes */
         table {
             width: 100%;
             border-collapse: separate;
@@ -264,7 +261,6 @@
             transition: background-color 0.2s ease-in-out;
         }
 
-        /* Botones dentro de celdas */
         td a.btn, td .btn {
             font-size: 0.9em;
             padding: 8px 14px;
@@ -276,55 +272,54 @@
 </head>
 <body>
 
-    <div class="menu-toggle">
-        <i class="fas fa-bars"></i>
-    </div>
+<div class="menu-toggle">
+    <i class="fas fa-bars"></i>
+</div>
 
 <!-- Menú lateral -->
-  <div class="menu" id="menu">
+<div class="menu" id="menu">
     <h2>Arre Caballito</h2>
     <ul>
-      {% if is_admin %}
-        <li><a href="/cajas"><i class="fas fa-cash-register"></i> Caja</a></li>
-        <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/caballos"><i class="fas fa-horse"></i> Caballos</a></li>
-        <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-        <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
-      {% elif is_profesor %}
-        <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-      {% else %}
-        <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
-        <li><a href="/cuotascuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
-        <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
-      {% endif %}
-      <!-- Enlace común para el perfil del usuario, independientemente de los roles -->
-      {% if user.is_authenticated %}
-        <li><a href="{% url 'perfil' id=request.user.id %}"><i class="fas fa-user-circle"></i> Perfil</a></li>
-        <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+        {% if is_admin %}
+            <li><a href="/cajas"><i class="fas fa-cash-register"></i> Caja</a></li>
+            <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
+            <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+            <li><a href="/caballos"><i class="fas fa-horse"></i> Caballos</a></li>
+            <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
+            <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+            <li><a href="/profesores"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+        {% elif is_profesor %}
+            <li><a href="/alumnos"><i class="fas fa-user-graduate"></i> Alumnos</a></li>
+            <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+            <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+        {% else %}
+            <li><a href="/clases"><i class="fas fa-calendar-alt"></i> Clases</a></li>
+            <li><a href="/cuotas"><i class="fas fa-receipt"></i> Cuotas</a></li>
+            <li><a href="/competencias"><i class="fas fa-trophy"></i> Competencias</a></li>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'perfil' id=request.user.id %}"><i class="fas fa-user-circle"></i> Perfil</a></li>
+            <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
         {% endif %}
     </ul>
-  </div>
+</div>
 
-    <div class="contenido">
-        <div class="contenedor-general">
-            {% block content %}
-            {% endblock %}
-        </div>
+<div class="contenido">
+    <div class="contenedor-general">
+        {% block content %}
+        {% endblock %}
     </div>
+</div>
 
-    <script>
-        const toggleBtn = document.querySelector('.menu-toggle');
-        const menu = document.getElementById('menu');
-        const contenido = document.querySelector('.contenido');
+<script>
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const menu = document.getElementById('menu');
+    const contenido = document.querySelector('.contenido');
 
-        toggleBtn.addEventListener('click', () => {
-            menu.classList.toggle('activo');
-            contenido.classList.toggle('activo');
-        });
-    </script>
+    toggleBtn.addEventListener('click', () => {
+        menu.classList.toggle('activo');
+        contenido.classList.toggle('activo');
+    });
+</script>
 </body>
 </html>

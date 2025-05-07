@@ -2,14 +2,33 @@
 
 {% block content %}
   <h1>Lista de Profesores</h1>
-  <ul>
-    {% for profesor in profesores %}
-      <li>
-        <a href="{% url 'detalle_profesor' pk=profesor.pk %}">{{ profesor.nombre }} {{ profesor.apellido }}</a>
-        <a href="{% url 'modificar_profesor' pk=profesor.pk %}">Editar</a>
-        <a href="{% url 'eliminar_profesor' pk=profesor.pk %}">Eliminar</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'crear_profesor' %}">Crear Profesor</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for profesor in profesores %}
+        <tr>
+          <td>{{ profesor.nombre }}</td>
+          <td>{{ profesor.apellido }}</td>
+          <td>
+            <a href="{% url 'detalle_profesor' pk=profesor.pk %}" class="btn">Ver</a>
+            <a href="{% url 'modificar_profesor' pk=profesor.pk %}" class="btn btn-secundario">Editar</a>
+            <a href="{% url 'eliminar_profesor' pk=profesor.pk %}" class="btn btn-alerta">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3">No hay profesores registrados.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{% url 'crear_profesor' %}" class="btn">Crear Profesor</a>
 {% endblock %}
