@@ -14,7 +14,7 @@
         body {
             margin: 0;
             font-family: 'Merriweather', serif;
-            background-color:rgb(244, 244, 244);
+            background-color: rgb(244, 244, 244);
             color: #333;
             line-height: 1.7;
             font-synthesis: none;
@@ -41,12 +41,12 @@
         }
 
         .navbar .logo img {
-            height: 60px;
+            height: 100px;
         }
 
         .navbar .logo h1 {
             margin-left: 20px;
-            font-size: 28px;
+            font-size: 38px;
             color: #fff;
             font-weight: bold;
             font-family: 'Playfair Display', serif;
@@ -66,9 +66,9 @@
         .nav-links a {
             text-decoration: none;
             color: #fff;
-            font-size: 18px;
+            font-size: 25px;
             font-weight: 600;
-            padding: 12px 15px;
+            padding: 14px 18px;
             transition: color 0.3s ease-in-out;
         }
 
@@ -107,7 +107,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            align-items: center;
+            align-items: start;
         }
 
         #nuestra-historia .text-content {
@@ -130,7 +130,7 @@
 
         .image-gallery {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
 
@@ -164,6 +164,16 @@
         .scroll-button:hover {
             background-color: rgb(79, 68, 77);
         }
+
+        @media (max-width: 768px) {
+            #nuestra-historia {
+                grid-template-columns: 1fr;
+            }
+
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -171,7 +181,7 @@
     <nav class="navbar">
         <div class="logo">
             <a href="#">
-                <img src="{% static 'imagen/Logo.jpg' %}" alt="Logo de Arre Caballito">
+                <img src="{% static 'imagen/logo3.png' %}" alt="Logo de Arre Caballito">
             </a>
             <h1>Arre Caballito</h1>
         </div>
@@ -200,12 +210,16 @@
         </div>
         <div class="image-gallery">
             <img src="{% static 'imagen/silleta.jpg' %}" alt="Imagen de nuestra historia 1">
-            <img src="{% static 'imagen/imagen2.jpg' %}" alt="Imagen de nuestra historia 2">
+            <img src="{% static 'imagen/clases.jpg' %}" alt="Imagen de nuestra historia 2">
+            <img src="{% static 'imagen/16.jpg' %}" alt="Imagen de nuestra historia 3">
+            <img src="{% static 'imagen/24.jpg' %}" alt="Imagen de nuestra historia 4">
+            <img src="{% static 'imagen/31.jpg' %}" alt="Imagen de nuestra historia 5">
+            <img src="{% static 'imagen/2.jpg' %}" alt="Imagen de nuestra historia 6">
         </div>
     </section>
 
     <div class="scroll-button-container">
-        <button id="scroll-to-top-button" class="scroll-button">Volver al Inicio</button>
+        <button id="scroll-to-top-button" class="scroll-button">Volver hacia arriba</button>
     </div>
 
     <script>
