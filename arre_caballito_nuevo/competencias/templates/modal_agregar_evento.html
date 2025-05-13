@@ -1,0 +1,26 @@
+<!-- modal_agregar_evento.html -->
+<div id="modal_agregar_evento_{{ competencia.id_competencias }}" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div style="background: white; margin: 10% auto; padding: 20px; width: 400px; position: relative;">
+    <span onclick="cerrarModal('modal_agregar_evento_{{ competencia.id_competencias }}')" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
+
+    <form method="POST" action="{% url 'agregar_evento' competencia.id_competencias %}">
+      {% csrf_token %}
+
+      <label for="disciplina">Disciplina:</label><br>
+      <select name="disciplina" required>
+        {% for disciplina in disciplinas %}
+          <option value="{{ disciplina.id_disciplina }}">{{ disciplina.nombre }}</option>
+        {% endfor %}
+      </select><br><br>
+
+      <label for="categoria">Categoría:</label><br>
+      <select name="categoria" required>
+        {% for categoria in categorias %}
+          <option value="{{ categoria.id_categoria }}">{{ categoria.nombre }}</option>
+        {% endfor %}
+      </select><br><br>
+
+      <button type="submit" class="btn">Guardar Evento</button>
+    </form>
+  </div>
+</div>

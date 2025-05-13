@@ -278,3 +278,35 @@ def pagar(request, pk):
 
     # Si no es un POST, redirigir a la vista de deudas
     return redirect('deudas', pk=alumno.id_alumno)
+
+from calendar import month_name
+from django.db.models import Count
+
+
+def grafico_cuotas(request):
+    # Agrupar cuotas por mes y estado (solo pagadas y vencidas)
+    cuotas_por_mes = (
+        Cuota.objects
+        .filter(estado__in=['pagado', 'vencida'])
+        .values('id_periodo__mes', 'estado')
+        .annotate(total=Count('id_cuota'))
+        .order_by('id_periodo__mes')
+    )
+
+    # Crear estructura de datos
+    meses = [str(i).zfill(2) for i in range(1, 13)]
+    etiquetas = [month_name[int(m)] for m in meses]
+    pagadas = []
+    vencidas = []
+
+    for mes in meses:
+        total_pagadas = next((c['total'] for c in cuotas_por_mes if c['id_periodo__mes'] == mes and c['estado'] == 'pagado'), 0)
+        total_vencidas = next((c['total'] for c in cuotas_por_mes if c['id_periodo__mes'] == mes and c['estado'] == 'vencida'), 0)
+        pagadas.append(total_pagadas)
+        vencidas.append(total_vencidas)
+
+    return render(request, 'grafico_cuotas.html', {
+        'etiquetas': etiquetas,
+        'pagadas': pagadas,
+        'vencidas': vencidas,
+    })

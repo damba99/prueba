@@ -1,6 +1,7 @@
 from django.db import models
 from profesores.models import Profesor
 
+
 class Categoria(models.Model):
 
     id_categoria = models.AutoField(primary_key=True)

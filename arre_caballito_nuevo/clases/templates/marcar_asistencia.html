@@ -28,9 +28,9 @@
                 </td>
 
                 <!-- Caballo de la Asistencia -->
-                <td>
+                <td>    <pre>{{ asistencias_dict }}</pre>
                         {% for caballo in caballos %}
-                            <p>{{ asistencias_dict|get_item:alumno.id_alumno.id_caballo.nombre }}</p>
+                            <p>{{ asistencias_dict|get_item:alumno.id_alumno }}</p>
                         {% endfor %}   
                     <select name="caballo_{{ alumno.id_alumno }}" required>
                         <option value="">-- Seleccione Caballo --</option>

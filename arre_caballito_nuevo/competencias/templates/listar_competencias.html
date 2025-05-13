@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Listado de Competencias</h1>
+
+  <!-- Botón para abrir el modal de crear competencia -->
+  <a href="javascript:void(0);" class="btn" onclick="abrirModal('modal_crear')">+ Crear Competencia</a>
+
+  <!-- Modal Crear Competencia -->
+  {% include 'modal_crear_competencia.html' %}
+
+  <!-- Tabla -->
+  {% if competencias %}
+    <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Lugar</th>
+          <th>Fecha y Hora</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for competencia in competencias %}
+          <tr>
+            <td>{{ competencia.nombre }}</td>
+            <td>{{ competencia.descripcion }}</td>
+            <td>{{ competencia.lugar }}</td>
+            <td>{{ competencia.fecha_hora|date:"d/m/Y H:i" }}</td>
+            <td>
+              <!-- Botones -->
+              <a href="javascript:void(0);" class="btn" onclick="abrirModal('modal_agregar_evento_{{ competencia.id_competencias }}')">Agregar Evento</a>
+              <a href="javascript:void(0);" class="btn" onclick="abrirModal('modal_detalles_{{ competencia.id_competencias }}')">Detalles</a>
+            </td>
+          </tr>
+
+          <!-- Modal Agregar Evento -->
+          {% include 'modal_agregar_evento.html' with competencia=competencia %}
+
+          <!-- Modal Detalles -->
+          {% include 'modal_detalles_competencia.html' with competencia=competencia %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+  <script>
+    function abrirModal(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function cerrarModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+  </script>
+{% endblock %}

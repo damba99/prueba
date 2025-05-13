@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Financiero</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Dashboard Financiero</h1>
+
+    <!-- Formulario para elegir el período -->
+    <form method="get" action="{% url 'dashboard' %}">
+        <label for="periodo">Seleccionar período:</label>
+        <select id="periodo" name="periodo">
+            <option value="diario" {% if request.GET.periodo == 'diario' %}selected{% endif %}>Diario</option>
+            <option value="semanal" {% if request.GET.periodo == 'semanal' %}selected{% endif %}>Semanal</option>
+            <option value="mensual" {% if request.GET.periodo == 'mensual' %}selected{% endif %}>Mensual</option>
+            <option value="anual" {% if request.GET.periodo == 'anual' %}selected{% endif %}>Anual</option>
+        </select>
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <!-- Canvas para el gráfico -->
+    <canvas id="financialChart"></canvas>
+
+    <script>
+        var ctx = document.getElementById('financialChart').getContext('2d');
+        var financialChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'Ingresos',
+                    data: {{ data_ingresos|safe }},
+                    borderColor: 'green',
+                    fill: false
+                }, {
+                    label: 'Egresos',
+                    data: {{ data_egresos|safe }},
+                    borderColor: 'red',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Fecha'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Monto'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -18,6 +18,8 @@ urlpatterns = [
     path('', views.horarios, name='horarios'),
     path('agregar_clase/', views.agregar_clase, name='agregar_clase'),
     path('detalle_clase/<int:pk>/', views.detalle_clase, name='detalle_clase'),
+    path('clasesmarcar_asistencia/<int:clase_id>/<str:fecha>/', views.marcar_asistencia, name='marcar_asistencia'),
+
 
 
 ]

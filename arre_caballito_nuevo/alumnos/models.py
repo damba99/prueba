@@ -71,18 +71,26 @@ class AlumnoClase(models.Model):
         super().save(*args, **kwargs) 
     
 class Asistencia(models.Model):
+    
+    ESTADO_CHOICES = [
+        ('presente', 'Presente'),
+        ('ausente', 'Ausente'),
+    ]
+
     id_sesion = models.ForeignKey(Sesion, related_name='asistencias', on_delete=models.CASCADE, null=True)
     id_alumno = models.ForeignKey(Alumno, related_name='asistencias', on_delete=models.CASCADE)
     id_caballo = models.ForeignKey(Caballo, related_name='asistencias', on_delete=models.CASCADE, null=True, blank=True)
     fecha = models.DateField(default=timezone.now)
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='presente')
 
+    
+    class Meta:
+        unique_together = ('id_alumno', 'id_caballo', 'fecha')
+        
     def clean(self):
-        # Asegurarse de que el alumno está inscrito en la clase asociada a la sesión
-        # Obtener la clase asociada a la sesión
+
         if self.id_sesion:
             clase = self.id_sesion.id_clase  # Obtener la clase a la que pertenece la sesión
-            
-            # Verificar si el alumno está inscrito en esa clase
             if not AlumnoClase.objects.filter(alumno=self.id_alumno, clase=clase).exists():
                 raise ValidationError(f"El alumno {self.id_alumno} no está inscrito en la clase {clase}.")
     

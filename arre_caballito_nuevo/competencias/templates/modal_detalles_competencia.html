@@ -1,0 +1,18 @@
+<!-- modal_detalles_competencia.html -->
+<div id="modal_detalles_{{ competencia.id_competencias }}" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+  <div style="background: white; margin: 10% auto; padding: 20px; width: 400px; position: relative;">
+    <span onclick="cerrarModal('modal_detalles_{{ competencia.id_competencias }}')" style="position: absolute; top: 10px; right: 15px; cursor: pointer;">&times;</span>
+
+    <h3>Detalles de {{ competencia.nombre }}</h3>
+    <p><strong>Descripción:</strong> {{ competencia.descripcion }}</p>
+    <p><strong>Lugar:</strong> {{ competencia.lugar }}</p>
+    <p><strong>Fecha:</strong> {{ competencia.fecha_hora|date:"d/m/Y H:i" }}</p>
+
+    <h4>Eventos:</h4>
+    {% for evento in competencia.eventos.all %}
+      <p>{{ evento.id_disciplina.nombre }} - {{ evento.id_categoria.nombre }}</p>
+    {% empty %}
+      <p>No hay eventos registrados.</p>
+    {% endfor %}
+  </div>
+</div>

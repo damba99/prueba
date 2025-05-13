@@ -120,3 +120,49 @@ def movimientos_caja(request, pk):
 
     return render(request, 'movimientos_caja.html', {'caja': caja, 'movimientos': movimientos})
 
+# views.py
+from django.shortcuts import render
+from django.db.models import Sum
+from django.utils import timezone
+from .models import Movimiento
+from decimal import Decimal
+from datetime import timedelta
+
+def dashboard(request):
+    # Obtener el período (por defecto será 'diario')
+    periodo = request.GET.get('periodo', 'diario')
+    current_date = timezone.now().date()
+
+    # Datos de ingresos y egresos
+    data_ingresos = []
+    data_egresos = []
+    labels = []
+
+    if periodo == 'diario':
+        # Últimos 30 días
+        for i in range(30):
+            day = current_date - timedelta(days=i)
+            labels.append(day.strftime('%d-%m-%Y'))
+            ingresos = Movimiento.objects.filter(fecha_y_hora__date=day, tipo='Ingreso').aggregate(total=Sum('monto'))['total'] or Decimal('0.00')
+            egresos = Movimiento.objects.filter(fecha_y_hora__date=day, tipo='Egreso').aggregate(total=Sum('monto'))['total'] or Decimal('0.00')
+            data_ingresos.append(ingresos)
+            data_egresos.append(egresos)
+
+    elif periodo == 'semanal':
+        # Últimos 4 semanas
+        for i in range(4):
+            start_of_week = current_date - timedelta(weeks=i)
+            labels.append(start_of_week.strftime('%d-%m-%Y'))
+            ingresos = Movimiento.objects.filter(fecha_y_hora__date__week=start_of_week.week, tipo='Ingreso').aggregate(total=Sum('monto'))['total'] or Decimal('0.00')
+            egresos = Movimiento.objects.filter(fecha_y_hora__date__week=start_of_week.week, tipo='Egreso').aggregate(total=Sum('monto'))['total'] or Decimal('0.00')
+            data_ingresos.append(ingresos)
+            data_egresos.append(egresos)
+
+    # Similar para los otros periodos (mensual y anual)
+
+    # Enviar los datos a la plantilla
+    return render(request, 'dashboard.html', {
+        'labels': labels,
+        'data_ingresos': data_ingresos,
+        'data_egresos': data_egresos,
+    })

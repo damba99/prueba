@@ -1,75 +1,94 @@
 {% extends 'base.html' %}
 
-{% block title %} Detalle de Caja {% endblock %}
+{% block title %}Detalle de Caja #{{ caja.id_caja }}{% endblock %}
 
 {% block content %}
-    <h2>Detalles de la Caja #{{ caja.id_caja }}</h2>
-    
-    <table>
-        <tr>
-            <th>Usuario de Apertura</th>
-            <td>{{ caja.usuario_apertura.username }}</td>
-        </tr>
-        <tr>
-            <th>Fecha de Apertura</th>
-            <td>{{ caja.fecha_apertura|date:"d/m/Y H:i" }}</td> <!-- Formateo de fecha -->
-        </tr>
-        <tr>
-            <th>Monto Inicial</th>
-            <td>${{ caja.monto_inicial|floatformat:2 }}</td> <!-- Formato de número con 2 decimales -->
-        </tr>
-        <tr>
-            <th>Ingresos</th>
-            <td>${{ caja.ingresos|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <th>Egresos</th>
-            <td>${{ caja.egresos|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <th>Saldo</th>
-            <td>${{ caja.saldo|floatformat:2 }}</td>
-        </tr>
-        <tr>
-            <th>Estado</th>
-            <td>{{ caja.get_estado_display }}</td>
-        </tr>
-        <tr>
-            <th>Monto Final</th>
-            <td>
-                {% if caja.estado == "Cerrada" %}
-                    ${{ caja.monto_final|floatformat:2 }}
-                {% else %}
-                    ----- <!-- Muestra '-----' si la caja está abierta -->
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <th>Usuario de Cierre</th>
-            <td>{{ caja.usuario_cierre.username|default:"No ha sido cerrado aún" }}</td>
-        </tr>
-        <tr>
-            <th>Fecha de Cierre</th>
-            <td>{{ caja.fecha_cierre|default:"No ha sido cerrado aún"|date:"d/m/Y H:i" }}</td> <!-- Formato de fecha en caso de no estar cerrado -->
-        </tr>
-    </table>
+  <h2>Resumen de Caja #{{ caja.id_caja }}</h2>
 
-    <!-- Botón para cerrar caja -->
-    {% if caja.estado == "Abierta" %}
-        <form action="{% url 'cerrar_caja' pk=caja.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Cerrar Caja</button>
-        </form>
+  <!-- Tabla única que incluye datos esenciales y detalles ocultos -->
+  <table>
+    <tr>
+      <th>Fecha de Apertura</th>
+      <td>{{ caja.fecha_apertura|date:"d/m/Y H:i" }}</td>
+    </tr>
+    <tr>
+      <th>Ingresos</th>
+      <td>${{ caja.ingresos|floatformat:2 }}</td>
+    </tr>
+    <tr>
+      <th>Egresos</th>
+      <td>${{ caja.egresos|floatformat:2 }}</td>
+    </tr>
+    <tr>
+      <th>Saldo</th>
+      <td>${{ caja.saldo|floatformat:2 }}</td>
+    </tr>
+    <tr>
+      <th>Estado</th>
+      <td>{{ caja.get_estado_display }}</td>
+    </tr>
 
-        <!-- Enlaces para registrar ingreso o egreso si la caja está abierta -->
-        <br><br>
-        <a href="{% url 'registrar_movimiento' %}" class="btn btn-success">Registrar movimiento</a>
+    <!-- FILAS OCULTAS (se revelan con el botón) -->
+    <tbody id="filas-extra" style="display: none;">
+      <tr>
+        <th>Usuario de Apertura</th>
+        <td>{{ caja.usuario_apertura.username }}</td>
+      </tr>
+      <tr>
+        <th>Monto Inicial</th>
+        <td>${{ caja.monto_inicial|floatformat:2 }}</td>
+      </tr>
+      <tr>
+        <th>Monto Final</th>
+        <td>
+          {% if caja.estado == "Cerrada" %}
+            ${{ caja.monto_final|floatformat:2 }}
+          {% else %}
+            -----
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Usuario de Cierre</th>
+        <td>{{ caja.usuario_cierre.username|default:"No ha sido cerrado aún" }}</td>
+      </tr>
+      <tr>
+        <th>Fecha de Cierre</th>
+        <td>{{ caja.fecha_cierre|default:"No ha sido cerrado aún"|date:"d/m/Y H:i" }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-        <!-- Enlace para ver los movimientos de la caja con la nueva URL -->
-        <a href="{% url 'movimientos_caja' pk=caja.pk %}" class="btn btn-info">Ver Movimientos</a>
-    {% endif %}
+  <!-- Botón para expandir/replegar -->
+  <button class="btn" onclick="toggleFilas()">Más detalles</button>
 
-    <br><br>
-    <a href="{% url 'listar_cajas' %}">Ir a Listado de Cajas</a>
+  <script>
+    function toggleFilas() {
+      const filas = document.getElementById('filas-extra');
+      const boton = event.target;
+      if (filas.style.display === 'none') {
+        filas.style.display = '';
+        boton.innerText = 'Menos detalles';
+      } else {
+        filas.style.display = 'none';
+        boton.innerText = 'Más detalles';
+      }
+    }
+  </script>
 
+  <!-- Movimientos -->
+{% include 'movimientos_caja.html' with movimientos=caja.movimientos.all %}
+
+  {% if caja.estado == "Abierta" %}
+    <form action="{% url 'cerrar_caja' pk=caja.pk %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Cerrar Caja</button>
+    </form>
+    <br>
+    <a href="{% url 'registrar_movimiento' %}" class="btn btn-success">Registrar movimiento</a>
+  {% endif %}
+
+  <br><br>
+  <a href="{% url 'listar_cajas' %}" class="btn">Volver a Cajas</a>
+  <a href="{% url 'dashboard' %}" class="btn">Ir al Dashboard</a>
 {% endblock %}

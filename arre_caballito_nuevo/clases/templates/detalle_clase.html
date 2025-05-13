@@ -1,56 +1,128 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Detalle de la Clase</h1>
+<style>
+  .cuadro-asistencia {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    margin: 0 auto;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
+    position: relative; /* Necesario para el tooltip */
+  }
 
-  <!-- Información de la clase -->
-  <p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
-  <p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
-  <p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+  .cuadro-asistencia.ausente {
+    background-color: #d9534f;
+    border-color: #c9302c;
+  }
 
-  <!-- Enlaces para modificar o eliminar la clase -->
-  <a href="{% url 'modificar_clase' pk=clase.pk %}">Modificar</a>
-  <a href="{% url 'eliminar_clase' pk=clase.pk %}">Eliminar</a>
-  <a href="{% url 'horarios' %}">Volver al listado de clases</a>
+  .cuadro-asistencia.presente {
+    background-color: #0bc005;
+    border-color: #31b0d5;
+  }
 
-  <hr>
+  .cuadro-asistencia.pendiente {
+    background-color: #757575;
+    border-color: #ec971f;
+  }
 
-  <!-- Listado de alumnos -->
-  <h2>Alumnos de la Clase</h2>
-  <ul>
-    {% for alumno in alumnos %}
-      <li>{{ alumno.nombre }}</li>
-    {% empty %}
-      <li>No hay alumnos asignados a esta clase.</li>
-    {% endfor %}
-  </ul>
+  /* Tooltip que se muestra al pasar el ratón */
+  .tooltip {
+    visibility: hidden;
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 10000000;
+    bottom: 25px;
+    left: 50%;
+    margin-left: -125px; /* Ajusta para que el tooltip esté centrado */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
 
-  <hr>
+  .cuadro-asistencia:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
 
-  <!-- Listado de sesiones -->
-  <h2>Sesiones de la Clase</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Día</th>
-        <th>Hora de Inicio</th>
-        <th>Hora de Fin</th>
-        <th>Profesor</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for sesion in sesiones %}
-        <tr>
-          <td>{{ sesion.dia }}</td>
-          <td>{{ sesion.hora_inicio }}</td>
-          <td>{{ sesion.hora_fin }}</td>
-          <td>{{ sesion.profesor }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="4">No hay sesiones para esta clase.</td>
-        </tr>
+  .tooltip p {
+    margin: 0;
+    padding: 2px 0;
+  }
+</style>
+
+<h1>Detalle de la Clase</h1>
+
+<p><strong>Nombre de la Clase:</strong> {{ clase.nombre }}</p>
+<p><strong>Disciplina:</strong> {{ clase.id_disciplina.nombre }}</p>
+<p><strong>Categoría:</strong> {{ clase.id_categoria.nombre }}</p>
+
+<div class="sesiones-container" style="display: flex;">
+  {% for sesion in sesiones %}
+    <div style="margin-right: 20px;">
+      <p><strong>Día:</strong> {{ sesion.dia }}</p>
+      <p><strong>Hora de Inicio:</strong> {{ sesion.hora_inicio }}</p>
+      <p><strong>Hora de Fin:</strong> {{ sesion.hora_fin }}</p>
+      <p><strong>Profesor:</strong> {{ sesion.profesor }}</p>
+    </div>
+  {% empty %}
+    <div>No hay sesiones para esta clase.</div>
+  {% endfor %}
+</div>
+
+<a href="{% url 'modificar_clase' pk=clase.pk %}" class="btn">Modificar</a>
+<a href="{% url 'eliminar_clase' pk=clase.pk %}" class="btn btn-alerta">Eliminar</a>
+<a href="{% url 'horarios' %}" class="btn btn-secundario">Volver al listado de clases</a>
+
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Alumno</th>
+      <th colspan="{{ fechas|length }}">Asistencias</th>
+    </tr>
+    <tr>
+      {% for fecha in fechas %}
+        <th style="width: 30px; text-align: center;">{{ fecha|date:"j/n" }}</th>
       {% endfor %}
-    </tbody>
-  </table>
+    </tr>
+  </thead>
+  <tbody>
+    {% for alumno in alumnos %}
+      <tr>
+        <td>{{ alumno.apellido }} {{ alumno.nombre }}</td>
+        {% for fecha in fechas %}
+          <td>
+            {% for asistencia in asistencias %}
+              {% if asistencia.id_alumno == alumno and asistencia.fecha == fecha %}
+                <a href="{% url 'marcar_asistencia' clase_id=clase.id_clase fecha=fecha|date:'Y-m-d' %}">
+                  <div class="cuadro-asistencia 
+                    {% if asistencia.estado == 'presente' %}presente
+                    {% elif asistencia.estado == 'ausente' %}ausente
+                    {% else %}pendiente{% endif %}">
+                    <!-- Tooltip con la información de la asistencia -->
+                    <div class="tooltip">
+                      <p><strong>Alumno:</strong> {{ alumno.apellido }} {{ alumno.nombre }}</p>
+                      <p><strong>Estado:</strong> {{ asistencia.estado|capfirst }}</p>
+                      <p><strong>Caballo:</strong> {% if asistencia.id_caballo %}{{ asistencia.id_caballo.nombre }}{% else %}N/A{% endif %}</p>
+                      <p><strong>Fecha:</strong> {{ fecha|date:"j/n/Y" }}</p>
+                    </div>
+                  </div>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}
