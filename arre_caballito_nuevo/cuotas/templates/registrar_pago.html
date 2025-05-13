@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Registrar Pago - Deudas de {{ alumno.nombre }} {{ alumno.apellido }}</h1>
-  
+
   <h3>Conceptos Seleccionados</h3>
   <table class="table">
     <thead>
@@ -40,12 +40,49 @@
       </select>
     </div>
 
-      <!-- Incluimos los conceptos seleccionados como campo oculto -->
+    <!-- Conceptos seleccionados como campos ocultos -->
     {% for concepto in conceptos_detalles %}
       <input type="hidden" name="conceptos_seleccionados" value="{{ concepto.id }};{{ concepto.tipo }};{{ concepto.descripcion }};{{ concepto.monto }};{{ concepto.estado }}">
     {% endfor %}
 
-    <button type="submit" class="btn btn-primary">Confirmar Pago</button>
+    <button type="submit" class="btn btn-primary mt-3">Confirmar Pago</button>
   </form>
+
+  <!-- Mensajes -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-3" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Modal de Éxito -->
+  <div class="modal fade" id="modalExito" tabindex="-1" role="dialog" aria-labelledby="modalExitoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content text-center p-4">
+        <div class="modal-body">
+          <div class="mb-3">
+            <!-- Ícono de check -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.97 11.03a.75.75 0 0 0 1.08.02L12.03 7l-1.06-1.06L7.5 9.44 5.53 7.47 4.47 8.53l2.5 2.5z"/>
+            </svg>
+          </div>
+          <h5 class="modal-title" id="modalExitoLabel">¡Pago realizado con éxito!</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script para activar modal si hay éxito -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const alerta = document.querySelector('.alert-success');
+      if (alerta) {
+        const modal = new bootstrap.Modal(document.getElementById('modalExito'));
+        modal.show();
+      }
+    });
+  </script>
 
 {% endblock %}

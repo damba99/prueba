@@ -304,3 +304,4 @@ def pagar(request, pk):
 
     # Si no es un POST, redirigir a la vista de deudas
     return redirect('deudas', pk=alumno.id_alumno)
+    
