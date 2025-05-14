@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Actualizar Foto de Perfil</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div>
+      <label for="foto_perfil">Selecciona una foto:</label>
+      <input type="file" name="foto_perfil" id="foto_perfil" accept="image/*">
+    </div>
+
+    <button type="submit" class="btn">Actualizar Foto</button>
+  </form>
+
+  <h3>Foto Actual:</h3>
+  {% if perfil.foto_perfil %}
+    <img src="{{ perfil.foto_perfil.url }}" alt="Foto de perfil" style="width: 150px; height: 150px; border-radius: 50%;">
+  {% else %}
+    <p>No tienes una foto de perfil aún.</p>
+  {% endif %}
+{% endblock %}

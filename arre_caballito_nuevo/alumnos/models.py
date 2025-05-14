@@ -19,7 +19,8 @@ class Alumno(models.Model):
     email = models.EmailField(unique=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)  # Usamos usuario como nombre
     id_categoria = models.ForeignKey(Categoria, related_name='alumnos', on_delete=models.CASCADE, null=True, default=None)
-
+    tipo_sangre = models.CharField(max_length=5, null=True, blank=True)
+    
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
 

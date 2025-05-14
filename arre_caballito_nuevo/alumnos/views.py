@@ -3,6 +3,9 @@ from .models import Alumno, AlumnoClase
 from .forms import AlumnoForm
 from clases.models import Categoria
 from cuotas.models import Inscripcion, Monto, Cuota
+from django.contrib import messages
+from django.shortcuts import render, redirect
+
 
 def crear_alumno(request):
     if request.method == "POST":
@@ -14,17 +17,30 @@ def crear_alumno(request):
         telefono = request.POST.get('telefono')
         email = request.POST.get('email')
         id_categoria = request.POST.get('id_categoria')
-        
+        tipo_sangre = request.POST.get('tipo_sangre')
+
+        # Verificar si ya existe un alumno con ese DNI o correo
+        if Alumno.objects.filter(dni=dni).exists():
+            messages.error(request, "Ya existe un alumno con este DNI.")
+            return render(request, 'crear_alumno.html', {'categorias': Categoria.objects.all()})
+
+        if Alumno.objects.filter(email=email).exists():
+            messages.error(request, "Ya existe un alumno con este correo electrónico.")
+            return render(request, 'crear_alumno.html', {'categorias': Categoria.objects.all()})
+
+        # Si no hay conflictos, crear el alumno
         alumno = Alumno(
             nombre=nombre, apellido=apellido, dni=dni,
             fecha_nacimiento=fecha_nacimiento, direccion=direccion,
-            telefono=telefono, email=email, id_categoria_id=id_categoria
+            telefono=telefono, email=email, id_categoria_id=id_categoria,
+            tipo_sangre=tipo_sangre
         )
         alumno.save()
         return redirect('listar_alumnos')
     
     categorias = Categoria.objects.all()  # Obtén las categorías disponibles
     return render(request, 'crear_alumno.html', {'categorias': categorias})
+
 
 def listar_alumnos(request):
     alumnos = Alumno.objects.all()
@@ -41,6 +57,7 @@ def modificar_alumno(request, pk):
         alumno.telefono = request.POST.get('telefono')
         alumno.email = request.POST.get('email')
         alumno.id_categoria_id = request.POST.get('id_categoria')
+        alumno.tipo_sangre = request.POST.get('tipo_sangre')  # Agregamos tipo de sangre
         alumno.save()
         return redirect('detalle_alumno', pk=alumno.pk)
 
@@ -49,9 +66,16 @@ def modificar_alumno(request, pk):
 
 def eliminar_alumno(request, pk):
     alumno = get_object_or_404(Alumno, pk=pk)
+    
     if request.method == "POST":
-        alumno.delete()
+        # Si el alumno tiene un usuario relacionado, desactivamos su cuenta
+        if alumno.usuario:
+            user = alumno.usuario
+            user.is_active = False  
+            #user.save()  
+            print(user)
         return redirect('listar_alumnos')
+
     return render(request, 'eliminar_alumno.html', {'alumno': alumno})
 
 def detalle_alumno(request, pk):

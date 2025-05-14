@@ -1,40 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-      <h1>Detalles del Alumno</h1>
+  <h1>Detalles del Alumno</h1>
 
-      <div class="form-group">
-        <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
-        <p><strong>DNI:</strong> {{ alumno.dni }}</p>
-        <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
-        <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
-        <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
-        <p><strong>Email:</strong> {{ alumno.email }}</p>
-        <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
-      </div>
+  <div class="form-group">
+    <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+    <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+    <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+    <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+    <p><strong>Email:</strong> {{ alumno.email }}</p>
+    <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+    <p><strong>Tipo de Sangre:</strong> {{ alumno.tipo_sangre|default:"No especificado" }}</p> <!-- Tipo de sangre agregado -->
+  </div>
 
-      <h2>Clases en las que está inscrito:</h2>
+  <h2>Clases en las que está inscrito:</h2>
 
-      {% if clases %}
-        <ul>
-          {% for clase in clases %}
-            <li style="margin-bottom: 10px;">
-              {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
-              <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm" style="margin-left: 10px;">Eliminar Inscripción</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>El alumno no está inscrito en ninguna clase.</p>
-      {% endif %}
+  {% if clases %}
+    <ul>
+      {% for clase in clases %}
+        <li style="margin-bottom: 10px;">
+          {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
+          <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm" style="margin-left: 10px;">Eliminar Inscripción</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>El alumno no está inscrito en ninguna clase.</p>
+  {% endif %}
 
-      <div style="margin-top: 30px;">
-        <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn">Modificar</a>
-        <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn btn-secundario">Eliminar</a>
-        <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Volver a la lista</a>
-      </div>
+  <div style="margin-top: 30px;">
+    <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn">Modificar</a>
+    <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn btn-secundario">Eliminar</a>
+    <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Volver a la lista</a>
+  </div>
 
-      <div style="margin-top: 40px;">
-        <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn">Inscribir en una clase</a>
-      </div>
+  <div style="margin-top: 40px;">
+    <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn">Inscribir en una clase</a>
+  </div>
+
 {% endblock %}

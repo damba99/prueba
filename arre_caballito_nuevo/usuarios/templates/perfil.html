@@ -3,24 +3,49 @@
 {% block title %}Perfil de Usuario{% endblock %}
 
 {% block content %}
-    <h1>Perfil de Usuario</h1>
+  {% if perfil.foto_perfil %}
+    <img src="{{ perfil.foto_perfil.url }}" alt="Foto de perfil" style="width: 150px; height: 150px; border-radius: 50%;">
+  {% else %}
+    <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #ccc; display: flex; justify-content: center; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80">
+        <circle cx="50" cy="50" r="50" fill="#ccc"/>
+        <path d="M50 20c6.627 0 12 5.373 12 12s-5.373 12-12 12-12-5.373-12-12 5.373-12 12-12zm0 22c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm0 6c-8.284 0-15 6.716-15 15v2h30v-2c0-8.284-6.716-15-15-15z" fill="#fff"/>
+        </svg>
+    </div>
+  {% endif %}
+  <h1> {{ alumno.nombre }} {{ alumno.apellido }}</h1>
+  
 
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Fecha de Registro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Fecha de Registro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
 
-    <h3>Detalles del Alumno</h3>
-    <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
-    <p><strong>DNI:</strong> {{ alumno.dni }}</p>
-    <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento|date:"b d, Y" }}</p>
-    <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
-    <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
-    <p><strong>Email:</strong> {{ alumno.email }}</p>
-    <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+  <h3>Detalles del Alumno</h3>
+  <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+  <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+  <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento|date:"b d, Y" }}</p>
+  <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+  <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+  <p><strong>Email:</strong> {{ alumno.email }}</p>
+  <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
 
-    <h3>Opciones</h3>
-    <ul>
-        <li><a href="{% url 'nueva_password' %}">Cambiar contraseña</a></li>
-        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
-    </ul>
+  {% if user.is_authenticated %}
+    <div style="margin-top: 20px;">
+      {% if user.is_superuser %}
+        <a href="{% url 'actualizar_foto_perfil_admin' id=alumno.usuario.id %}" class="btn">
+          Cambiar foto de perfil
+        </a>
+      {% elif user.id == alumno.usuario.id %}
+        <a href="{% url 'actualizar_foto_perfil' %}" class="btn">
+          Cambiar mi foto de perfil
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <h3>Opciones</h3>
+  <ul>
+      <li><a href="{% url 'nueva_password' %}">Cambiar contraseña</a></li>
+      <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+  </ul>
 {% endblock %}

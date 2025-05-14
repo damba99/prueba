@@ -4,6 +4,7 @@
   <h1>Modificar Alumno</h1>
   <form method="POST">
     {% csrf_token %}
+    
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" value="{{ alumno.nombre }}" required>
     
@@ -32,7 +33,22 @@
       {% endfor %}
     </select>
 
+    <!-- Tipo de sangre -->
+    <label for="tipo_sangre">Tipo de sangre:</label>
+    <select id="tipo_sangre" name="tipo_sangre">
+      <option value="">-- Seleccione --</option>
+      <option value="A+" {% if alumno.tipo_sangre == "A+" %} selected {% endif %}>A+</option>
+      <option value="A-" {% if alumno.tipo_sangre == "A-" %} selected {% endif %}>A-</option>
+      <option value="B+" {% if alumno.tipo_sangre == "B+" %} selected {% endif %}>B+</option>
+      <option value="B-" {% if alumno.tipo_sangre == "B-" %} selected {% endif %}>B-</option>
+      <option value="AB+" {% if alumno.tipo_sangre == "AB+" %} selected {% endif %}>AB+</option>
+      <option value="AB-" {% if alumno.tipo_sangre == "AB-" %} selected {% endif %}>AB-</option>
+      <option value="O+" {% if alumno.tipo_sangre == "O+" %} selected {% endif %}>O+</option>
+      <option value="O-" {% if alumno.tipo_sangre == "O-" %} selected {% endif %}>O-</option>
+    </select>
+
     <button type="submit">Modificar</button>
   </form>
+
   <a href="{% url 'listar_alumnos' %}">Volver a la lista</a>
 {% endblock %}

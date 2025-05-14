@@ -44,6 +44,21 @@
         </div>
 
         <div class="form-group">
+          <label for="tipo_sangre">Tipo de sangre:</label>
+          <select id="tipo_sangre" name="tipo_sangre">
+            <option value="">-- Seleccione --</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label for="id_categoria">Categoría:</label>
           <select id="id_categoria" name="id_categoria" required>
             {% for categoria in categorias %}

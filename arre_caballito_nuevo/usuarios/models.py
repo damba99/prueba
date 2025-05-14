@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, User
 
 class Usuario(AbstractUser):
     ROLES_CHOICES = [
@@ -20,3 +20,10 @@ class Usuario(AbstractUser):
         related_name='usuarios_permissions_set', 
         blank=True
     )
+    
+class Perfil(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    foto_perfil = models.ImageField(upload_to='perfil/', null=True, blank=True)  # Foto de perfil
+
+    def __str__(self):
+        return f"Perfil de {self.usuario.username}"
