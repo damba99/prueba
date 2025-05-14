@@ -110,6 +110,7 @@
     .checkbox-container {
       display: flex;
       align-items: center;
+      margin-top: 10px;
       margin-bottom: 20px;
     }
 
@@ -163,15 +164,25 @@
       <label for="username">Nombre de usuario</label>
       <input type="text" id="username" name="username" required placeholder="Ingresa tu nombre de usuario">
 
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" name="password" required placeholder="Ingresa tu contraseña">
+      <div>
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required placeholder="Ingresa tu contraseña" style="margin-bottom: 0;">
+        {% if error %}
+          <p style="color: red;">{{ error }}</p>
+        {% endif %}
+      </div>
+
 
       <div class="checkbox-container">
         <input type="checkbox" id="mostrarPassword" onclick="togglePassword()">
         <label for="mostrarPassword">Mostrar contraseña</label>
       </div>
 
+
       <button type="submit">Iniciar sesión</button>
+      <a href="{% url 'recuperar_password' %}" style="color: #ff0044; text-decoration: none; font-size: 0.95em;">
+        ¿Olvidaste tu contraseña?
+      </a>
     </form>
   </div>
 

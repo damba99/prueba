@@ -80,6 +80,7 @@ def registrar_movimiento(request):
         # Recogemos los datos del formulario
         tipo = request.POST.get('tipo')
         monto = request.POST.get('monto')
+        descripcion = request.POST.get('descripcion')
 
         # Convertimos el monto a Decimal
         try:
@@ -96,6 +97,7 @@ def registrar_movimiento(request):
         # Creamos el nuevo movimiento
         movimiento = Movimiento(
             id_caja=caja_abierta,
+            descripcion = descripcion,
             fecha_y_hora=timezone.now(),
             tipo=tipo,
             monto=monto_decimal,

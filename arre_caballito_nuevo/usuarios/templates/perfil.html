@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Perfil de Usuarios</title>
-</head>
-<body>
-    <h1>Lista de Usuarios</h1>
+{% extends 'base.html' %}
+
+{% block title %}Perfil de Usuario{% endblock %}
+
+{% block content %}
+    <h1>Perfil de Usuario</h1>
+
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Fecha de Registro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+
+    <h3>Detalles del Alumno</h3>
+    <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+    <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento|date:"b d, Y" }}</p>
+    <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+    <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+    <p><strong>Email:</strong> {{ alumno.email }}</p>
+    <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+
+    <h3>Opciones</h3>
     <ul>
-        {% for usuario in usuarios %}
-            <li>{{ usuario.rol }}</li>  <!-- Asumiendo que 'nombre' es un campo en el modelo Usuarios -->
-        {% endfor %}
+        <li><a href="{% url 'nueva_password' %}">Cambiar contraseña</a></li>
+        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
     </ul>
-</body>
-</html>
+{% endblock %}

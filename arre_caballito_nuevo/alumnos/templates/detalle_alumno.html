@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="contenido">
-    <div class="contenedor-general">
       <h1>Detalles del Alumno</h1>
 
       <div class="form-group">
@@ -39,6 +37,4 @@
       <div style="margin-top: 40px;">
         <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn">Inscribir en una clase</a>
       </div>
-    </div>
-  </div>
 {% endblock %}

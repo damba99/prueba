@@ -121,7 +121,7 @@ def crear_clase(request):
         cont = clases.count() + 1  # El contador será el número de clases + 1 para la nueva clase
 
         # Crear el nombre de la clase
-        nombre = f"Grupo {cont} ({disciplina.nombre} - {categoria.nombre})"
+        nombre = f"Grupo {cont} ({categoria.nombre})"
 
         # Crear la clase con el nombre generado y los objetos disciplina y categoria
         clase = Clase(nombre=nombre, id_disciplina=disciplina, id_categoria=categoria)
@@ -299,58 +299,53 @@ def obtener_fecha_dia_sesion(dia_sesion):
     }
 
     hoy = datetime.date.today()
-    dia_actual = hoy.weekday()
+    dia_actual = hoy.weekday()  # 0 = lunes, ..., 6 = domingo
 
     dia_sesion_numero = dias_semana.get(dia_sesion.lower())
     if dia_sesion_numero is None:
         raise ValueError(f'Día inválido: {dia_sesion}')
 
-    diferencia_dias = dia_actual - dia_sesion_numero
-    if diferencia_dias < 0:
-        diferencia_dias += 7
+    dias_hasta_proximo = (dia_sesion_numero - dia_actual + 7) % 7
+    dias_hasta_proximo = dias_hasta_proximo or 7  # Si es hoy, ir al mismo día pero la próxima semana
 
-    fecha_sesion = hoy - datetime.timedelta(days=diferencia_dias)
+    fecha_sesion = hoy + datetime.timedelta(days=dias_hasta_proximo)
     return fecha_sesion
+
+
+from datetime import date
 
 def crear_asistencias(clase):
     from datetime import timedelta
+
     alumnos = AlumnoClase.objects.filter(clase=clase).values_list('alumno', flat=True)
     sesiones = Sesion.objects.filter(id_clase=clase)
 
+    hoy = date.today()
+
     for sesion in sesiones:
-        fecha = obtener_fecha_dia_sesion(sesion.dia)
-        
+        fecha_programada = obtener_fecha_dia_sesion(sesion.dia)  # Fecha correspondiente al día de la sesión esta semana
+
         for alumno_id in alumnos:
             alumno = Alumno.objects.filter(id_alumno=alumno_id).first()
-            asistencias = Asistencia.objects.filter(id_sesion=sesion).order_by('-fecha')
-            
-            if asistencias.exists():
-                asistencia_mas_lejana = asistencias.first()
-                fecha_asistencia_mas_lejana = asistencia_mas_lejana.fecha
-                
-                diferencia_dias = (fecha_asistencia_mas_lejana - fecha).days
 
-                if diferencia_dias < 7:
-                    if Asistencia.objects.filter(id_alumno=alumno, id_sesion=sesion, fecha=fecha).exists():
-                        fecha_siguiente = fecha + timedelta(days=7)
-                        asistencia = Asistencia(
-                            id_alumno=alumno,
-                            id_sesion=sesion,
-                            fecha=fecha_siguiente,
-                            estado='pendiente'
-                        )
-                        asistencia.save()
-                    else:    
-                        asistencia = Asistencia(
-                            id_alumno=alumno,          
-                            id_sesion=sesion,          
-                            fecha=fecha,            
-                            estado='pendiente'      
-                        )
-                        
-                        asistencia.save()
-                else:
-                    print("no mas xfa")
+            # Verifica si ya existe una asistencia futura (a partir de hoy) para ese alumno y sesión
+            existe_futura = Asistencia.objects.filter(
+                id_sesion=sesion,
+                id_alumno=alumno,
+                fecha__gte=fecha_programada
+            ).exists()
+            print(sesion, alumno, hoy)
+            print(fecha_programada)
+            if not existe_futura:
+                # Crea la asistencia en la fecha que le corresponde esta semana
+                Asistencia.objects.create(
+                    id_alumno=alumno,
+                    id_sesion=sesion,
+                    fecha=fecha_programada,
+                    estado='pendiente'
+                )
+                print("se ha creado a tu señora")
+
 
 from caballos.models import Caballo
 from datetime import datetime

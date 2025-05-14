@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="contenido">
-    <div class="contenedor-general">
       <h1>Lista de Alumnos</h1>
 
       {% if alumnos %}
@@ -34,6 +32,4 @@
 
       <br>
       <a href="{% url 'crear_alumno' %}" class="btn">Crear Alumno</a>
-    </div>
-  </div>
 {% endblock %}

@@ -1,21 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{% url 'listar_montos' %}" class="btn btn-secondary">Ir al listado de montos</a>
-<br>
+{% if is_admin %}
+  <a href="{% url 'listar_montos' %}" class="btn btn-secondary">Ir al listado de montos</a>
+{% endif %}<br>
+
 <h1>Lista de Cuotas</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>ID Cuota</th>
-        <th>Alumno</th>
-        <th>Periodo</th>
-        <th>Monto</th>
-        <th>Estado</th>
-        <th>Fecha de Vencimiento</th>
-      </tr>
-    </thead>
-    <tbody>
+
+<!-- Formulario de búsqueda y filtro visual -->
+<form method="get">
+  <label for="filtro">Filtrar por estado:</label>
+  <select id="filtro" name="filtro_estado">
+    <option value="">Seleccione una opción</option>
+    {% for value, label in estado_choices %}
+      <option value="{{ value }}" {% if estado_seleccionado == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+
+<!-- Mostrar las cuotas filtradas -->
+<h2>Lista de Cuotas</h2>
+<p>ID Usuario Logueado: {{ user.id }}</p>
+<table>
+  <thead>
+    <tr>
+      <th>ID Cuota</th>
+      <th>Alumno</th>
+      <th>Periodo</th>
+      <th>Monto</th>
+      <th>Estado</th>
+      <th>Fecha de Vencimiento</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if cuotas %}
       {% for cuota in cuotas %}
         <tr>
           <td>{{ cuota.id_cuota }}</td>
@@ -27,7 +46,13 @@
           <td><a href="{% url 'modificar_cuota' pk=cuota.pk %}" class="btn btn-secondary">Modificar montos</a></td>
         </tr>
       {% endfor %}
-    </tbody>
-  </table>
-  <a href="{% url 'cuotas' %}" class="btn btn-secondary">PRICIPAL</a>
+    {% else %}
+      <tr>
+        <td colspan="6" class="text-center">No existen registros que coincidan con la búsqueda.</td>
+      </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+<a href="{% url 'cuotas' %}" class="btn btn-secondary">PRINCIPAL</a>
 {% endblock %}
