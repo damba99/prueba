@@ -7,6 +7,7 @@
   <div class="mb-3" style="max-width: 400px; position: relative;">
     <input type="text" id="busqueda" class="form-control" placeholder="Buscar por nombre o apellido...">
     <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #aaa;">🔍</span>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   </div>
 
   {% if alumnos %}
@@ -24,9 +25,15 @@
             <td>{{ alumno.nombre }}</td>
             <td>{{ alumno.apellido }}</td>
             <td>
-              <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn-tabla">Ver</a>
-              <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn-tabla">Editar</a>
-              <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
+              <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn-tabla" title="Ver">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+              <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn-tabla" title="Editar">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn-tabla btn-secundario" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+              </a>
             </td>
           </tr>
         {% endfor %}

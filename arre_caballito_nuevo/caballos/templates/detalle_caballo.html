@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Detalles del Caballo</h1>
+  <h1 style="margin-bottom: 20px;">Detalles del Caballo</h1>
 
-  <table class="tabla-estandar" style="max-width: 600px;">
+  <table class="tabla-estandar">
     <tr>
       <th>Nombre</th>
       <td>{{ caballo.nombre }}</td>
@@ -20,7 +20,7 @@
       <th>Disciplinas</th>
       <td>
         {% if caballo.caballodisciplina_set.all %}
-          <ul style="margin: 0; padding-left: 1.2em;">
+          <ul>
             {% for cd in caballo.caballodisciplina_set.all %}
               <li>{{ cd.disciplina.nombre }}</li>
             {% endfor %}
@@ -34,69 +34,101 @@
 
   <br>
 
-  <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn-tabla">Modificar</a>
-  <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
-  <a href="{% url 'listar_caballos' %}" class="btn btn-success">Volver a la lista</a>
+  <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn-tabla" title="Editar">
+    <i class="fa-solid fa-pen-to-square"></i> Modificar
+  </a>
+  <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn-tabla btn-secundario" title="Eliminar">
+    <i class="fa-solid fa-trash"></i> Eliminar
+  </a>
+  <a href="{% url 'listar_caballos' %}" class="btn btn-success" title="Volver">
+    <i class="fa-solid fa-arrow-left"></i> Volver a la lista
+  </a>
 
   <style>
+    body {
+      background-color: #fff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #000;
+    }
+
     .tabla-estandar {
       width: 100%;
+      max-width: 700px;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     }
 
     .tabla-estandar th,
     .tabla-estandar td {
-      border: 1px solid #000;
-      padding: 10px;
+      border: 2px solid #000;
+      padding: 12px 15px;
       text-align: left;
-      vertical-align: top;
     }
 
     .tabla-estandar th {
-      background-color:rgb(79, 75, 78);
-      width: 30%;
+      background-color: rgba(71, 69, 69, 0.55);
+      color: white;
+      font-weight: 600;
+    }
+
+    .tabla-estandar ul {
+      padding-left: 1.2em;
+      margin: 0;
     }
 
     .btn-tabla {
       display: inline-block;
-      padding: 6px 10px;
-      margin-right: 5px;
+      padding: 8px 12px;
+      margin-right: 8px;
       text-decoration: none;
       color: white;
-      border-radius: 4px;
-      font-size: 0.9em;
-      background-color: rgb(7, 7, 7);
+      border-radius: 6px;
+      font-size: 0.95em;
+      background-color: #ff3399; /* Rosa chicle */
+      transition: background-color 0.3s ease;
     }
 
     .btn-tabla:hover {
-      background-color: rgb(69, 141, 219);
+      background-color: #cc0066;
     }
 
     .btn-tabla.btn-secundario {
-      background-color: #dc3545;
+      background-color: #ff0000; /* Rojo fuerte */
     }
 
     .btn-tabla.btn-secundario:hover {
-      background-color: #c82333;
+      background-color: #b30000;
     }
 
     .btn {
       display: inline-block;
       padding: 8px 15px;
       text-decoration: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 1em;
       margin-top: 10px;
     }
 
     .btn-success {
-      background-color: #28a745;
+      background-color: #000; /* Negro */
       color: white;
     }
 
     .btn-success:hover {
-      background-color: #1e7e34;
+      background-color: #333;
+    }
+
+    .btn i {
+      margin-right: 5px;
+    }
+
+    .btn-tabla i {
+      margin-right: 5px;
     }
   </style>
+
+  <!-- Font Awesome para los íconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 {% endblock %}

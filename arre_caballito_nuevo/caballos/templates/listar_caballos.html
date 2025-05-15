@@ -6,6 +6,7 @@
     <div class="mb-3" style="max-width: 400px; position: relative;">
     <input type="text" id="busqueda-caballos" class="form-control" placeholder="Buscar por nombre...">
     <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #aaa;">🔍</span>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   </div>
 
   {% if caballos %}
@@ -25,10 +26,16 @@
             <td>{{ caballo.edad }}</td>
             <td>{{ caballo.raza }}</td>
             <td>
-              <a href="{% url 'detalle_caballo' pk=caballo.pk %}" class="btn-tabla">Ver</a>
-              <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn-tabla">Editar</a>
-              <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
-            </td>
+              <a href="{% url 'detalle_caballo' pk=caballo.pk %}" class="btn-tabla" title="Ver">
+                <i class="fa-regular fa-eye"></i>
+              </a>
+              <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn-tabla" title="Editar">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn-tabla btn-secundario" title="Eliminar">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -78,14 +85,19 @@
       color: white;
       border-radius: 4px;
       font-size: 0.9em;
-    }
+      vertical-align: middle;
+      text-align: center;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+    }
 
     .btn-tabla {
-      background-color:rgb(255, 0, 128); /* Azul */
+      background-color: rgb(255, 0, 128); /* Rosa fuerte */
     }
 
     .btn-tabla:hover {
-      background-color: #0056b3;
+      background-color:rgb(255, 0, 128);
     }
 
     .btn-tabla:last-child {
@@ -115,7 +127,13 @@
     }
 
     .btn-success:hover {
-      background-color: #1e7e34;
+      background-color:rgba(126, 59, 30, 0);
     }
+
+    /* Para que el icono se vea bien centrado y en buen tamaño */
+    .btn-tabla i {
+      font-size: 16px;
+      vertical-align: middle;
+    }
   </style>
 {% endblock %}

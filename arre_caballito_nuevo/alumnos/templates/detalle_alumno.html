@@ -1,40 +1,141 @@
 {% extends "base.html" %}
 
 {% block content %}
-      <h1>Detalles del Alumno</h1>
+  <h1 style="margin-bottom: 20px;">Detalles del Alumno</h1>
 
-      <div class="form-group">
-        <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
-        <p><strong>DNI:</strong> {{ alumno.dni }}</p>
-        <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
-        <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
-        <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
-        <p><strong>Email:</strong> {{ alumno.email }}</p>
-        <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
-      </div>
+  <div class="detalle-alumno">
+    <p><strong>Nombre:</strong> {{ alumno.nombre }} {{ alumno.apellido }}</p>
+    <p><strong>DNI:</strong> {{ alumno.dni }}</p>
+    <p><strong>Fecha de Nacimiento:</strong> {{ alumno.fecha_nacimiento }}</p>
+    <p><strong>Dirección:</strong> {{ alumno.direccion }}</p>
+    <p><strong>Teléfono:</strong> {{ alumno.telefono }}</p>
+    <p><strong>Email:</strong> {{ alumno.email }}</p>
+    <p><strong>Categoría:</strong> {{ alumno.id_categoria.nombre }}</p>
+  </div>
 
-      <h2>Clases en las que está inscrito:</h2>
+  <h2 style="margin-top: 30px;">Clases en las que está inscrito:</h2>
 
-      {% if clases %}
-        <ul>
-          {% for clase in clases %}
-            <li style="margin-bottom: 10px;">
-              {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
-              <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm" style="margin-left: 10px;">Eliminar Inscripción</a>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>El alumno no está inscrito en ninguna clase.</p>
-      {% endif %}
+  {% if clases %}
+    <ul class="lista-clases">
+      {% for clase in clases %}
+        <li>
+          {{ clase.nombre }} ({{ clase.id_categoria.nombre }})
+          <a href="{% url 'eliminar_inscripcion' alumno_pk=alumno.pk clase_pk=clase.id_clase %}" class="btn btn-alerta btn-sm">
+            <i class="fa-solid fa-xmark"></i> Eliminar Inscripción
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>El alumno no está inscrito en ninguna clase.</p>
+  {% endif %}
 
-      <div style="margin-top: 30px;">
-        <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn">Modificar</a>
-        <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn btn-secundario">Eliminar</a>
-        <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Volver a la lista</a>
-      </div>
+  <div class="botones-acciones">
+    <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn btn-rosa">
+      <i class="fa-solid fa-pen-to-square"></i> Modificar
+    </a>
+    <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn btn-rojo">
+      <i class="fa-solid fa-trash"></i> Eliminar
+    </a>
+    <a href="{% url 'listar_alumnos' %}" class="btn btn-negro">
+      <i class="fa-solid fa-arrow-left"></i> Volver a la lista
+    </a>
+  </div>
 
-      <div style="margin-top: 40px;">
-        <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn">Inscribir en una clase</a>
-      </div>
+  <div style="margin-top: 40px;">
+    <a href="{% url 'inscribir_alumno' pk=alumno.pk %}" class="btn btn-rosa">
+      <i class="fa-solid fa-plus"></i> Inscribir en una clase
+    </a>
+  </div>
+
+  <style>
+    body {
+      background-color: #fff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #000;
+    }
+
+    .detalle-alumno p {
+      margin: 8px 0;
+      font-size: 1rem;
+    }
+
+    .lista-clases {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    .lista-clases li {
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+    }
+
+    .botones-acciones {
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 1em;
+      margin: 8px 10px 0 0;
+      transition: background-color 0.3s ease;
+      color: white;
+    }
+
+    .btn i {
+      margin-right: 6px;
+    }
+
+    .btn-rosa {
+      background-color: #ff3399;
+    }
+
+    .btn-rosa:hover {
+      background-color: #cc0066;
+    }
+
+    .btn-rojo {
+      background-color: #ff0000;
+    }
+
+    .btn-rojo:hover {
+      background-color: #b30000;
+    }
+
+    .btn-negro {
+      background-color: #000;
+    }
+
+    .btn-negro:hover {
+      background-color: #333;
+    }
+
+    .btn-alerta {
+      background-color: #ff0000;
+      color: white;
+      padding: 6px 10px;
+      font-size: 0.9em;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    .btn-alerta:hover {
+      background-color: #b30000;
+    }
+
+    .btn-sm {
+      font-size: 0.85em;
+      padding: 5px 8px;
+    }
+  </style>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 {% endblock %}
