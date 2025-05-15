@@ -5,10 +5,51 @@
   
   <p>¿Está seguro de que desea eliminar la inscripción del alumno <strong>{{ alumno.nombre }} {{ alumno.apellido }}</strong> en la clase <strong>{{ clase.nombre }}</strong>?</p>
   
-  <form method="post">
+  <form method="post" id="form-eliminar-inscripcion">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
   </form>
   
   <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn btn-secondary">Cancelar</a>
+
+  <!-- Incluir SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const form = document.getElementById('form-eliminar-inscripcion');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      Swal.fire({
+        title: '¿Está seguro?',
+        text: 'Esta acción eliminará la inscripción del alumno en la clase.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-danger',
+          cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        } else {
+          Swal.fire({
+            title: 'Cancelado',
+            text: 'La inscripción no fue eliminada.',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+          });
+        }
+      });
+    });
+  </script>
 {% endblock %}

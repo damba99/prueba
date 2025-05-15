@@ -2,9 +2,50 @@
 
 {% block content %}
   <h1>¿Estás seguro de que quieres eliminar a {{ alumno.nombre }} {{ alumno.apellido }}?</h1>
-  <form method="POST">
+
+  <form method="POST" id="form-eliminar-alumno">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
   </form>
+
   <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Cancelar</a>
+
+  <!-- Incluir SweetAlert2 si no está en base.html -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const form = document.getElementById('form-eliminar-alumno');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+
+      swalWithBootstrapButtons.fire({
+        title: "¿Estás seguro?",
+        text: "¡Esta acción no se puede deshacer!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "No, cancelar",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelado",
+            text: "El alumno no fue eliminado.",
+            icon: "error"
+          });
+        }
+      });
+    });
+  </script>
 {% endblock %}

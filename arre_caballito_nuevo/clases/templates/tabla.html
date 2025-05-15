@@ -98,9 +98,9 @@
             // Asignar color a cada clase si no tiene asignado uno ya
             clases.forEach(clase => {
                 if (!colorPorClase[clase.pk]) {
-                    // Asignar el siguiente color disponible de la lista
-                    colorPorClase[clase.pk] = listaColores.shift(); // Obtener y eliminar el primer color de la lista
-                }
+                        colorPorClase[clase.pk] = listaColores.shift();
+            }
+
         
                 const sesionesClase = sesiones.filter(sesion => sesion.fields.id_clase === clase.pk); // Filtrar sesiones por clase
         

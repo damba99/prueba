@@ -1,10 +1,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>¿Estás seguro de que quieres eliminar a {{ caballo.nombre }}?</h1>
-  <form method="POST">
+  <form id="form-eliminar" method="POST" style="display: none;">
     {% csrf_token %}
     <button type="submit">Confirmar eliminación</button>
   </form>
-  <a href="{% url 'listar_caballos' %}">Cancelar</a>
+
+  <!-- SweetAlert2 desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    // Mostrar automáticamente la alerta al cargar la página
+    document.addEventListener('DOMContentLoaded', function () {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+
+      swalWithBootstrapButtons.fire({
+        title: "¿Estás seguro?",
+        text: "¡No podrás revertir esto!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "No, cancelar",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('form-eliminar').submit();
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelado",
+            text: "Tu caballo está a salvo :)",
+            icon: "error"
+          }).then(() => {
+            window.location.href = "{% url 'listar_caballos' %}";
+          });
+        }
+      });
+    });
+  </script>
 {% endblock %}

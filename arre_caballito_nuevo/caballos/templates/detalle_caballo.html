@@ -2,19 +2,101 @@
 
 {% block content %}
   <h1>Detalles del Caballo</h1>
-  
-  <p><strong>Nombre:</strong> {{ caballo.nombre }}</p>
-  <p><strong>Edad:</strong> {{ caballo.edad }}</p>
-  <p><strong>Sexo:</strong> {{ caballo.get_sexo_display }}</p>  <!-- Mostrar 'Macho' o 'Hembra' -->
 
-  <p><strong>Disciplinas:</strong></p>
-  <ul>
-    {% for caballo_disciplina in caballo.caballodisciplina_set.all %}
-      <li>{{ caballo_disciplina.disciplina.nombre }}</li>  <!-- Mostrar el nombre de la disciplina -->
-    {% endfor %}
-  </ul>
+  <table class="tabla-estandar" style="max-width: 600px;">
+    <tr>
+      <th>Nombre</th>
+      <td>{{ caballo.nombre }}</td>
+    </tr>
+    <tr>
+      <th>Edad</th>
+      <td>{{ caballo.edad }}</td>
+    </tr>
+    <tr>
+      <th>Sexo</th>
+      <td>{{ caballo.get_sexo_display }}</td>
+    </tr>
+    <tr>
+      <th>Disciplinas</th>
+      <td>
+        {% if caballo.caballodisciplina_set.all %}
+          <ul style="margin: 0; padding-left: 1.2em;">
+            {% for cd in caballo.caballodisciplina_set.all %}
+              <li>{{ cd.disciplina.nombre }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <em>No tiene disciplinas asignadas</em>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
 
-  <a href="{% url 'modificar_caballo' pk=caballo.pk %}">Modificar</a>
-  <a href="{% url 'eliminar_caballo' pk=caballo.pk %}">Eliminar</a>
-  <a href="{% url 'listar_caballos' %}">Volver a la lista</a>
+  <br>
+
+  <a href="{% url 'modificar_caballo' pk=caballo.pk %}" class="btn-tabla">Modificar</a>
+  <a href="{% url 'eliminar_caballo' pk=caballo.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
+  <a href="{% url 'listar_caballos' %}" class="btn btn-success">Volver a la lista</a>
+
+  <style>
+    .tabla-estandar {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .tabla-estandar th,
+    .tabla-estandar td {
+      border: 1px solid #000;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .tabla-estandar th {
+      background-color:rgb(79, 75, 78);
+      width: 30%;
+    }
+
+    .btn-tabla {
+      display: inline-block;
+      padding: 6px 10px;
+      margin-right: 5px;
+      text-decoration: none;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.9em;
+      background-color: rgb(7, 7, 7);
+    }
+
+    .btn-tabla:hover {
+      background-color: rgb(69, 141, 219);
+    }
+
+    .btn-tabla.btn-secundario {
+      background-color: #dc3545;
+    }
+
+    .btn-tabla.btn-secundario:hover {
+      background-color: #c82333;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 15px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #1e7e34;
+    }
+  </style>
 {% endblock %}

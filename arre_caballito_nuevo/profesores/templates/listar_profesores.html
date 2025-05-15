@@ -1,15 +1,121 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Lista de Profesores</h1>
-  <ul>
-    {% for profesor in profesores %}
-      <li>
-        <a href="{% url 'detalle_profesor' pk=profesor.pk %}">{{ profesor.nombre }} {{ profesor.apellido }}</a>
-        <a href="{% url 'modificar_profesor' pk=profesor.pk %}">Editar</a>
-        <a href="{% url 'eliminar_profesor' pk=profesor.pk %}">Eliminar</a>
-      </li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'crear_profesor' %}">Crear Profesor</a>
+  <h1>Lista de Profesores</h1>
+
+    <div class="mb-3" style="max-width: 400px; position: relative;">
+    <input type="text" id="busqueda-profesores" class="form-control" placeholder="Buscar por nombre o apellido...">
+    <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #aaa;">🔍</span>
+  </div>
+
+  {% if profesores %}
+    <table class="tabla-estandar" id="tabla-profesores">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profesor in profesores %}
+          <tr>
+            <td>{{ profesor.nombre }}</td>
+            <td>{{ profesor.apellido }}</td>
+            <td>
+              <a href="{% url 'detalle_profesor' pk=profesor.pk %}" class="btn-tabla">Ver</a>
+              <a href="{% url 'modificar_profesor' pk=profesor.pk %}" class="btn-tabla">Editar</a>
+              <a href="{% url 'eliminar_profesor' pk=profesor.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay profesores registrados.</p>
+  {% endif %}
+
+  <br>
+  <a href="{% url 'crear_profesor' %}" class="btn btn-success">Crear Profesor</a>
+
+    <script>
+    document.getElementById('busqueda-profesores').addEventListener('keyup', function () {
+      const filtro = this.value.toLowerCase();
+      const filas = document.querySelectorAll('#tabla-profesores tbody tr');
+
+      filas.forEach(fila => {
+        const nombre = fila.children[0].textContent.toLowerCase();
+        const apellido = fila.children[1].textContent.toLowerCase();
+        const visible = nombre.includes(filtro) || apellido.includes(filtro);
+        fila.style.display = visible ? '' : 'none';
+      });
+    });
+  </script>
+
+  <style>
+    .tabla-estandar {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .tabla-estandar th,
+    .tabla-estandar td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .tabla-estandar th {
+      background-color: #f5f5f5;
+    }
+
+    .btn-tabla {
+      display: inline-block;
+      padding: 6px 10px;
+      margin-right: 5px;
+      text-decoration: none;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .btn-tabla {
+      background-color: #007bff; /* Azul */
+    }
+
+    .btn-tabla:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-tabla:last-child {
+      margin-right: 0;
+    }
+
+    .btn-secundario {
+      background-color: #dc3545; /* Rojo */
+    }
+
+    .btn-secundario:hover {
+      background-color: #c82333;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 15px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #1e7e34;
+    }
+  </style>
 {% endblock %}

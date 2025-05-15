@@ -2,7 +2,8 @@
 
 {% block content %}
   <h1>Modificar Alumno</h1>
-  <form method="POST">
+
+  <form method="POST" id="form-modificar-alumno">
     {% csrf_token %}
     
     <label for="nombre">Nombre:</label>
@@ -47,8 +48,63 @@
       <option value="O-" {% if alumno.tipo_sangre == "O-" %} selected {% endif %}>O-</option>
     </select>
 
-    <button type="submit">Modificar</button>
+    <!-- Tipo de sangre -->
+    <label for="tipo_sangre">Tipo de sangre:</label>
+    <select id="tipo_sangre" name="tipo_sangre">
+      <option value="">-- Seleccione --</option>
+      <option value="A+" {% if alumno.tipo_sangre == "A+" %} selected {% endif %}>A+</option>
+      <option value="A-" {% if alumno.tipo_sangre == "A-" %} selected {% endif %}>A-</option>
+      <option value="B+" {% if alumno.tipo_sangre == "B+" %} selected {% endif %}>B+</option>
+      <option value="B-" {% if alumno.tipo_sangre == "B-" %} selected {% endif %}>B-</option>
+      <option value="AB+" {% if alumno.tipo_sangre == "AB+" %} selected {% endif %}>AB+</option>
+      <option value="AB-" {% if alumno.tipo_sangre == "AB-" %} selected {% endif %}>AB-</option>
+      <option value="O+" {% if alumno.tipo_sangre == "O+" %} selected {% endif %}>O+</option>
+      <option value="O-" {% if alumno.tipo_sangre == "O-" %} selected {% endif %}>O-</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Modificar</button>
   </form>
 
-  <a href="{% url 'listar_alumnos' %}">Volver a la lista</a>
+  <a href="{% url 'listar_alumnos' %}" class="btn btn-secundario">Volver a la lista</a>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const form = document.getElementById('form-modificar-alumno');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Deseas guardar los cambios realizados al alumno?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, guardar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit();
+        } else {
+          Swal.fire({
+            title: 'Cancelado',
+            text: 'Los cambios no fueron guardados.',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            customClass: {
+              confirmButton: 'btn btn-primary'
+            },
+            buttonsStyling: false
+          });
+        }
+      });
+    });
+  </script>
 {% endblock %}
