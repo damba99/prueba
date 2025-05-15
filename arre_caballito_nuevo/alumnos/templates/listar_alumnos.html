@@ -1,35 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-      <h1>Lista de Alumnos</h1>
+  <h1>Lista de Alumnos</h1>
 
-      {% if alumnos %}
-        <table class="tabla-estandar">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for alumno in alumnos %}
-              <tr>
-                <td>{{ alumno.nombre }}</td>
-                <td>{{ alumno.apellido }}</td>
-                <td>
-                  <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn-tabla">Ver</a>
-                  <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn-tabla">Editar</a>
-                  <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p>No hay alumnos registrados.</p>
-      {% endif %}
+  <!-- Campo de búsqueda -->
+  <div class="mb-3" style="max-width: 400px; position: relative;">
+    <input type="text" id="busqueda" class="form-control" placeholder="Buscar por nombre o apellido...">
+    <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #aaa;">🔍</span>
+  </div>
 
-      <br>
-      <a href="{% url 'crear_alumno' %}" class="btn">Crear Alumno</a>
+  {% if alumnos %}
+    <table class="tabla-estandar" id="tabla-alumnos">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alumno in alumnos %}
+          <tr>
+            <td>{{ alumno.nombre }}</td>
+            <td>{{ alumno.apellido }}</td>
+            <td>
+              <a href="{% url 'detalle_alumno' pk=alumno.pk %}" class="btn-tabla">Ver</a>
+              <a href="{% url 'modificar_alumno' pk=alumno.pk %}" class="btn-tabla">Editar</a>
+              <a href="{% url 'eliminar_alumno' pk=alumno.pk %}" class="btn-tabla btn-secundario">Eliminar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay alumnos registrados.</p>
+  {% endif %}
+
+  <br>
+  <a href="{% url 'crear_alumno' %}" class="btn">Crear Alumno</a>
+
+  <!-- Script para filtrar -->
+  <script>
+    document.getElementById('busqueda').addEventListener('keyup', function () {
+      const filtro = this.value.toLowerCase();
+      const filas = document.querySelectorAll('#tabla-alumnos tbody tr');
+
+      filas.forEach(fila => {
+        const nombre = fila.children[0].textContent.toLowerCase();
+        const apellido = fila.children[1].textContent.toLowerCase();
+        const visible = nombre.includes(filtro) || apellido.includes(filtro);
+        fila.style.display = visible ? '' : 'none';
+      });
+    });
+  </script>
 {% endblock %}

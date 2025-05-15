@@ -208,7 +208,7 @@ def agregar_clase(request):
         clases = Clase.objects.all()
         cont = clases.count() + 1  
         # Crear el nombre de la clase
-        nombre = f"Grupo {cont} ({disciplina.nombre} - {categoria.nombre})"
+        nombre = f"Categoria {categoria.nombre} ({disciplina.nombre})"
 
         # Crear la clase con el nombre generado y los objetos disciplina y categoria
         clase = Clase(nombre=nombre, id_disciplina=disciplina, id_categoria=categoria)
