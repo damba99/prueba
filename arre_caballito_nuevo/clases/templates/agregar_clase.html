@@ -55,7 +55,7 @@
         <br><br>
     
         <!-- Contenedor para las sesiones -->
-        <div id="sesiones-container"></div>
+        <div class="accordion" id="sesiones-container"></div>
     
         <br><br>
     
@@ -63,59 +63,64 @@
     </form>
 
     {% include 'tabla.html' %}
-    <script>
- // Obtener el botón y el contenedor donde se agregarán las sesiones
-        const agregarSesionBtn = document.getElementById('agregar-sesion-btn');
-        const sesionesContainer = document.getElementById('sesiones-container');
+<script>
+    let contadorSesiones = 0;
 
-        // Al hacer clic en el botón "Agregar sesión", se agrega un formulario de sesión
-        agregarSesionBtn.addEventListener('click', function() {
-            // Crear un nuevo contenedor para la sesión
-            const sessionForm = document.createElement('div');
-            sessionForm.classList.add('session-form');
-            
-            // HTML para el select de Día, hora de inicio y hora de fin
-            sessionForm.innerHTML = `
-                <h4>Sesión</h4>
+    const agregarSesionBtn = document.getElementById('agregar-sesion-btn');
+    const sesionesContainer = document.getElementById('sesiones-container');
 
-                <!-- Select de Día -->
-                <label for="dia">Día:</label>
-                <select name="dia" class="form-control" required>
-                    <option value="" disabled selected>Selecciona un Día</option>
-                    <option value="Lunes">Lunes</option>
-                    <option value="Martes">Martes</option>
-                    <option value="Miércoles">Miércoles</option>
-                    <option value="Jueves">Jueves</option>
-                    <option value="Viernes">Viernes</option>
-                    <option value="Sábado">Sábado</option>
-                    <option value="Domingo">Domingo</option>
-                </select>
+    agregarSesionBtn.addEventListener('click', function () {
+        contadorSesiones++;
 
-                <br><br>
+        const sessionId = `sesion-${contadorSesiones}`;
 
-                <label for="id_profesor">Profesor:</label>
-                <select id="id_profesor" name="id_profesor" class="form-control" required>
-                    <option value="" disabled selected>Seleccione una profesor</option>
-                    {% for profesor in profesores %}
-                    <option value="{{ profesor.id_profesor }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
-                    {% endfor %}            
-                </select>
+        const sessionForm = document.createElement('div');
+        sessionForm.classList.add('accordion-item');
+        sessionForm.innerHTML = `
+            <h2 class="accordion-header" id="heading-${sessionId}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${sessionId}" aria-expanded="false" aria-controls="collapse-${sessionId}">
+                    Sesión ${contadorSesiones}
+                </button>
+            </h2>
+            <div id="collapse-${sessionId}" class="accordion-collapse collapse" aria-labelledby="heading-${sessionId}" data-bs-parent="#sesiones-container">
+                <div class="accordion-body">
+                    <label>Día:</label>
+                    <select name="dia" class="form-control" required>
+                        <option value="" disabled selected>Selecciona un Día</option>
+                        <option value="Lunes">Lunes</option>
+                        <option value="Martes">Martes</option>
+                        <option value="Miércoles">Miércoles</option>
+                        <option value="Jueves">Jueves</option>
+                        <option value="Viernes">Viernes</option>
+                        <option value="Sábado">Sábado</option>
+                        <option value="Domingo">Domingo</option>
+                    </select>
 
-                <!-- Input de Hora de Inicio -->
-                <label for="hora_inicio">Hora de Inicio:</label>
-                <input type="time" name="hora_inicio" class="form-control" required>
+                    <br>
 
-                <br><br>
+                    <label for="id_profesor">Profesor:</label>
+                    <select name="id_profesor" class="form-control" required>
+                        <option value="" disabled selected>Seleccione un profesor</option>
+                        {% for profesor in profesores %}
+                        <option value="{{ profesor.id_profesor }}">{{ profesor.nombre }} {{ profesor.apellido }}</option>
+                        {% endfor %}
+                    </select>
 
-                <!-- Input de Hora de Fin -->
-                <label for="hora_fin">Hora de Fin:</label>
-                <input type="time" name="hora_fin" class="form-control" required>
+                    <br>
 
-                <br><br>
-            `;
+                    <label>Hora de Inicio:</label>
+                    <input type="time" name="hora_inicio" class="form-control" required>
 
-            // Agregar el nuevo formulario de sesión al contenedor
-            sesionesContainer.appendChild(sessionForm);
-        });
-    </script>
+                    <br>
+
+                    <label>Hora de Fin:</label>
+                    <input type="time" name="hora_fin" class="form-control" required>
+                </div>
+            </div>
+        `;
+
+        sesionesContainer.appendChild(sessionForm);
+    });
+</script>
+
 {% endblock %}
