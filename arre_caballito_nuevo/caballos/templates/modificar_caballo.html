@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Modificar Caballo</h1>
-  <form method="POST">
+  <form method="POST" id="form-modificar-caballo">
     {% csrf_token %}
     
     <label for="nombre">Nombre:</label>
@@ -24,7 +24,37 @@
       {{ disciplina.nombre }}<br>
     {% endfor %}
     
-    <button type="submit">Modificar Caballo</button>
+    <button type="submit" class="btn btn-success">Guardar Modificaciones</button>
   </form>
-  <a href="{% url 'listar_caballos' %}">Volver a la lista</a>
+
+  <a href="{% url 'listar_caballos' %}" class="btn btn-secundario">Volver a la lista</a>
+
+  <!-- Incluir SweetAlert2 si no está ya incluido en base.html -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    const form = document.getElementById('form-modificar-caballo');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Evita envío automático
+
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Se guardarán los cambios del caballo.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, guardar",
+        cancelButtonText: "Cancelar",
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.submit(); // Envía el formulario si confirma
+        }
+      });
+    });
+  </script>
 {% endblock %}

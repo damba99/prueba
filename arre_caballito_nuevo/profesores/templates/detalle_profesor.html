@@ -1,15 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Detalles del Profesor</h1>
-  <p><strong>Nombre:</strong> {{ profesor.nombre }} {{ profesor.apellido }}</p>
-  <p><strong>DNI:</strong> {{ profesor.dni }}</p>
-  <p><strong>Fecha de Nacimiento:</strong> {{ profesor.fecha_nacimiento }}</p>
-  <p><strong>Dirección:</strong> {{ profesor.direccion }}</p>
-  <p><strong>Teléfono:</strong> {{ profesor.telefono }}</p>
-  <p><strong>Email:</strong> {{ profesor.email }}</p>
+<div class="container mt-4">
+  <h1 class="mb-4 text-center">Detalles del Profesor</h1>
 
-  <a href="{% url 'modificar_profesor' pk=profesor.pk %}">Modificar</a>
-  <a href="{% url 'eliminar_profesor' pk=profesor.pk %}">Eliminar</a>
-  <a href="{% url 'listar_profesores' %}">Volver a la lista</a>
+  <div class="card shadow rounded p-4">
+    <table class="table table-bordered table-striped">
+      <tbody>
+        <tr>
+          <th scope="row">Nombre</th>
+          <td>{{ profesor.nombre }} {{ profesor.apellido }}</td>
+        </tr>
+        <tr>
+          <th scope="row">DNI</th>
+          <td>{{ profesor.dni }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Fecha de Nacimiento</th>
+          <td>{{ profesor.fecha_nacimiento }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Dirección</th>
+          <td>{{ profesor.direccion }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Teléfono</th>
+          <td>{{ profesor.telefono }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Email</th>
+          <td>{{ profesor.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'modificar_profesor' pk=profesor.pk %}" class="btn btn-primary me-2">Modificar</a>
+      <a href="{% url 'eliminar_profesor' pk=profesor.pk %}" class="btn btn-danger me-2">Eliminar</a>
+      <a href="{% url 'listar_profesores' %}" class="btn btn-secondary">Volver a la lista</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
